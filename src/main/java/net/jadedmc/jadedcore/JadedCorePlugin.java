@@ -46,6 +46,9 @@ public final class JadedCorePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Initilize API
+        new JadedAPI(this);
+
         // Load settings.
         settingsManager = new SettingsManager(this);
         hookManager = new HookManager(this);
