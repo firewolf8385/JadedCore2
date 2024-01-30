@@ -29,10 +29,13 @@ import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.hooks.HookManager;
 import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
+import net.jadedmc.jadedcore.listeners.PlayerJoinListener;
+import net.jadedmc.jadedcore.listeners.UserDataRecalculateListener;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import net.jadedmc.jadedutils.gui.GUIListeners;
 import net.jadedmc.jadedutils.scoreboard.ScoreboardUpdate;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JadedCorePlugin extends JavaPlugin {
@@ -76,6 +79,10 @@ public final class JadedCorePlugin extends JavaPlugin {
      * Registers plugin listeners.
      */
     private void registerListeners() {
+        // Plugin listeners.
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        new UserDataRecalculateListener(this, LuckPermsProvider.get());
+
         // Utility listeners.
         getServer().getPluginManager().registerEvents(new GUIListeners(), this);
     }
