@@ -7,3 +7,88 @@ depend:
   - PlaceholderAPI
   - LuckPerms
   - JadedChat
+
+commands:
+  broadcast:
+    description: Broadcast command.
+    usage: /broadcast
+    aliases: [ bc ]
+    permission: jadecore.broadcast
+  center:
+    description: Center yourself on a block.
+    permission: jadedcore.center
+  chatlog:
+    description: View the chat logs of a player.
+    usage: /chatlog
+    permission: jadedcore.chatlog
+  commandspy:
+    description: Spy on commands.
+    usage: /<command>
+    aliases: [ cmdspy ]
+    permission: jadedcore.commandspy
+  discord:
+    description: View the server discord.
+  duels:
+    description: Open the duels gui.
+  ecsee:
+    description: View someone's enderchest.
+    usage: /<command>
+    permission: jadedcore.ecsee
+  enderchest:
+    description: View your own enderchest.
+    usage: /<command>
+    aliases: [ ec ]
+    permission: jadedcore.enderchest
+  feed:
+    description: Fill a player's hunger and saturation bars.
+    usage: /<command>
+    permission: jadedcore.feed
+  fly:
+    description: Toggles flight
+    usage: /<command>
+    permission: jadedcore.fly
+  games:
+    description: View the games available on the server.
+    usage: /<command>
+    aliases: [ play ]
+  heal:
+    description: Heals a player
+    usage: /<command>
+    permission: jadedcore.heal
+  invsee:
+    description: View a player's inventory.
+    usage: /<command>
+    permission: jadedcore.invsee
+  jamison:
+    description: Open jamison the journeymen.
+  profile:
+    description: View a player's profile.
+  rank:
+    description: Debug command for the rank system.
+  rename:
+    description: Rename an item in the player's hand.
+    usage: /<command>
+    permission: jadedcore.rename
+  rules:
+    description: View the server rules.
+  store:
+    description: View a link to the server store.
+    aliases: [ shop ]
+  uuid:
+    description: View a player's uuid.
+    usage: /<command>
+    permission: jadedcore.uuid
+  vanish:
+    description: Toggle vanish mode.
+    usage: /<command>
+    aliases: [ v ]
+    permission: jadedcore.vanish
+  vote:
+    description: View vote links.
+  website:
+    description: View a link to the server website.
+  workbench:
+    description: Opens a crafting table.
+    usage: /<command>
+    aliases: [ wb,craft ]
+    permission: jadedcore.workbench

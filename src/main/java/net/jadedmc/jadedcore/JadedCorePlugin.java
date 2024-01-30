@@ -25,6 +25,7 @@
 package net.jadedmc.jadedcore;
 
 import net.jadedmc.jadedcore.achievements.AchievementManager;
+import net.jadedmc.jadedcore.commands.AbstractCommand;
 import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.hooks.HookManager;
@@ -67,6 +68,7 @@ public final class JadedCorePlugin extends JavaPlugin {
 
         // Register commands and listeners.
         registerListeners();
+        AbstractCommand.registerCommands(this);
 
         // Register placeholders.
         new Placeholders(this).register();
