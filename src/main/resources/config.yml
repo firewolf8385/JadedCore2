@@ -1,0 +1,24 @@
+############################################
+# Databases
+############################################
+
+# MySQL
+# Stores player data.
+MySQL:
+  host: localhost
+  port: 3306
+  database: database
+  username: username
+  password: password
+  useSSL: true
+
+# MongoDB
+# Stores map data.
+MongoDB:
+  connection: ""
+
+# Redis
+# Syncs data across servers.
+Redis:
+  host: "127.0.0.1"
+  port: 6379

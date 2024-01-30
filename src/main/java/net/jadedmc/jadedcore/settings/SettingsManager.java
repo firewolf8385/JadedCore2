@@ -22,20 +22,37 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedcore;
+package net.jadedmc.jadedcore.settings;
 
-import net.jadedmc.jadedcore.settings.SettingsManager;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.jadedmc.jadedcore.JadedCorePlugin;
+import org.bukkit.configuration.file.FileConfiguration;
 
-public final class JadedCorePlugin extends JavaPlugin {
-    private SettingsManager settingsManager;
+import java.io.File;
 
-    @Override
-    public void onEnable() {
-        settingsManager = new SettingsManager(this);
+/**
+ * Allows easy access to plugin configuration
+ * files. Stores spawn and arena locations.
+ */
+public class SettingsManager {
+    private final FileConfiguration config;
+    private final File configFile;
+
+    /**
+     * Creates the SettingsManager and loads each config file.
+     * @param plugin Instance of the plugin.
+     */
+    public SettingsManager(JadedCorePlugin plugin) {
+        config = plugin.getConfig();
+        config.options().copyDefaults(true);
+        configFile = new File(plugin.getDataFolder(), "config.yml");
+        plugin.saveConfig();
     }
 
-    public SettingsManager settingsManager() {
-        return settingsManager;
+    /**
+     * Get the main configuration file.
+     * @return Main configuration file.
+     */
+    public FileConfiguration getConfig() {
+        return config;
     }
 }
