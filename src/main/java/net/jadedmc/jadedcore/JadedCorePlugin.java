@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.achievements.AchievementManager;
 import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.hooks.HookManager;
+import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import net.jadedmc.jadedutils.gui.GUIListeners;
@@ -37,6 +38,7 @@ public final class JadedCorePlugin extends JavaPlugin {
     private AchievementManager achievementManager;
     private HookManager hookManager;
     private JadedPlayerManager jadedPlayerManager;
+    private LeaderboardManager leaderboardManager;
     private SettingsManager settingsManager;
     private MongoDB mongoDB;
     private MySQL mySQL;
@@ -54,6 +56,7 @@ public final class JadedCorePlugin extends JavaPlugin {
         // Load other managers.
         achievementManager = new AchievementManager(this);
         jadedPlayerManager = new JadedPlayerManager(this);
+        leaderboardManager = new LeaderboardManager(this);
 
         // Register commands and listeners.
         registerListeners();
@@ -89,6 +92,14 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     public JadedPlayerManager jadedPlayerManager() {
         return jadedPlayerManager;
+    }
+
+    /**
+     * Get the Leaderboard Manager, which controls leaderboards.
+     * @return Leaderboard Manager.
+     */
+    public LeaderboardManager leaderboardManager() {
+        return leaderboardManager;
     }
 
     /**
