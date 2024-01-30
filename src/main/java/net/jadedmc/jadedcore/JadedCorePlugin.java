@@ -60,6 +60,9 @@ public final class JadedCorePlugin extends JavaPlugin {
 
         // Register commands and listeners.
         registerListeners();
+
+        // Register placeholders.
+        new Placeholders(this).register();
     }
 
     /**
