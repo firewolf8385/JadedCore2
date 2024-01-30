@@ -1,0 +1,4 @@
+name: JadedCore
+version: '${project.version}'
+main: net.jadedmc.jadedcore.JadedCorePlugin
+api-version: "1.20"
