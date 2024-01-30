@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore;
 import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.settings.SettingsManager;
+import net.jadedmc.jadedutils.gui.GUIListeners;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JadedCorePlugin extends JavaPlugin {
@@ -42,6 +43,17 @@ public final class JadedCorePlugin extends JavaPlugin {
         // Load Databases
         mongoDB = new MongoDB(this);
         mySQL = new MySQL(this);
+
+        // Register commands and listeners.
+        registerListeners();
+    }
+
+    /**
+     * Registers plugin listeners.
+     */
+    private void registerListeners() {
+        // Utility listeners.
+        getServer().getPluginManager().registerEvents(new GUIListeners(), this);
     }
 
     /**
