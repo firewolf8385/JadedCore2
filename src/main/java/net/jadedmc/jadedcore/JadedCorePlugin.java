@@ -24,13 +24,19 @@
  */
 package net.jadedmc.jadedcore;
 
+import net.jadedmc.jadedcore.achievements.AchievementManager;
 import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
+import net.jadedmc.jadedcore.hooks.HookManager;
+import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import net.jadedmc.jadedutils.gui.GUIListeners;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JadedCorePlugin extends JavaPlugin {
+    private AchievementManager achievementManager;
+    private HookManager hookManager;
+    private JadedPlayerManager jadedPlayerManager;
     private SettingsManager settingsManager;
     private MongoDB mongoDB;
     private MySQL mySQL;
@@ -39,10 +45,15 @@ public final class JadedCorePlugin extends JavaPlugin {
     public void onEnable() {
         // Load settings.
         settingsManager = new SettingsManager(this);
+        hookManager = new HookManager(this);
 
         // Load Databases
         mongoDB = new MongoDB(this);
         mySQL = new MySQL(this);
+
+        // Load other managers.
+        achievementManager = new AchievementManager(this);
+        jadedPlayerManager = new JadedPlayerManager(this);
 
         // Register commands and listeners.
         registerListeners();
@@ -54,6 +65,30 @@ public final class JadedCorePlugin extends JavaPlugin {
     private void registerListeners() {
         // Utility listeners.
         getServer().getPluginManager().registerEvents(new GUIListeners(), this);
+    }
+
+    /**
+     * Get the Achievement Manager, which controls Achievements.
+     * @return AchievementManager.
+     */
+    public AchievementManager achievementManager() {
+        return achievementManager;
+    }
+
+    /**
+     * Get the Hook Manager, which controls what third-party plugins we hook into.
+     * @return HookManager.
+     */
+    public HookManager hookManager() {
+        return hookManager;
+    }
+
+    /**
+     * Get the Jaded Player manager, which manages player data.
+     * @return Jaded Player manager.
+     */
+    public JadedPlayerManager jadedPlayerManager() {
+        return jadedPlayerManager;
     }
 
     /**
