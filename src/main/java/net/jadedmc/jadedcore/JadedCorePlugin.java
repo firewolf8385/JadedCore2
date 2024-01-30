@@ -25,12 +25,14 @@
 package net.jadedmc.jadedcore;
 
 import net.jadedmc.jadedcore.databases.MongoDB;
+import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JadedCorePlugin extends JavaPlugin {
     private SettingsManager settingsManager;
     private MongoDB mongoDB;
+    private MySQL mySQL;
 
     @Override
     public void onEnable() {
@@ -39,6 +41,7 @@ public final class JadedCorePlugin extends JavaPlugin {
 
         // Load Databases
         mongoDB = new MongoDB(this);
+        mySQL = new MySQL(this);
     }
 
     /**
@@ -47,6 +50,14 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     public MongoDB mongoDB() {
         return mongoDB;
+    }
+
+    /**
+     * Be able to connect to MySQL.
+     * @return MySQL.
+     */
+    public MySQL mySQL() {
+        return mySQL;
     }
 
     /**
