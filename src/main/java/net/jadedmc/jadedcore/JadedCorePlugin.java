@@ -30,7 +30,9 @@ import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.hooks.HookManager;
 import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
+import net.jadedmc.jadedcore.listeners.ChannelMessageSendListener;
 import net.jadedmc.jadedcore.listeners.PlayerJoinListener;
+import net.jadedmc.jadedcore.listeners.PlayerQuitListener;
 import net.jadedmc.jadedcore.listeners.UserDataRecalculateListener;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
@@ -82,7 +84,9 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     private void registerListeners() {
         // Plugin listeners.
+        getServer().getPluginManager().registerEvents(new ChannelMessageSendListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
         new UserDataRecalculateListener(this, LuckPermsProvider.get());
 
         // Utility listeners.
