@@ -32,6 +32,7 @@ import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import net.jadedmc.jadedutils.gui.GUIListeners;
+import net.jadedmc.jadedutils.scoreboard.ScoreboardUpdate;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JadedCorePlugin extends JavaPlugin {
@@ -63,6 +64,9 @@ public final class JadedCorePlugin extends JavaPlugin {
 
         // Register placeholders.
         new Placeholders(this).register();
+
+        // Updates scoreboards every second
+        new ScoreboardUpdate().runTaskTimer(this, 20L, 20L);
     }
 
     /**
