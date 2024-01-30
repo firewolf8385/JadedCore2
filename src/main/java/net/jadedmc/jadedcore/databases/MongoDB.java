@@ -22,38 +22,49 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedcore;
+package net.jadedmc.jadedcore.databases;
 
-import net.jadedmc.jadedcore.databases.MongoDB;
-import net.jadedmc.jadedcore.settings.SettingsManager;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
+import net.jadedmc.jadedcore.JadedCorePlugin;
 
-public final class JadedCorePlugin extends JavaPlugin {
-    private SettingsManager settingsManager;
-    private MongoDB mongoDB;
+import java.util.Objects;
 
-    @Override
-    public void onEnable() {
-        // Load settings.
-        settingsManager = new SettingsManager(this);
+/**
+ * Manages the connection process to MongoDB.
+ */
+public class MongoDB {
+    private final MongoClient client;
+    private final MongoDatabase database;
 
-        // Load Databases
-        mongoDB = new MongoDB(this);
+    /**
+     * Connects to MongoDB.
+     * @param plugin Instance of the plugin.
+     */
+    public MongoDB(final JadedCorePlugin plugin) {
+        ConnectionString connectionString = new ConnectionString(Objects.requireNonNull(plugin.settingsManager().getConfig().getString("MongoDB.connection")));
+        MongoClientSettings settings = MongoClientSettings.builder().applyConnectionString(connectionString).build();
+
+        client = MongoClients.create(settings);
+        database = client.getDatabase("maps");
     }
 
     /**
-     * Gets the MongoDB connection.
-     * @return MongoDB.
+     * Gets the current MongoDB client.
+     * @return MongoDB client.
      */
-    public MongoDB mongoDB() {
-        return mongoDB;
+    public MongoClient client() {
+        return client;
     }
 
     /**
-     * Gets the server's configuration files.
-     * @return Settings Manager
+     * Gets the current MongoDB Database
+     * @return MongoDB database.
      */
-    public SettingsManager settingsManager() {
-        return settingsManager;
+    public MongoDatabase database() {
+        return database;
     }
 }
