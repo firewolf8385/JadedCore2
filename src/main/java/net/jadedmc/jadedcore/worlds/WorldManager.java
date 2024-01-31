@@ -79,7 +79,7 @@ public class WorldManager {
         GridFSBucket gridFSBucket = GridFSBuckets.create(database, "storage");
 
         // Downloads a file to an output stream
-        try (FileOutputStream streamToDownloadTo = new FileOutputStream(plugin.getServer().getPluginsFolder().getParent() + "/" + worldName + ".zip")) {
+        try (FileOutputStream streamToDownloadTo = new FileOutputStream(plugin.getServer().getWorldContainer() + "/" + worldName + ".zip")) {
             gridFSBucket.downloadToStream(worldName + ".zip", streamToDownloadTo, downloadOptions);
             streamToDownloadTo.flush();
         }
@@ -88,8 +88,8 @@ public class WorldManager {
         }
 
         // Extracts the world from the zip file, and deletes the old zip file.
-        File zipFile = new File(plugin.getServer().getPluginsFolder().getParent() + "/" + worldName + ".zip");
-        File worldFolder = new File(plugin.getServer().getPluginsFolder().getParent() + "/" + worldName);
+        File zipFile = new File(plugin.getServer().getWorldContainer() + "/" + worldName + ".zip");
+        File worldFolder = new File(plugin.getServer().getWorldContainer() + "/" + worldName);
         ZipUtil.unpack(zipFile, worldFolder);
         zipFile.delete();
 
@@ -129,7 +129,7 @@ public class WorldManager {
             GridFSBucket gridFSBucket = GridFSBuckets.create(database, "storage");
 
             // Downloads a file to an output stream
-            try (FileOutputStream streamToDownloadTo = new FileOutputStream(plugin.getServer().getPluginsFolder().getParent() + "/" + worldName + ".zip")) {
+            try (FileOutputStream streamToDownloadTo = new FileOutputStream(plugin.getServer().getWorldContainer() + "/" + worldName + ".zip")) {
                 gridFSBucket.downloadToStream(worldName + ".zip", streamToDownloadTo, downloadOptions);
                 streamToDownloadTo.flush();
             }
@@ -138,8 +138,8 @@ public class WorldManager {
             }
 
             // Extracts the world from the zip file, and deletes the old zip file.
-            File zipFile = new File(plugin.getServer().getPluginsFolder().getParent() + "/" + worldName + ".zip");
-            File worldFolder = new File(plugin.getServer().getPluginsFolder().getParent() + "/" + worldName);
+            File zipFile = new File(plugin.getServer().getWorldContainer() + "/" + worldName + ".zip");
+            File worldFolder = new File(plugin.getServer().getWorldContainer() + "/" + worldName);
             ZipUtil.unpack(zipFile, worldFolder);
             zipFile.delete();
 
