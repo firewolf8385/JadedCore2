@@ -22,3 +22,13 @@ MongoDB:
 Redis:
   host: "127.0.0.1"
   port: 6379
+
+############################################
+# Worlds
+############################################
+
+# The list of worlds that should be updated on startup.
+# Format:
+# Worlds:
+#   world: fileName
+Worlds: []
