@@ -55,8 +55,8 @@ public class WorldManager {
      * Downloads a world from MongoDB given a world name.
      * @param worldName Name of the world to download.
      */
-    public void downloadWorldSync(String worldName) {
-        downloadWorldSync(worldName, new GridFSDownloadOptions());
+    public File downloadWorldSync(String worldName) {
+        return downloadWorldSync(worldName, new GridFSDownloadOptions());
     }
 
     /**
@@ -64,8 +64,8 @@ public class WorldManager {
      * @param worldName Name of the world to download.
      * @param revision Revision number of the world.
      */
-    public void downloadWorldSync(String worldName, int revision) {
-        downloadWorldSync(worldName, new GridFSDownloadOptions().revision(revision));
+    public File downloadWorldSync(String worldName, int revision) {
+        return downloadWorldSync(worldName, new GridFSDownloadOptions().revision(revision));
     }
 
     /**
@@ -73,7 +73,7 @@ public class WorldManager {
      * @param worldName Name of the world to download.
      * @param downloadOptions MongoDB download options.
      */
-    public void downloadWorldSync(String worldName, GridFSDownloadOptions downloadOptions) {
+    public File downloadWorldSync(String worldName, GridFSDownloadOptions downloadOptions) {
         // Get MongoDB connection.
         MongoDatabase database = plugin.mongoDB().database();
         GridFSBucket gridFSBucket = GridFSBuckets.create(database, "storage");
@@ -92,6 +92,8 @@ public class WorldManager {
         File worldFolder = new File(plugin.getServer().getPluginsFolder().getParent() + "/" + worldName);
         ZipUtil.unpack(zipFile, worldFolder);
         zipFile.delete();
+
+        return worldFolder;
     }
 
     /**
