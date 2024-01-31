@@ -28,18 +28,23 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSDownloadOptions;
+import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.worlds.generators.VoidWorldGenerator;
+import net.jadedmc.jadedutils.FileUtils;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.zeroturnaround.zip.ZipUtil;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class manages the creation, loading, and saving, or worlds through MongoDB.
+ */
 public class WorldManager {
     private final JadedCorePlugin plugin;
 
@@ -178,5 +183,40 @@ public class WorldManager {
             // Returns the resulting world.
             return world;
         }));
+    }
+
+    /**
+     * Saves a world folder to MongoDB.
+     * <strong>Warning:</strong> Does not unload the world. Do that before using.
+     * This is done to allow arena editors to work.
+     * @param worldFolder Folder to save
+     * @param name Name to save the world as.
+     */
+    public void saveWorld(File worldFolder, String name) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            File zipFile = new File(worldFolder.getParent(), name + ".zip");
+            ZipUtil.pack(worldFolder, zipFile);
+
+            MongoDatabase database = plugin.mongoDB().database();
+            GridFSBucket gridFSBucket = GridFSBuckets.create(database, "storage");
+
+
+            try (InputStream streamToUploadFrom = new FileInputStream(zipFile) ) {
+                // Defines options that specify configuration information for files uploaded to the bucket
+                GridFSUploadOptions options = new GridFSUploadOptions()
+                        .chunkSizeBytes(1048576)
+                        .metadata(new Document("type", "zip archive"));
+                // Uploads a file from an input stream to the GridFS bucket
+                ObjectId fileId = gridFSBucket.uploadFromStream(name + ".zip", streamToUploadFrom, options);
+                // Prints the "_id" value of the uploaded file
+                System.out.println("The file id of the uploaded file is: " + fileId.toHexString());
+            }
+            catch (IOException exception) {
+                throw new RuntimeException(exception);
+            }
+
+            FileUtils.deleteDirectory(worldFolder);
+            zipFile.delete();
+        });
     }
 }
