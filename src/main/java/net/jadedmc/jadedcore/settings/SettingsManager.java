@@ -26,15 +26,17 @@ package net.jadedmc.jadedcore.settings;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Allows easy access to plugin configuration
  * files. Stores spawn and arena locations.
  */
 public class SettingsManager {
-    private final FileConfiguration config;
+    private FileConfiguration config;
     private final File configFile;
 
     /**
@@ -54,5 +56,24 @@ public class SettingsManager {
      */
     public FileConfiguration getConfig() {
         return config;
+    }
+
+    /**
+     * Update the configuration files.
+     */
+    public void reloadConfig() {
+        saveConfig();
+        config = YamlConfiguration.loadConfiguration(configFile);
+    }
+
+    /**
+     * Saves the current configuration.
+     */
+    public void saveConfig() {
+        try {
+            config.save(configFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
