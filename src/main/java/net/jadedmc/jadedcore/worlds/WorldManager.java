@@ -30,6 +30,7 @@ import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSDownloadOptions;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import net.jadedmc.jadedcore.JadedCorePlugin;
+import net.jadedmc.jadedcore.worlds.generators.JadedChunkGenerator;
 import net.jadedmc.jadedcore.worlds.generators.VoidWorldGenerator;
 import net.jadedmc.jadedutils.FileUtils;
 import org.bson.Document;
@@ -40,6 +41,8 @@ import org.bukkit.WorldCreator;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -47,6 +50,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class WorldManager {
     private final JadedCorePlugin plugin;
+    private final Collection<JadedChunkGenerator> generators = new HashSet<>();
 
     /**
      * Creates the world manager.
@@ -54,6 +58,17 @@ public class WorldManager {
      */
     public WorldManager(final JadedCorePlugin plugin) {
         this.plugin = plugin;
+
+        // Adds default generators.
+        addGenerator(new VoidWorldGenerator());
+    }
+
+    /**
+     * Adds a chunk generator to the plugin.
+     * @param generator JadedChunkGenerator to add.
+     */
+    public void addGenerator(JadedChunkGenerator generator) {
+        generators.add(generator);
     }
 
     /**
@@ -99,6 +114,30 @@ public class WorldManager {
         zipFile.delete();
 
         return worldFolder;
+    }
+
+    /**
+     * Gets a generator from its id.
+     * Returns a new void generator if not found.
+     * @param id id of the generator.
+     * @return Generator corresponding to that id.
+     */
+    public JadedChunkGenerator getGenerator(String id) {
+        for(JadedChunkGenerator generator : generators) {
+            if(generator.getId().equalsIgnoreCase(id)) {
+                return generator;
+            }
+        }
+
+        return new VoidWorldGenerator();
+    }
+
+    /**
+     * Gets all currently loaded generators.
+     * @return Collection of JadedChunkGenerators.
+     */
+    public Collection<JadedChunkGenerator> getGenerators() {
+        return generators;
     }
 
     /**
