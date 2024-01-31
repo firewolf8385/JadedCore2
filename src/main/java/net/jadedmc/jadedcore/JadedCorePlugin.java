@@ -36,6 +36,7 @@ import net.jadedmc.jadedcore.listeners.PlayerQuitListener;
 import net.jadedmc.jadedcore.listeners.UserDataRecalculateListener;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
+import net.jadedmc.jadedcore.worlds.WorldManager;
 import net.jadedmc.jadedutils.gui.GUIListeners;
 import net.jadedmc.jadedutils.scoreboard.ScoreboardUpdate;
 import net.luckperms.api.LuckPermsProvider;
@@ -46,13 +47,14 @@ public final class JadedCorePlugin extends JavaPlugin {
     private HookManager hookManager;
     private JadedPlayerManager jadedPlayerManager;
     private LeaderboardManager leaderboardManager;
-    private SettingsManager settingsManager;
     private MongoDB mongoDB;
     private MySQL mySQL;
+    private SettingsManager settingsManager;
+    private WorldManager worldManager;
 
     @Override
     public void onEnable() {
-        // Initilize API
+        // Initialize API
         new JadedAPI(this);
 
         // Load settings.
@@ -62,11 +64,13 @@ public final class JadedCorePlugin extends JavaPlugin {
         // Load Databases
         mongoDB = new MongoDB(this);
         mySQL = new MySQL(this);
+        mySQL.openConnection();
 
         // Load other managers.
         achievementManager = new AchievementManager(this);
         jadedPlayerManager = new JadedPlayerManager(this);
         leaderboardManager = new LeaderboardManager(this);
+        worldManager = new WorldManager(this);
 
         // Register commands and listeners.
         registerListeners();
@@ -143,9 +147,17 @@ public final class JadedCorePlugin extends JavaPlugin {
 
     /**
      * Gets the server's configuration files.
-     * @return Settings Manager
+     * @return Settings Manager.
      */
     public SettingsManager settingsManager() {
         return settingsManager;
+    }
+
+    /**
+     * Get the world manager, which manages savings and storing worlds.
+     * @return World Manager.
+     */
+    public WorldManager worldManager() {
+        return worldManager;
     }
 }
