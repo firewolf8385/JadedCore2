@@ -23,6 +23,7 @@ Redis:
   host: "127.0.0.1"
   port: 6379
 
+
 ############################################
 # Worlds
 ############################################
@@ -32,3 +33,50 @@ Redis:
 # Worlds:
 #   world: fileName
 Worlds: []
+
+
+############################################
+# Lobby
+############################################
+Lobby:
+  # Whether lobby features should be enabled.
+  Enabled: true
+
+  # The worlds that should be classified as lobby worlds.
+  Worlds:
+    - "world"
+
+  # Spawn point of the lobby.
+  Spawn:
+    World: world
+    X: 0
+    Y: 0
+    Z: 0
+    Yaw: 0
+    Pitch: 0
+    Set: false
+
+  # Configures items the player should have when they join.
+  Items:
+    Games: true
+    Profile: true
+    Cosmetics: true
+    Settings: true
+
+  # Sets up the lobby scoreboard.
+  Scoreboard:
+    Enabled: true
+    Title: "&a&lJadedMC"
+    Lines:
+      - "&7%localtime_time_MM/dd/YY%"
+      - "&aRank:"
+      - "  %jadedcore_rank_displayname_legacy%"
+      - ""
+      - "&aParkour:"
+      - "  %ajpk_stats_highscore%"
+      - ""
+      - ""
+      - "&aOnline:"
+      - "  %bungee_total%"
+      - ""
+      - "&aplay.jadedmc.net"

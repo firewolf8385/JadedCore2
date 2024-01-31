@@ -72,6 +72,8 @@ commands:
     permission: jadedcore.rename
   rules:
     description: View the server rules.
+  setlobby:
+    description: Sets the lobby spawn.
   store:
     description: View a link to the server store.
     aliases: [ shop ]

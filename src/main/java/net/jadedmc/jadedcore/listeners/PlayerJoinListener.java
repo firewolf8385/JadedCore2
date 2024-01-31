@@ -77,6 +77,11 @@ public class PlayerJoinListener implements Listener {
 
             plugin.getServer().getScheduler().runTask(plugin, () -> {
                 plugin.getServer().getPluginManager().callEvent(new JadedJoinEvent(jadedPlayer));
+
+                // Sends the player to the lobby if it is enabled.
+                if(plugin.lobbyManager().isEnabled()) {
+                    plugin.lobbyManager().sendToLobby(player);
+                }
             });
         });
     }

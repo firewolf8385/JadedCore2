@@ -31,6 +31,7 @@ import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.hooks.HookManager;
 import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
 import net.jadedmc.jadedcore.listeners.*;
+import net.jadedmc.jadedcore.lobby.LobbyManager;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import net.jadedmc.jadedcore.worlds.WorldManager;
@@ -48,6 +49,7 @@ public final class JadedCorePlugin extends JavaPlugin {
     private HookManager hookManager;
     private JadedPlayerManager jadedPlayerManager;
     private LeaderboardManager leaderboardManager;
+    private LobbyManager lobbyManager;
     private MongoDB mongoDB;
     private MySQL mySQL;
     private SettingsManager settingsManager;
@@ -72,6 +74,7 @@ public final class JadedCorePlugin extends JavaPlugin {
         jadedPlayerManager = new JadedPlayerManager(this);
         leaderboardManager = new LeaderboardManager(this);
         worldManager = new WorldManager(this);
+        lobbyManager = new LobbyManager(this);
 
         // Register commands and listeners.
         registerListeners();
@@ -92,8 +95,13 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     private void registerListeners() {
         // Plugin listeners.
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
+        getServer().getPluginManager().registerEvents(new BlockPlaceListener(this), this);
         getServer().getPluginManager().registerEvents(new ChannelMessageSendListener(this), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageListener(this), this);
+        getServer().getPluginManager().registerEvents(new FoodLevelChangeListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerCommandPreprocessListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
         new UserDataRecalculateListener(this, LuckPermsProvider.get());
@@ -160,6 +168,14 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     public LeaderboardManager leaderboardManager() {
         return leaderboardManager;
+    }
+
+    /**
+     * Get the Lobby Manager, which controls everything related to lobbies.
+     * @return Lobby Manager.
+     */
+    public LobbyManager lobbyManager() {
+        return lobbyManager;
     }
 
     /**
