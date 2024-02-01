@@ -48,7 +48,7 @@ public class GamesGUI extends CustomGUI {
         addGame(31, Game.LOBBY);
 
         ItemStack comingSoon = new ItemBuilder(XMaterial.GRAY_DYE)
-                .setDisplayName("&c&lComing Soon")
+                .setDisplayName("<red><bold>Coming Soon")
                 .build();
 
         //setItem(22, comingSoon);
@@ -56,12 +56,12 @@ public class GamesGUI extends CustomGUI {
         setItem(24, comingSoon);
 
         ItemStack duels = new ItemBuilder(XMaterial.IRON_SWORD)
-                .setDisplayName("&a&lDuels")
+                .setDisplayName("<green><bold>Duels")
                 .addLore("")
-                .addLore(ChatPaginator.wordWrap(Game.DUELS.getDescription(), 25), "&7")
+                .addLore(ChatPaginator.wordWrap(Game.DUELS.getDescription(), 25), "<gray>")
                 .addLore("")
-                .addLore("&a▸ Click to Connect")
-                .addLore(ChatUtils.parsePlaceholders("&7Join %math_0_{bungee_modernduels}+{bungee_legacyduels}+{bungee_tournament}% others playing!"))
+                .addLore("<green>▸ Click to Connect")
+                .addLore(ChatUtils.parsePlaceholders("<gray>Join %math_0_{bungee_modernduels}+{bungee_legacyduels}+{bungee_tournament}% others playing!"))
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .build();
         setItem(22, duels, (p, a) -> new DuelsGUI().open(p));
@@ -80,21 +80,21 @@ public class GamesGUI extends CustomGUI {
 
         if(game == Game.LOBBY) {
             return new ItemBuilder(material)
-                    .setDisplayName("&a&l" + game.getName())
+                    .setDisplayName("<green><bold>" + game.getName())
                     .addLore("")
-                    .addLore("&a▸ Click to Connect")
-                    .addLore(ChatUtils.parsePlaceholders("&7Join %bungee_" + game.getServer() + "% others playing!"))
+                    .addLore("<green>▸ Click to Connect")
+                    .addLore(ChatUtils.parsePlaceholders("<gray>Join %bungee_" + game.getServer() + "% others playing!"))
                     .build();
         }
 
         ItemBuilder builder = new ItemBuilder(material)
-                .setDisplayName("&a&l" + game.getName())
-                .addLore("&8" + game.getType())
+                .setDisplayName("<green><bold>" + game.getName())
+                .addLore("<dark_gray>" + game.getType())
                 .addLore("")
                 .addLore(ChatPaginator.wordWrap(game.getDescription(), 25), "&7")
                 .addLore("")
-                .addLore("&a▸ Click to Connect")
-                .addLore(ChatUtils.parsePlaceholders("&7Join %bungee_" + game.getServer() + "% others playing!"))
+                .addLore("<green>▸ Click to Connect")
+                .addLore(ChatUtils.parsePlaceholders("<gray>Join %bungee_" + game.getServer() + "% others playing!"))
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES);
         return builder.build();
     }

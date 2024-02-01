@@ -42,7 +42,7 @@ public class DuelsGUI extends CustomGUI {
         addFiller(1,2,3,4,5,6,7,8,45,46,47,48,49,50,51,52,53);
 
         ItemStack comingSoon = new ItemBuilder(XMaterial.GRAY_DYE)
-                .setDisplayName("&c&lComing Soon")
+                .setDisplayName("<red><bold>Coming Soon")
                 .build();
 
         setItem(22, comingSoon);
@@ -69,13 +69,13 @@ public class DuelsGUI extends CustomGUI {
         }
 
         ItemBuilder builder = new ItemBuilder(material)
-                .setDisplayName("&a&l" + game.getName())
-                .addLore("&8" + game.getType())
+                .setDisplayName("<green><bold>" + game.getName())
+                .addLore("<dark_gray>" + game.getType())
                 .addLore("")
-                .addLore(ChatPaginator.wordWrap(game.getDescription(), 25), "&7")
+                .addLore(ChatPaginator.wordWrap(game.getDescription(), 25), "<gray>")
                 .addLore("")
-                .addLore("&a▸ Click to Connect")
-                .addLore(ChatUtils.parsePlaceholders("&7Join %bungee_" + game.getServer() + "% others playing!"))
+                .addLore("<green>▸ Click to Connect")
+                .addLore(ChatUtils.parsePlaceholders("<gray>Join %bungee_" + game.getServer() + "% others playing!"))
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES);
         return builder.build();
     }

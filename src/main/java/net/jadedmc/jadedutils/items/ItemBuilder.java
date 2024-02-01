@@ -167,7 +167,7 @@ public class ItemBuilder {
     public ItemBuilder addLore(String[] lore, String starter) {
 
         for(String string : lore) {
-            addLore(string);
+            addLore(starter + string);
         }
         return this;
     }
