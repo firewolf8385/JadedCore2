@@ -120,6 +120,12 @@ public class ChatUtils {
      * @return Translated Message.
      */
     public static Component translate(String message) {
+
+        // Checks for the "<center>" tag, which centers a message.
+        if(message.startsWith("<center>")) {
+            message = centerText(message.replaceFirst("<center>", ""));
+        }
+
         return MiniMessage.miniMessage().deserialize(replaceLegacy(message));
     }
 
