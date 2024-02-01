@@ -10,6 +10,9 @@ depend:
   - JadedChat
 
 commands:
+  anvil:
+    description: Opens an anvil.
+    permission: jadedcore.anvil
   broadcast:
     description: Broadcast command.
     usage: /broadcast
@@ -52,6 +55,9 @@ commands:
     description: View the games available on the server.
     usage: /<command>
     aliases: [ play ]
+  grindstone:
+    description: Opens a grindstone.
+    permission: jadedcore.grindstone.
   heal:
     description: Heals a player
     usage: /<command>
@@ -62,6 +68,9 @@ commands:
     permission: jadedcore.invsee
   jamison:
     description: Open jamison the journeymen.
+  loom:
+    description: Opens a loom.
+    permission: jadedcore.loom
   profile:
     description: View a player's profile.
   rank:

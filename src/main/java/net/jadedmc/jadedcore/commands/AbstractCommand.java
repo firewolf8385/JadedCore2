@@ -55,6 +55,7 @@ public abstract class AbstractCommand implements CommandExecutor {
     public static void registerCommands(JadedCorePlugin pl) {
         plugin = pl;
 
+        new AnvilCMD();
         new BroadcastCMD();
         new CenterCMD();
         new ChatLogCMD(pl);
@@ -66,9 +67,11 @@ public abstract class AbstractCommand implements CommandExecutor {
         new FeedCMD();
         new FlyCMD();
         new GamesCMD();
+        new GrindstoneCMD();
         new HealCMD();
         new InvSeeCMD();
         new JamisonCMD();
+        new LoomCMD();
         new ProfileCMD(pl);
         new RankCMD(pl);
         new RenameCMD();
