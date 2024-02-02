@@ -187,6 +187,12 @@ public class WorldManager {
             ZipUtil.unpack(zipFile, worldFolder);
             zipFile.delete();
 
+            // Deletes the uid.dat file if present. This allows multiple copies of a world to be loaded at the same time.
+            File uidDat = new File(worldFolder, "uid.dat");
+            if(uidDat.exists()) {
+                uidDat.delete();
+            }
+
             return worldFolder;
         });
 
