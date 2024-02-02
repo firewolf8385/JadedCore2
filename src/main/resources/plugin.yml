@@ -25,11 +25,17 @@ commands:
     description: View the chat logs of a player.
     usage: /chatlog
     permission: jadedcore.chatlog
+  cancelworld:
+    description: Exits out of a loaded world without saving.
+    permission: jadedcore.cancelworld
   commandspy:
     description: Spy on commands.
     usage: /<command>
     aliases: [ cmdspy ]
     permission: jadedcore.commandspy
+  createworld:
+    description:  Creates a world.
+    permission: jadedcore.createworld
   discord:
     description: View the server discord.
   duels:
@@ -68,6 +74,9 @@ commands:
     permission: jadedcore.invsee
   jamison:
     description: Open jamison the journeymen.
+  loadworld:
+    description: Loads a world.
+    permission: jadedcore.loadworld
   loom:
     description: Opens a loom.
     permission: jadedcore.loom
@@ -81,6 +90,9 @@ commands:
     permission: jadedcore.rename
   rules:
     description: View the server rules.
+  saveworld:
+    description: Saves the world.
+    permission: jadedcore.saveworld
   setlobby:
     description: Sets the lobby spawn.
   store:

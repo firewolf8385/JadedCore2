@@ -57,9 +57,11 @@ public abstract class AbstractCommand implements CommandExecutor {
 
         new AnvilCMD();
         new BroadcastCMD();
+        new CancelWorldCMD(pl);
         new CenterCMD();
         new ChatLogCMD(pl);
         new CommandSpyCMD(pl);
+        new CreateWorldCMD(pl);
         new DiscordCMD();
         new DuelsCMD();
         new ECSeeCMD();
@@ -71,11 +73,13 @@ public abstract class AbstractCommand implements CommandExecutor {
         new HealCMD();
         new InvSeeCMD();
         new JamisonCMD();
+        new LoadWorldCMD(pl);
         new LoomCMD();
         new ProfileCMD(pl);
         new RankCMD(pl);
         new RenameCMD();
         new RulesCMD();
+        new SaveWorldCMD(pl);
         new SetLobbyCMD(pl);
         new StoreCMD();
         new UUIDCMD();
