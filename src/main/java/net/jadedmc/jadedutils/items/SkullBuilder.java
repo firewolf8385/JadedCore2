@@ -55,6 +55,14 @@ public class SkullBuilder {
         meta.setOwner(player.getName());
     }
 
+    /**
+     * Creates a SkullBuilder with a given Skull enum.
+     * @param skull Skull enum to use.
+     */
+    public SkullBuilder(Skull skull) {
+        this(skull.getTexture());
+    }
+
     public ItemBuilder asItemBuilder() {
         item.setItemMeta(meta);
         return new ItemBuilder(item);
