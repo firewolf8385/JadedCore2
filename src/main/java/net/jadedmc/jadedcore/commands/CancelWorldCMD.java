@@ -48,7 +48,7 @@ public class CancelWorldCMD extends AbstractCommand {
 
         // Make sure the world isn't loaded as a lobby.
         if(plugin.lobbyManager().isLobbyWorld(player.getWorld())) {
-            ChatUtils.chat(player, "&c&lError &8» You cannot cancel this world!");
+            ChatUtils.chat(player, "&c&lError &8» &cYou cannot cancel this world!");
             return;
         }
 
