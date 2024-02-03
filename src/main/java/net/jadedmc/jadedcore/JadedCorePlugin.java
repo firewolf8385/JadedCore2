@@ -83,6 +83,9 @@ public final class JadedCorePlugin extends JavaPlugin {
         registerListeners();
         AbstractCommand.registerCommands(this);
 
+        // Allow the plugin to send messages to the proxy.
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
         // Register placeholders.
         new Placeholders(this).register();
 
