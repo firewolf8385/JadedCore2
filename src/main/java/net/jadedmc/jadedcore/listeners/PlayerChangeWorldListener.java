@@ -26,46 +26,24 @@ package net.jadedmc.jadedcore.listeners;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.LobbyQuitEvent;
-import net.jadedmc.jadedcore.player.JadedPlayer;
-import net.jadedmc.jadedutils.chat.ChatUtils;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 
-/**
- * Listens to the PlayerQuitEvent, which is called when a player quits.
- * Used to remove references to the player object when the player leaves.
- */
-public class PlayerQuitListener implements Listener {
+public class PlayerChangeWorldListener implements Listener {
     private final JadedCorePlugin plugin;
 
-    /**
-     * Creates the Listener.
-     * @param plugin Instance of the plugin.
-     */
-    public PlayerQuitListener(JadedCorePlugin plugin) {
+    public PlayerChangeWorldListener(final JadedCorePlugin plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * Runs when the PlayerQuitEvent is called.
-     * @param event PlayerQuitEvent.
-     */
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
-
-        // Call the lobby quit event if the world is a lobby world.
-        if(plugin.lobbyManager().isLobbyWorld(player.getWorld())) {
-            plugin.getServer().getPluginManager().callEvent(new LobbyQuitEvent(player));
+    @EventHandler
+    public void onWorldChange(PlayerChangedWorldEvent event) {
+        if(!plugin.lobbyManager().isLobbyWorld(event.getFrom())) {
+            return;
         }
 
-        event.setQuitMessage(null);
-        ChatUtils.broadcast(player.getWorld(),"&8[&c-&8] &c" + jadedPlayer.getName());
-
-        plugin.jadedPlayerManager().removePlayer(player);
+        // Call the LobbyQuitEvent event.
+        plugin.getServer().getPluginManager().callEvent(new LobbyQuitEvent(event.getPlayer()));
     }
 }
