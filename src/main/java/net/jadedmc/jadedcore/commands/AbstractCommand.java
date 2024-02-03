@@ -73,6 +73,8 @@ public abstract class AbstractCommand implements CommandExecutor {
         new HealCMD();
         new InvSeeCMD();
         new JamisonCMD();
+        new ListAllCMD(pl);
+        new ListCMD(pl);
         new LoadWorldCMD(pl);
         new LoomCMD();
         new ProfileCMD(pl);

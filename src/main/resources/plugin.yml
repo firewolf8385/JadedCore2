@@ -74,6 +74,12 @@ commands:
     permission: jadedcore.invsee
   jamison:
     description: Open jamison the journeymen.
+  list:
+    description: View online players in the world.
+    permission: jadedcore.list
+  listall:
+    description: View online players in the server.
+    permission: jadedcore.listall
   loadworld:
     description: Loads a world.
     permission: jadedcore.loadworld
