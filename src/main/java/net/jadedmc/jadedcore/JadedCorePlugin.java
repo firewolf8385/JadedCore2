@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.achievements.AchievementManager;
 import net.jadedmc.jadedcore.commands.AbstractCommand;
 import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
+import net.jadedmc.jadedcore.databases.Redis;
 import net.jadedmc.jadedcore.hooks.HookManager;
 import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
 import net.jadedmc.jadedcore.listeners.*;
@@ -52,6 +53,7 @@ public final class JadedCorePlugin extends JavaPlugin {
     private LobbyManager lobbyManager;
     private MongoDB mongoDB;
     private MySQL mySQL;
+    private Redis redis;
     private SettingsManager settingsManager;
     private WorldManager worldManager;
 
@@ -68,6 +70,7 @@ public final class JadedCorePlugin extends JavaPlugin {
         mongoDB = new MongoDB(this);
         mySQL = new MySQL(this);
         mySQL.openConnection();
+        redis = new Redis(this);
 
         // Load other managers.
         achievementManager = new AchievementManager(this);
@@ -192,6 +195,14 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     public MySQL mySQL() {
         return mySQL;
+    }
+
+    /**
+     * Gets the Redis connection.
+     * @return Redis.
+     */
+    public Redis redis() {
+        return redis;
     }
 
     /**
