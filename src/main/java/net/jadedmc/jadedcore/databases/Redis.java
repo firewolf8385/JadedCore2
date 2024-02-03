@@ -93,4 +93,24 @@ public class Redis {
             }
         }.start();
     }
+
+    public void subscribe(String... channels) {
+        new Thread("Redis Subscriber") {
+            @Override
+            public void run() {
+
+                try (Jedis jedis = jedisPool.getResource()) {
+                    jedis.subscribe(new JedisPubSub() {
+                        @Override
+                        public void onMessage(String channel, String msg) {
+                            System.out.println("[Redis] " + channel + ":" + msg);
+                        }
+                    }, channels);
+                }
+                catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }.start();
+    }
 }
