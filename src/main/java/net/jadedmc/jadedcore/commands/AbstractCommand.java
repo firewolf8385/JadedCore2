@@ -61,6 +61,7 @@ public abstract class AbstractCommand implements CommandExecutor {
         new CenterCMD();
         new ChatLogCMD(pl);
         new CommandSpyCMD(pl);
+        new CopyWorldCMD(pl);
         new CreateWorldCMD(pl);
         new DiscordCMD();
         new DuelsCMD();

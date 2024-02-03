@@ -33,6 +33,9 @@ commands:
     usage: /<command>
     aliases: [ cmdspy ]
     permission: jadedcore.commandspy
+  copyworld:
+    description: Copies a given world.
+    permission: jadedcore.copyworld.
   createworld:
     description:  Creates a world.
     permission: jadedcore.createworld

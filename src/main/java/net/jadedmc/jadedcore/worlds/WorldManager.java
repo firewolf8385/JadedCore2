@@ -72,6 +72,99 @@ public class WorldManager {
     }
 
     /**
+     * Loads a copy of a world from MongoDB given a world name.
+     * @param worldName Name of the world to load.
+     * @param copyName Name of the copy to make.
+     * @return Copied world.
+     */
+    public CompletableFuture<World> copyWorld(String worldName, String copyName) {
+        return copyWorld(worldName, new GridFSDownloadOptions(), copyName);
+    }
+
+    /**
+     * Loads a copy of a world from MongoDB with a given world name and revision number.
+     * @param worldName Name of the world to load.
+     * @param revision Revision number of the world.
+     * @param copyName Name of the copy to make.
+     * @return Copied world.
+     */
+    public CompletableFuture<World> copyWorld(String worldName, int revision, String copyName) {
+        return copyWorld(worldName, new GridFSDownloadOptions().revision(revision), copyName);
+    }
+
+    /**
+     * Loads a copy of a world from MongoDB, given a world name and download options.
+     * @param worldName Name of the world.
+     * @param downloadOptions MongoDB download options.
+     * @param copyName Name of the copy to make.
+     * @return Copied world.
+     */
+    public CompletableFuture<World> copyWorld(String worldName, GridFSDownloadOptions downloadOptions, String copyName) {
+        // Downloads the world from MongoDB.
+        CompletableFuture<File> worldDownload = CompletableFuture.supplyAsync(() -> {
+            // Get MongoDB connection.
+            MongoDatabase database = plugin.mongoDB().database();
+            GridFSBucket gridFSBucket = GridFSBuckets.create(database, "storage");
+
+            // Downloads a file to an output stream
+            try (FileOutputStream streamToDownloadTo = new FileOutputStream(plugin.getServer().getWorldContainer() + "/" + worldName + ".zip")) {
+                gridFSBucket.downloadToStream(worldName + ".zip", streamToDownloadTo, downloadOptions);
+                streamToDownloadTo.flush();
+            }
+            catch (IOException exception) {
+                throw new RuntimeException(exception);
+            }
+
+            // Extracts the world from the zip file, and deletes the old zip file.
+            File zipFile = new File(plugin.getServer().getWorldContainer() + "/" + worldName + ".zip");
+            File worldFolder = new File(plugin.getServer().getWorldContainer() + "/" + copyName);
+            ZipUtil.unpack(zipFile, worldFolder);
+            zipFile.delete();
+
+            // Deletes the uid.dat file if present. This allows multiple copies of a world to be loaded at the same time.
+            File uidDat = new File(worldFolder, "uid.dat");
+            if(uidDat.exists()) {
+                uidDat.delete();
+            }
+
+            return worldFolder;
+        });
+
+        // Loads the world.
+        return worldDownload.thenCompose(file -> CompletableFuture.supplyAsync(() -> {
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                WorldCreator worldCreator = new WorldCreator(copyName);
+                // TODO: Store proper generator to use in the file metadata.
+                worldCreator.generator(new VoidWorldGenerator());
+                Bukkit.createWorld(worldCreator);
+            });
+
+            // Wait for the world to be loaded.
+            boolean loaded = false;
+            World world = null;
+            while(!loaded) {
+                try {
+                    Thread.sleep(60);
+                }
+                catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                for(World w : Bukkit.getWorlds()) {
+                    if(w.getName().equals(copyName)) {
+                        loaded = true;
+                        world = w;
+                        break;
+                    }
+                }
+            }
+
+            // Returns the resulting world.
+            return world;
+        }));
+    }
+
+    /**
      * Downloads a world from MongoDB given a world name.
      * @param worldName Name of the world to download.
      */
