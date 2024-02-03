@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.jadedmc.jadedcore.games.Game;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -69,6 +70,14 @@ public class JadedAPI {
 
         // Sends the message using the first player online.
         player.sendPluginMessage(plugin, channel, out.toByteArray());
+    }
+
+    public static Game getServerGame() {
+        return Game.valueOf(plugin.settingsManager().getConfig().getString("serverGame"));
+    }
+
+    public static String getServerName() {
+        return plugin.settingsManager().getConfig().getString("serverName");
     }
 
     public static int getServerVersion() {
