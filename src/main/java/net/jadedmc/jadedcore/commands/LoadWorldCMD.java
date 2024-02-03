@@ -26,6 +26,8 @@ package net.jadedmc.jadedcore.commands;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedutils.chat.ChatUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,11 +43,23 @@ public class LoadWorldCMD extends AbstractCommand {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
+        // Make sure they are using the command properly.
         if(args.length != 1) {
             ChatUtils.chat(player, "&c&lUsage &8» &/loadworld <name>");
             return;
         }
 
+        String worldName = args[0];
+
+        // Make sure the world isn't already being loaded.
+        for(World world : Bukkit.getWorlds()) {
+            if(world.getName().equals(worldName)) {
+                player.teleport(world.getSpawnLocation());
+                return;
+            }
+        }
+
+        // If not, downloads the world and teleports the player.
         plugin.worldManager().loadWorld(args[0]).thenAccept(world -> {
             plugin.getServer().getScheduler().runTask(plugin, () -> {
                 player.teleport(world.getSpawnLocation());
