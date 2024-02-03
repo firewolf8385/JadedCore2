@@ -27,6 +27,9 @@ package net.jadedmc.jadedcore;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.jadedmc.jadedcore.databases.MongoDB;
+import net.jadedmc.jadedcore.databases.MySQL;
+import net.jadedmc.jadedcore.databases.Redis;
 import net.jadedmc.jadedcore.games.Game;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import org.bukkit.Bukkit;
@@ -41,8 +44,21 @@ public class JadedAPI {
         plugin = pl;
     }
 
+    @Deprecated
     public static Connection getDatabase() {
         return plugin.mySQL().getConnection();
+    }
+
+    public static MongoDB getMongoDB() {
+        return plugin.mongoDB();
+    }
+
+    public static MySQL getMySQL() {
+        return plugin.mySQL();
+    }
+
+    public static Redis getRedis() {
+        return plugin.redis();
     }
 
     public static JadedCorePlugin getPlugin() {
