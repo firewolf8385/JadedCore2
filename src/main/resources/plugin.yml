@@ -104,6 +104,8 @@ commands:
     permission: jadedcore.saveworld
   setlobby:
     description: Sets the lobby spawn.
+  spawn:
+    description: Go to the lobby spawn if it is set.
   store:
     description: View a link to the server store.
     aliases: [ shop ]
