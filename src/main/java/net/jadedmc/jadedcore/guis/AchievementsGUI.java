@@ -55,7 +55,7 @@ public class AchievementsGUI extends CustomGUI {
 
         addFiller(1,2,3,4,5,6,7,8,45,46,47,48,49,50,51,52,53);
 
-        Game[] games = new Game[]{Game.GENERAL, Game.CACTUS_RUSH, Game.ELYTRAPVP, Game.HOUSING, Game.TURFWARS, Game.DUELS};
+        Game[] games = new Game[]{Game.GENERAL, Game.CACTUS_RUSH, Game.ELYTRAPVP, Game.TURFWARS, Game.DUELS};
         int[] gameSlots = new int[]{19,20,21,22,23,24,25,28,29,30,31,32,33,34};
 
         ItemStack back = new SkullBuilder("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjg0ZjU5NzEzMWJiZTI1ZGMwNThhZjg4OGNiMjk4MzFmNzk1OTliYzY3Yzk1YzgwMjkyNWNlNGFmYmEzMzJmYyJ9fX0=")
