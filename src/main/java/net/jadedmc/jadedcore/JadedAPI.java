@@ -65,6 +65,9 @@ public class JadedAPI {
         return plugin;
     }
 
+    public boolean isLobbyServer() {
+        return plugin.lobbyManager().isEnabled();
+    }
 
     public static void sendBungeecordMessage(String channel, String subChannel, String message) {
 
