@@ -127,6 +127,8 @@ public class LobbyManager {
         player.setGameMode(GameMode.ADVENTURE);
         player.setCollidable(true);
 
+        player.setArrowsInBody(0);
+
         // Teleport Player
         if(isSpawnSet()) {
             player.teleport(getSpawn());
