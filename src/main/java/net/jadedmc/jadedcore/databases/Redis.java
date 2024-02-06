@@ -25,6 +25,7 @@
 package net.jadedmc.jadedcore.databases;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
+import net.jadedmc.jadedcore.events.RedisMessageEvent;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -34,6 +35,7 @@ import redis.clients.jedis.JedisPubSub;
  * Manages the connection process to Redis.
  */
 public class Redis {
+    private final JadedCorePlugin plugin;
     private final JedisPool jedisPool;
 
     /**
@@ -41,6 +43,8 @@ public class Redis {
      * @param plugin Instance of the plugin.
      */
     public Redis(final JadedCorePlugin plugin) {
+        this.plugin = plugin;
+
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(Integer.MAX_VALUE);
 
@@ -83,7 +87,10 @@ public class Redis {
                     jedis.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String msg) {
-                            System.out.println("[Redis] " + channel + ":" + msg);
+                            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                plugin.getServer().getPluginManager().callEvent(new RedisMessageEvent(channel, msg));
+                            });
+
                         }
                     }, "test");
                 }
@@ -103,7 +110,9 @@ public class Redis {
                     jedis.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String msg) {
-                            System.out.println("[Redis] " + channel + ":" + msg);
+                            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                plugin.getServer().getPluginManager().callEvent(new RedisMessageEvent(channel, msg));
+                            });
                         }
                     }, channels);
                 }
