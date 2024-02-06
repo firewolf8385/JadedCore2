@@ -101,4 +101,39 @@ public class LocationUtils {
 
         return new Location(world, x, y, z, yaw, pitch);
     }
+
+    /**
+     * Get a location from a formatted string.
+     * @param string Formatted string to get location in.
+     * @return Location inside that string.
+     */
+    public Location fromString(String string) {
+        // Get the components of the location.
+        String[] args = string.split(",");
+
+        // Represents a location without yaw and pitch, usually used for blocks.
+        if(args.length == 4) {
+            World world = Bukkit.getWorld(args[0]);
+            double x = Double.parseDouble(args[1]);
+            double y = Double.parseDouble(args[2]);
+            double z = Double.parseDouble(args[3]);
+
+            return new Location(world, x, y, z);
+        }
+
+        // Represents a location with yaw and pitch, usually used for entities.
+        if(args.length == 6) {
+            World world = Bukkit.getWorld(args[0]);
+            double x = Double.parseDouble(args[1]);
+            double y = Double.parseDouble(args[2]);
+            double z = Double.parseDouble(args[3]);
+            float yaw = Float.parseFloat(args[4]);
+            float pitch = Float.parseFloat(args[5]);
+
+            return new Location(world, x, y, z, yaw, pitch);
+        }
+
+        // Location isn't formatted correctly.
+        return null;
+    }
 }
