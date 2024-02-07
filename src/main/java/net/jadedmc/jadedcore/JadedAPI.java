@@ -32,10 +32,17 @@ import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.databases.Redis;
 import net.jadedmc.jadedcore.games.Game;
 import net.jadedmc.jadedcore.player.JadedPlayer;
+import net.jadedmc.jadedcore.servers.Server;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import redis.clients.jedis.Jedis;
 
 import java.sql.Connection;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class JadedAPI {
     private static JadedCorePlugin plugin = null;
@@ -59,6 +66,22 @@ public class JadedAPI {
 
     public static Redis getRedis() {
         return plugin.redis();
+    }
+
+    public CompletableFuture<Collection<Server>> getServers() {
+        return CompletableFuture.supplyAsync(() -> {
+            Collection<Server> servers = new HashSet<>();
+
+            try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
+                Set<String> names = jedis.keys("server:*");
+
+                for (String key : names) {
+                    servers.add(new Server(key));
+                }
+
+                return servers;
+            }
+        });
     }
 
     public static JadedCorePlugin getPlugin() {

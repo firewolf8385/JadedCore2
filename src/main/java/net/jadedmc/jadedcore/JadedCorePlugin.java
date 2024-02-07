@@ -94,6 +94,15 @@ public final class JadedCorePlugin extends JavaPlugin {
 
         // Downloads configured worlds.
         updateWorlds();
+
+        // Server heartbeat
+        new ServerHeartbeat(this).runTaskTimerAsynchronously(this, 0, 20*30);
+    }
+
+    @Override
+    public void onDisable() {
+        // Deletes the search from Redis
+        redis.del("servers:" + settingsManager.getConfig().getString("serverName"));
     }
 
     /**

@@ -78,6 +78,12 @@ public class Redis {
         }
     }
 
+    public void del(String key) {
+        try(Jedis jedis = jedisPool.getResource()) {
+            jedis.del(key);
+        }
+    }
+
     public void subscribe() {
         new Thread("Redis Subscriber") {
             @Override
