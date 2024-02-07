@@ -107,7 +107,7 @@ public class LocationUtils {
      * @param string Formatted string to get location in.
      * @return Location inside that string.
      */
-    public Location fromString(String string) {
+    public static Location fromString(String string) {
         // Get the components of the location.
         String[] args = string.split(",");
 
