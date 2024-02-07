@@ -136,4 +136,14 @@ public class LocationUtils {
         // Location isn't formatted correctly.
         return null;
     }
+
+    /**
+     * Gets the equivalent location of a given location, in a new world.
+     * @param world World to get new location in.
+     * @param location Location to get equivalent of.
+     * @return New location.
+     */
+    public static Location replaceWorld(World world, Location location) {
+        return new Location(world, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+    }
 }
