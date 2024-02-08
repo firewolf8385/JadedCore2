@@ -37,10 +37,10 @@ public class Server {
     public Server(String json) {
         Document document = Document.parse(json);
 
-        lastHeartbeat = Long.parseLong(document.getString("heartbeat"));
-        online = Integer.parseInt(document.getString("online"));
-        capacity = Integer.parseInt(document.getString("capacity"));
-        name = document.getString("name");
+        lastHeartbeat = document.getLong("heartbeat");
+        online = document.getInteger("online");
+        capacity = document.getInteger("capacity");
+        name = document.getString("serverName");
         mode = document.getString("mode");
         type = document.getString("type");
     }

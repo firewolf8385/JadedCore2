@@ -72,15 +72,16 @@ public class JadedAPI {
         return CompletableFuture.supplyAsync(() -> {
             Collection<Server> servers = new HashSet<>();
 
+
             try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
-                Set<String> names = jedis.keys("server:*");
+                Set<String> names = jedis.keys("servers:*");
 
-                for (String key : names) {
-                    servers.add(new Server(key));
+                for(String key : names) {
+                    servers.add(new Server(jedis.get(key)));
                 }
-
-                return servers;
             }
+
+            return servers;
         });
     }
 
