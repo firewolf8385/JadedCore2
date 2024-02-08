@@ -37,6 +37,7 @@ public class ServerHeartbeat extends BukkitRunnable {
     @Override
     public void run() {
         Document document = new Document()
+                .append("serverName", plugin.settingsManager().getConfig().getString("serverName"))
                 .append("status", "ONLINE")
                 .append("online", plugin.getServer().getOnlinePlayers().size())
                 .append("capacity", plugin.getServer().getMaxPlayers())
