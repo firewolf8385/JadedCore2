@@ -83,7 +83,7 @@ public class JadedAPI {
         });
     }
 
-    public static void sendToLobby(Player player, GameType gameType) {
+    public static void sendToLobby(Player player, Game game) {
         JadedAPI.getServers().thenAccept(servers -> {
             UUID gameUUID = UUID.randomUUID();
 
@@ -94,7 +94,7 @@ public class JadedAPI {
                 // Loop through all online servers looking for a server to send the player to
                 for (Server server : servers) {
                     // Make sure the server is the right mode
-                    if (!server.mode().equalsIgnoreCase(gameType.toString())) {
+                    if (!server.mode().equalsIgnoreCase(game.toString())) {
                         continue;
                     }
 
