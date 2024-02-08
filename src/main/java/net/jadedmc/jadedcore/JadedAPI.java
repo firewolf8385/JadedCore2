@@ -68,7 +68,7 @@ public class JadedAPI {
         return plugin.redis();
     }
 
-    public CompletableFuture<Collection<Server>> getServers() {
+    public static CompletableFuture<Collection<Server>> getServers() {
         return CompletableFuture.supplyAsync(() -> {
             Collection<Server> servers = new HashSet<>();
 
