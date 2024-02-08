@@ -31,6 +31,7 @@ import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.databases.Redis;
 import net.jadedmc.jadedcore.games.Game;
+import net.jadedmc.jadedcore.games.GameType;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedcore.servers.Server;
 import org.bukkit.Bukkit;
@@ -38,10 +39,7 @@ import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 
 import java.sql.Connection;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class JadedAPI {
@@ -83,6 +81,53 @@ public class JadedAPI {
 
             return servers;
         });
+    }
+
+    public static void sendToLobby(Player player, GameType gameType) {
+        JadedAPI.getServers().thenAccept(servers -> {
+            UUID gameUUID = UUID.randomUUID();
+
+            String serverName = "";
+            {
+                int count = 999;
+
+                // Loop through all online servers looking for a server to send the player to
+                for (Server server : servers) {
+                    // Make sure the server is the right mode
+                    if (!server.mode().equalsIgnoreCase(gameType.toString())) {
+                        continue;
+                    }
+
+                    // Make sure the server isn't a game server.
+                    if (!server.type().equalsIgnoreCase("GAME")) {
+                        continue;
+                    }
+
+                    // Make sure there is room for another game.
+                    if (server.online() + 2 >= server.capacity()) {
+                        System.out.println("Not enough room!");
+                        continue;
+                    }
+
+                    //
+                    if (server.online() < count) {
+                        count = server.online();
+                        serverName = server.name();
+                    }
+                }
+
+                // If no server is found, give up ¯\_(ツ)_/¯
+                if (count == 999) {
+                    System.out.println("No Server Found!");
+                    return;
+                }
+
+                String finalServerName = serverName;
+                plugin.getServer().getScheduler().runTask(plugin, () -> {
+                    JadedAPI.sendBungeecordMessage(player, "BungeeCord", "Connect", finalServerName);
+                });
+            }
+        }).whenComplete((results, error) -> error.printStackTrace());
     }
 
     public static JadedCorePlugin getPlugin() {
