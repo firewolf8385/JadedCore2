@@ -99,7 +99,7 @@ public class JadedAPI {
                     }
 
                     // Make sure the server isn't a game server.
-                    if (!server.type().equalsIgnoreCase("GAME")) {
+                    if (!server.type().equalsIgnoreCase("LOBBY")) {
                         continue;
                     }
 
