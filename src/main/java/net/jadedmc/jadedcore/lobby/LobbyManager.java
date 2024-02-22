@@ -29,6 +29,7 @@ import net.jadedmc.jadedcore.events.LobbyJoinEvent;
 import net.jadedmc.jadedutils.LocationUtils;
 import net.jadedmc.jadedutils.items.ItemBuilder;
 import net.jadedmc.jadedutils.items.SkullBuilder;
+import net.jadedmc.jadedutils.scoreboard.CustomScoreboard;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -49,6 +50,15 @@ public class LobbyManager {
      */
     public LobbyManager(final JadedCorePlugin plugin) {
         this.plugin = plugin;
+    }
+
+    /**
+     * Get the lobby scoreboard for a player.
+     * @param player Player to get lobby scoreboard of.
+     * @return Lobby scoreboard.
+     */
+    public CustomScoreboard getLobbyScoreboard(Player player) {
+        return new LobbyScoreboard(plugin, player);
     }
 
     /**
