@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.LobbyQuitEvent;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
+import net.jadedmc.jadedutils.scoreboard.CustomScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -67,5 +68,8 @@ public class PlayerQuitListener implements Listener {
         ChatUtils.broadcast(player.getWorld(),"&8[&c-&8] &c" + jadedPlayer.getName());
 
         plugin.jadedPlayerManager().removePlayer(player);
+
+        // Remove cached scoreboard from a player.
+        CustomScoreboard.getPlayers().remove(player.getUniqueId());
     }
 }
