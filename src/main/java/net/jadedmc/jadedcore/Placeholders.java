@@ -179,6 +179,10 @@ class Placeholders extends PlaceholderExpansion {
             return jadedPlayer.getRank().getChatColor();
         }
 
+        if(identifier.contains("server_name")) {
+            return JadedAPI.getServerName();
+        }
+
         return null;
     }
 }
