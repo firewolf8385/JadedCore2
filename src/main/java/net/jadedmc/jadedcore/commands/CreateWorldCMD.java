@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -48,7 +49,7 @@ public class CreateWorldCMD extends AbstractCommand {
             return;
         }
 
-        WorldCreator worldCreator = new WorldCreator(args[0]);
+        WorldCreator worldCreator = new WorldCreator(args[0]).type(WorldType.FLAT);
         worldCreator.generator(plugin.worldManager().getGenerator(args[1].toLowerCase()));
         World world = worldCreator.createWorld();
         player.teleport(world.getSpawnLocation());
