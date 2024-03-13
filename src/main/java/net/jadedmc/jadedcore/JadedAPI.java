@@ -195,7 +195,7 @@ public class JadedAPI {
         return players;
     }
 
-    private static class NetworkPlayerSet {
+    public static class NetworkPlayerSet {
         private final List<NetworkPlayer> players = new ArrayList<>();
 
         public void addPlayer(Document document) {
@@ -207,7 +207,7 @@ public class JadedAPI {
         }
     }
 
-    private static class NetworkPlayer {
+    public static class NetworkPlayer {
         private final Document document;
 
         public NetworkPlayer(Document document) {
