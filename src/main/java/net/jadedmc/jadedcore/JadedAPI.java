@@ -181,14 +181,13 @@ public class JadedAPI {
         return plugin.jadedPlayerManager().getPlayer(player);
     }
 
-    public static NetworkPlayerSet getPlayers(Game game) {
+    public static NetworkPlayerSet getPlayers() {
         NetworkPlayerSet players = new NetworkPlayerSet();
 
         try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
             Set<String> names = jedis.keys("jadedplayers:*");
 
             for(String key : names) {
-                //players.add(UUID.fromString(key));
                 players.addPlayer(Document.parse(jedis.get("jadedplayers:" + key)));
             }
         }
