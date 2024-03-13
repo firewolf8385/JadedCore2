@@ -188,9 +188,10 @@ public class JadedAPI {
             Set<String> names = jedis.keys("jadedplayers:*");
 
             for(String key : names) {
-                Document document = Document.parse(jedis.get("jadedplayers:" + key));
+                String json = jedis.get(key);
+                Document document = Document.parse(json);
 
-                if(!Arrays.asList(games).contains(Game.valueOf(jedis.get("game")))) {
+                if(!Arrays.asList(games).contains(Game.valueOf(document.getString("game")))) {
                     continue;
                 }
 
@@ -231,7 +232,7 @@ public class JadedAPI {
         }
 
         public String getName() {
-            return document.getString("name");
+            return document.getString("displayName");
         }
 
         public UUID getUniqueID() {
