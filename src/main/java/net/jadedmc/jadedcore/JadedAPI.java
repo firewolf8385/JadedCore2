@@ -34,10 +34,12 @@ import net.jadedmc.jadedcore.games.Game;
 import net.jadedmc.jadedcore.games.GameType;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedcore.servers.Server;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 
+import javax.print.Doc;
 import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -179,17 +181,46 @@ public class JadedAPI {
         return plugin.jadedPlayerManager().getPlayer(player);
     }
 
-    public static Collection<UUID> getPlayers(Game game) {
-        Collection<UUID> players = new HashSet<>();
+    public static NetworkPlayerSet getPlayers(Game game) {
+        NetworkPlayerSet players = new NetworkPlayerSet();
 
         try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
             Set<String> names = jedis.keys("jadedplayers:*");
 
             for(String key : names) {
-                players.add(UUID.fromString(key));
+                //players.add(UUID.fromString(key));
+                players.addPlayer(Document.parse(jedis.get("jadedplayers:" + key)));
             }
         }
 
         return players;
+    }
+
+    private static class NetworkPlayerSet {
+        private final List<NetworkPlayer> players = new ArrayList<>();
+
+        public void addPlayer(Document document) {
+            players.add(new NetworkPlayer(document));
+        }
+
+        public List<NetworkPlayer> getPlayers() {
+            return players;
+        }
+    }
+
+    private static class NetworkPlayer {
+        private final Document document;
+
+        public NetworkPlayer(Document document) {
+            this.document = document;
+        }
+
+        public String getName() {
+            return document.getString("name");
+        }
+
+        public UUID getUniqueID() {
+            return UUID.fromString(document.getString("uuid"));
+        }
     }
 }
