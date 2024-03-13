@@ -178,4 +178,18 @@ public class JadedAPI {
     public static JadedPlayer getJadedPlayer(Player player) {
         return plugin.jadedPlayerManager().getPlayer(player);
     }
+
+    public Collection<UUID> getPlayers(Game game) {
+        Collection<UUID> players = new HashSet<>();
+
+        try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
+            Set<String> names = jedis.keys("jadedplayers:*");
+
+            for(String key : names) {
+                players.add(UUID.fromString(key));
+            }
+        }
+
+        return players;
+    }
 }
