@@ -211,6 +211,16 @@ public class JadedAPI {
         public List<NetworkPlayer> getPlayers() {
             return players;
         }
+
+        public boolean hasPlayer(String uuid) {
+            for(NetworkPlayer player : players) {
+                if(player.getUniqueID().toString().equalsIgnoreCase(uuid) || player.getName().equalsIgnoreCase(uuid)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     public static class NetworkPlayer {
