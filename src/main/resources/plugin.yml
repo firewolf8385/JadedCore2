@@ -75,6 +75,7 @@ commands:
     description: View all online instances.
     usage: /<command>
     permission: jadedcore.instances
+    aliases: [servers]
   invsee:
     description: View a player's inventory.
     usage: /<command>
