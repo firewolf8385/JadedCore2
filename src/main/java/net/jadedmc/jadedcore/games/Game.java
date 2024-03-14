@@ -39,7 +39,11 @@ public enum Game {
     DUELS("Duels", XMaterial.IRON_SWORD, GameType.COMPETITIVE, "Arena-Based PvP duels and tournaments!", ""),
     MODERN_DUELS("1.20 Duels", XMaterial.DIAMOND_SWORD, GameType.COMPETITIVE, "Arena-Based pvp duels and tournaments for modern minecraft.", "modernduels"),
     LEGACY_DUELS("1.8 Duels", XMaterial.GOLDEN_SWORD, GameType.COMPETITIVE, "", "legacyduels"),
-    TOURNAMENTS("1.8 Tournaments", XMaterial.GOLD_INGOT, GameType.COMPETITIVE, "Automated 1.8 PvP Tournaments, hosted by staff!", "tournament");
+    TOURNAMENTS("1.8 Tournaments", XMaterial.GOLD_INGOT, GameType.COMPETITIVE, "Automated 1.8 PvP Tournaments, hosted by staff!", "tournament"),
+    DUELS_MODERN("1.20 Duels", XMaterial.DIAMOND_SWORD, GameType.COMPETITIVE, "Arena-Based pvp duels and tournaments for modern minecraft.", "modernduels"),
+    DUELS_LEGACY("1.8 Duels", XMaterial.GOLDEN_SWORD, GameType.COMPETITIVE, "", "legacyduels"),
+    TOURNAMENTS_MODERN("1.20 Tournaments", XMaterial.GOLD_INGOT, GameType.COMPETITIVE, "Automated 1.20 PvP Tournaments, hosted by staff!", "tournament"),
+    TOURNAMENTS_LEGACY("1.8 Tournaments", XMaterial.GOLD_INGOT, GameType.COMPETITIVE, "Automated 1.8 PvP Tournaments, hosted by staff!", "tournament");
 
     private final String name;
     private final XMaterial iconMaterial;
