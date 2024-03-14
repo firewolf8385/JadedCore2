@@ -71,6 +71,10 @@ commands:
     description: Heals a player
     usage: /<command>
     permission: jadedcore.heal
+  instances:
+    description: View all online instances.
+    usage: /<command>
+    permission: jadedcore.instances
   invsee:
     description: View a player's inventory.
     usage: /<command>
