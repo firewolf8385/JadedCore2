@@ -79,6 +79,7 @@ public abstract class AbstractCommand implements CommandExecutor {
         new ListCMD(pl);
         new LoadWorldCMD(pl);
         new LoomCMD();
+        new PlayersCMD(pl);
         new ProfileCMD(pl);
         new RankCMD(pl);
         new RenameCMD();

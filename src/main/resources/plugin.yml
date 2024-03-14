@@ -93,6 +93,9 @@ commands:
   loom:
     description: Opens a loom.
     permission: jadedcore.loom
+  players:
+    description: View all online network players.
+    permission: jadedcore.players
   profile:
     description: View a player's profile.
   rank:
