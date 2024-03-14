@@ -238,5 +238,9 @@ public class JadedAPI {
         public UUID getUniqueID() {
             return UUID.fromString(document.getString("uuid"));
         }
+
+        public String skin() {
+            return document.getString("skin");
+        }
     }
 }
