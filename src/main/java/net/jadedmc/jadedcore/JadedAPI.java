@@ -259,5 +259,9 @@ public class JadedAPI {
         public String skin() {
             return document.getString("skin");
         }
+
+        public String server() {
+            return document.getString("server");
+        }
     }
 }
