@@ -181,6 +181,10 @@ public class JadedAPI {
         return plugin.jadedPlayerManager().getPlayer(player);
     }
 
+    public static void sendToServer(UUID uuid, String server) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> getRedis().publish("jadedmc", "connect " + uuid.toString() + " " + server));
+    }
+
     public static NetworkPlayerSet getPlayers() {
         NetworkPlayerSet players = new NetworkPlayerSet();
 

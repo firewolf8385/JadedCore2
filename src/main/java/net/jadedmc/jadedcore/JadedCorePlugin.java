@@ -120,6 +120,7 @@ public final class JadedCorePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
+        getServer().getPluginManager().registerEvents(new RedisMessageListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldInitListener(this), this);
         new UserDataRecalculateListener(this, LuckPermsProvider.get());
 
