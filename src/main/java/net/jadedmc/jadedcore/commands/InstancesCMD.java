@@ -81,7 +81,8 @@ public class InstancesCMD extends AbstractCommand {
                                 .setDisplayName("<green>" + server.name())
                                 .addLore("<gray>Mode: " + color + server.mode())
                                 .addLore("<gray>Type: " + color + server.type())
-                                .addLore("<gray>Online: " + color + server.online() + "<gray>/" + color + server.capacity());
+                                .addLore("<gray>Online: " + color + server.online() + "<gray>/" + color + server.capacity())
+                                .addLore("<gray>Port: " + color + server.port());
                         setItem(slot, builder.build());
 
                         slot++;

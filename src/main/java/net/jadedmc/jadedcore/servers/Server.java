@@ -34,6 +34,7 @@ public class Server {
     private final String mode;
     private final String type;
     private final ServerStatus status;
+    private final int port;
 
     public Server(String json) {
         Document document = Document.parse(json);
@@ -44,6 +45,7 @@ public class Server {
         name = document.getString("serverName");
         mode = document.getString("mode");
         type = document.getString("type");
+        port = document.getInteger("port");
 
         if((System.currentTimeMillis() - lastHeartbeat) > 90000) {
             status = ServerStatus.UNRESPONSIVE;
@@ -82,5 +84,9 @@ public class Server {
 
     public ServerStatus status() {
         return status;
+    }
+
+    public int port() {
+        return port;
     }
 }
