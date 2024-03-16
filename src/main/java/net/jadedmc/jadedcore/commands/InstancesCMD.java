@@ -57,11 +57,31 @@ public class InstancesCMD extends AbstractCommand {
                     int slot = 0;
 
                     for(Server server : servers) {
-                        ItemBuilder builder = new ItemBuilder(XMaterial.GREEN_TERRACOTTA)
+                        String color;
+                        XMaterial xMaterial;
+
+                        switch (server.status()) {
+                            case UNRESPONSIVE -> {
+                                color = "<dark_gray>";
+                                xMaterial = XMaterial.BLACK_TERRACOTTA;
+                            }
+
+                            case FULL -> {
+                                color = "<red>";
+                                xMaterial = XMaterial.RED_TERRACOTTA;
+                            }
+
+                            default -> {
+                                color = "<green>";
+                                xMaterial = XMaterial.GREEN_TERRACOTTA;
+                            }
+                        }
+
+                        ItemBuilder builder = new ItemBuilder(xMaterial)
                                 .setDisplayName("<green>" + server.name())
-                                .addLore("<gray>Mode: <green>" + server.mode())
-                                .addLore("<gray>Type: <green>" + server.type())
-                                .addLore("<gray>Online: <green>" + server.online() + "<gray>/<green>" + server.capacity());
+                                .addLore("<gray>Mode: " + color + server.mode())
+                                .addLore("<gray>Type: " + color + server.type())
+                                .addLore("<gray>Online: " + color + server.online() + "<gray>/" + color + server.capacity());
                         setItem(slot, builder.build());
 
                         slot++;

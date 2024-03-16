@@ -33,6 +33,7 @@ public class Server {
     private final String name;
     private final String mode;
     private final String type;
+    private final ServerStatus status;
 
     public Server(String json) {
         Document document = Document.parse(json);
@@ -43,6 +44,16 @@ public class Server {
         name = document.getString("serverName");
         mode = document.getString("mode");
         type = document.getString("type");
+
+        if((System.currentTimeMillis() - lastHeartbeat) > 90000) {
+            status = ServerStatus.UNRESPONSIVE;
+        }
+        else if(online == capacity) {
+            status = ServerStatus.FULL;
+        }
+        else {
+            status = ServerStatus.valueOf(document.getString("status"));
+        }
     }
 
     public int capacity() {
@@ -67,5 +78,9 @@ public class Server {
 
     public String type() {
         return type;
+    }
+
+    public ServerStatus status() {
+        return status;
     }
 }
