@@ -42,7 +42,8 @@ public class ServerHeartbeat extends BukkitRunnable {
                 .append("online", plugin.getServer().getOnlinePlayers().size())
                 .append("capacity", plugin.getServer().getMaxPlayers())
                 .append("mode", plugin.settingsManager().getConfig().getString("serverGame"))
-                .append("heartbeat", System.currentTimeMillis());
+                .append("heartbeat", System.currentTimeMillis())
+                .append("port", plugin.getServer().getPort());
 
         if(plugin.lobbyManager().isEnabled()) {
             document.append("type", "LOBBY");
