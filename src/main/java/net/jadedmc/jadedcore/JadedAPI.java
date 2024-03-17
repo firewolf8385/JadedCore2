@@ -34,6 +34,7 @@ import net.jadedmc.jadedcore.games.Game;
 import net.jadedmc.jadedcore.minigames.Minigame;
 import net.jadedmc.jadedcore.networking.CurrentInstance;
 import net.jadedmc.jadedcore.networking.Instance;
+import net.jadedmc.jadedcore.networking.InstanceMonitor;
 import net.jadedmc.jadedcore.networking.InstanceType;
 import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
 import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
@@ -200,5 +201,9 @@ public class JadedAPI {
         }
 
         return players;
+    }
+
+    public static InstanceMonitor getInstanceMonitor() {
+        return plugin.instanceMonitor();
     }
 }
