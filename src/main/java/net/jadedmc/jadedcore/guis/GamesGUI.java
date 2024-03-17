@@ -74,7 +74,7 @@ public class GamesGUI extends CustomGUI {
     private ItemStack getGameIcon(Game game) {
         XMaterial material = game.getIconMaterial();
 
-        if(JadedAPI.getServerVersion() < 9 && material == XMaterial.ELYTRA) {
+        if(JadedAPI.getCurrentInstance().getMajorVersion() < 9 && material == XMaterial.ELYTRA) {
             material = XMaterial.FEATHER;
         }
 

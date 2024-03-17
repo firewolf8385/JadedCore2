@@ -31,15 +31,18 @@ import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.databases.Redis;
 import net.jadedmc.jadedcore.games.Game;
-import net.jadedmc.jadedcore.games.GameType;
+import net.jadedmc.jadedcore.minigames.Minigame;
+import net.jadedmc.jadedcore.networking.CurrentInstance;
+import net.jadedmc.jadedcore.networking.Instance;
+import net.jadedmc.jadedcore.networking.InstanceType;
+import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
+import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
 import net.jadedmc.jadedcore.player.JadedPlayer;
-import net.jadedmc.jadedcore.servers.Server;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 
-import javax.print.Doc;
 import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -68,25 +71,8 @@ public class JadedAPI {
         return plugin.redis();
     }
 
-    public static CompletableFuture<Collection<Server>> getServers() {
-        return CompletableFuture.supplyAsync(() -> {
-            Collection<Server> servers = new HashSet<>();
-
-
-            try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
-                Set<String> names = jedis.keys("servers:*");
-
-                for(String key : names) {
-                    servers.add(new Server(jedis.get(key)));
-                }
-            }
-
-            return servers;
-        });
-    }
-
-    public static void sendToLobby(Player player, Game game) {
-        JadedAPI.getServers().thenAccept(servers -> {
+    public static void sendToLobby(Player player, Minigame minigame) {
+        plugin.instanceMonitor().getInstancesAsync().thenAccept(instances -> {
             UUID gameUUID = UUID.randomUUID();
 
             String serverName = "";
@@ -94,27 +80,27 @@ public class JadedAPI {
                 int count = 999;
 
                 // Loop through all online servers looking for a server to send the player to
-                for (Server server : servers) {
+                for (Instance instance : instances) {
                     // Make sure the server is the right mode
-                    if (!server.mode().equalsIgnoreCase(game.toString())) {
+                    if (instance.getMinigame() != minigame) {
                         continue;
                     }
 
                     // Make sure the server isn't a game server.
-                    if (!server.type().equalsIgnoreCase("LOBBY")) {
+                    if (instance.getType() != InstanceType.LOBBY) {
                         continue;
                     }
 
                     // Make sure there is room for another game.
-                    if (server.online() + 2 >= server.capacity()) {
+                    if (instance.getOnline() >= instance.getCapacity()) {
                         System.out.println("Not enough room!");
                         continue;
                     }
 
                     //
-                    if (server.online() < count) {
-                        count = server.online();
-                        serverName = server.name();
+                    if (instance.getOnline() < count) {
+                        count = instance.getOnline();
+                        serverName = instance.getName();
                     }
                 }
 
@@ -130,6 +116,10 @@ public class JadedAPI {
                 });
             }
         }).whenComplete((results, error) -> error.printStackTrace());
+    }
+
+    public static CurrentInstance getCurrentInstance() {
+        return plugin.instanceMonitor().getCurrentInstance();
     }
 
     public static JadedCorePlugin getPlugin() {
@@ -162,27 +152,16 @@ public class JadedAPI {
         player.sendPluginMessage(plugin, channel, out.toByteArray());
     }
 
-    public static Game getServerGame() {
-        return Game.valueOf(plugin.settingsManager().getConfig().getString("serverGame"));
-    }
-
-    public static String getServerName() {
-        return plugin.settingsManager().getConfig().getString("serverName");
-    }
-
-    public static int getServerVersion() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        int subVersion = Integer.parseInt(version.replace("1_", "").replaceAll("_R\\d", "").replace("v", ""));
-
-        return subVersion;
-    }
-
     public static JadedPlayer getJadedPlayer(Player player) {
         return plugin.jadedPlayerManager().getPlayer(player);
     }
 
     public static void sendToServer(UUID uuid, String server) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> getRedis().publish("jadedmc", "connect " + uuid.toString() + " " + server));
+    }
+
+    public static Instance getServer(String serverName) {
+        return plugin.instanceMonitor().getInstance(serverName);
     }
 
     public static NetworkPlayerSet getPlayers() {
@@ -195,14 +174,14 @@ public class JadedAPI {
                 String json = jedis.get(key);
                 Document document = Document.parse(json);
 
-                players.addPlayer(document);
+                players.add(new NetworkPlayer(document));
             }
         }
 
         return players;
     }
 
-    public static NetworkPlayerSet getPlayers(Game... games) {
+    public static NetworkPlayerSet getPlayers(Minigame... games) {
         NetworkPlayerSet players = new NetworkPlayerSet();
 
         try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
@@ -212,60 +191,14 @@ public class JadedAPI {
                 String json = jedis.get(key);
                 Document document = Document.parse(json);
 
-                if(!Arrays.asList(games).contains(Game.valueOf(document.getString("game")))) {
+                if(!Arrays.asList(games).contains(Minigame.valueOf(document.getString("game")))) {
                     continue;
                 }
 
-                players.addPlayer(document);
+                players.add(new NetworkPlayer(document));
             }
         }
 
         return players;
-    }
-
-    public static class NetworkPlayerSet {
-        private final List<NetworkPlayer> players = new ArrayList<>();
-
-        public void addPlayer(Document document) {
-            players.add(new NetworkPlayer(document));
-        }
-
-        public List<NetworkPlayer> getPlayers() {
-            return players;
-        }
-
-        public boolean hasPlayer(String uuid) {
-            for(NetworkPlayer player : players) {
-                if(player.getUniqueID().toString().equalsIgnoreCase(uuid) || player.getName().equalsIgnoreCase(uuid)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
-    public static class NetworkPlayer {
-        private final Document document;
-
-        public NetworkPlayer(Document document) {
-            this.document = document;
-        }
-
-        public String getName() {
-            return document.getString("displayName");
-        }
-
-        public UUID getUniqueID() {
-            return UUID.fromString(document.getString("uuid"));
-        }
-
-        public String skin() {
-            return document.getString("skin");
-        }
-
-        public String server() {
-            return document.getString("server");
-        }
     }
 }

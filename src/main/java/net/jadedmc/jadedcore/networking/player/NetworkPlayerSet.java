@@ -22,36 +22,29 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedcore;
+package net.jadedmc.jadedcore.networking.player;
 
-import org.bson.Document;
-import org.bukkit.scheduler.BukkitRunnable;
+import java.util.HashSet;
+import java.util.UUID;
 
-public class ServerHeartbeat extends BukkitRunnable {
-    private final JadedCorePlugin plugin;
+/**
+ * This class represents a Set of NetworkPlayer objects.
+ * Contains extra methods for comparing cached information inside the NetworkPlayer objects.
+ */
+public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
 
-    public ServerHeartbeat(final JadedCorePlugin plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override
-    public void run() {
-        Document document = new Document()
-                .append("serverName", plugin.settingsManager().getConfig().getString("serverName"))
-                .append("status", "ONLINE")
-                .append("online", plugin.getServer().getOnlinePlayers().size())
-                .append("capacity", plugin.getServer().getMaxPlayers())
-                .append("mode", plugin.settingsManager().getConfig().getString("serverGame"))
-                .append("heartbeat", System.currentTimeMillis())
-                .append("port", plugin.getServer().getPort());
-
-        if(plugin.lobbyManager().isEnabled()) {
-            document.append("type", "LOBBY");
-        }
-        else {
-            document.append("type", "GAME");
+    /**
+     * Check if the set contains a player with a given UUID.
+     * @param uuid UUID of the player to check.
+     * @return Whether the set has the player.
+     */
+    public boolean hasPlayer(UUID uuid) {
+        for(NetworkPlayer networkPlayer : this) {
+            if(networkPlayer.getUniqueUID().equals(uuid)) {
+                return true;
+            }
         }
 
-        plugin.redis().set("servers:" + plugin.settingsManager().getConfig().getString("serverName"), document.toJson());
+        return false;
     }
 }

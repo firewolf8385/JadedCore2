@@ -180,7 +180,7 @@ class Placeholders extends PlaceholderExpansion {
         }
 
         if(identifier.contains("server_name")) {
-            return JadedAPI.getServerName();
+            return JadedAPI.getCurrentInstance().getName();
         }
 
         return null;

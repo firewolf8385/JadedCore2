@@ -25,9 +25,8 @@
 package net.jadedmc.jadedcore.commands;
 
 import com.cryptomorin.xseries.XMaterial;
-import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
-import net.jadedmc.jadedcore.servers.Server;
+import net.jadedmc.jadedcore.networking.Instance;
 import net.jadedmc.jadedutils.gui.CustomGUI;
 import net.jadedmc.jadedutils.items.ItemBuilder;
 import org.bukkit.command.CommandSender;
@@ -47,20 +46,20 @@ public class InstancesCMD extends AbstractCommand {
         new InstancesGUI(plugin).open(player);
     }
 
-    private class InstancesGUI extends CustomGUI {
+    private static class InstancesGUI extends CustomGUI {
 
         public InstancesGUI(JadedCorePlugin plugin) {
             super(54, "Instances");
 
-            JadedAPI.getServers().thenAccept(servers -> {
+            plugin.instanceMonitor().getInstancesAsync().thenAccept(instances -> {
                 plugin.getServer().getScheduler().runTask(plugin, () -> {
                     int slot = 0;
 
-                    for(Server server : servers) {
+                    for(Instance instance : instances) {
                         String color;
                         XMaterial xMaterial;
 
-                        switch (server.status()) {
+                        switch (instance.getStatus()) {
                             case UNRESPONSIVE -> {
                                 color = "<dark_gray>";
                                 xMaterial = XMaterial.BLACK_TERRACOTTA;
@@ -71,6 +70,11 @@ public class InstancesCMD extends AbstractCommand {
                                 xMaterial = XMaterial.RED_TERRACOTTA;
                             }
 
+                            case CLOSED -> {
+                                color = "<gold>";
+                                xMaterial = XMaterial.ORANGE_TERRACOTTA;
+                            }
+
                             default -> {
                                 color = "<green>";
                                 xMaterial = XMaterial.GREEN_TERRACOTTA;
@@ -78,11 +82,11 @@ public class InstancesCMD extends AbstractCommand {
                         }
 
                         ItemBuilder builder = new ItemBuilder(xMaterial)
-                                .setDisplayName("<green>" + server.name())
-                                .addLore("<gray>Mode: " + color + server.mode())
-                                .addLore("<gray>Type: " + color + server.type())
-                                .addLore("<gray>Online: " + color + server.online() + "<gray>/" + color + server.capacity())
-                                .addLore("<gray>Port: " + color + server.port());
+                                .setDisplayName(color + instance.getName())
+                                .addLore("<gray>Mode: " + color + instance.getMinigame().toString())
+                                .addLore("<gray>Type: " + color + instance.getType().toString())
+                                .addLore("<gray>Online: " + color + instance.getOnline() + "<gray>/" + color + instance.getCapacity())
+                                .addLore("<gray>Address: " + color + instance.getAddress() + ":"  + instance.getPort());
                         setItem(slot, builder.build());
 
                         slot++;

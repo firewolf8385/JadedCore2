@@ -33,6 +33,7 @@ import net.jadedmc.jadedcore.hooks.HookManager;
 import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
 import net.jadedmc.jadedcore.listeners.*;
 import net.jadedmc.jadedcore.lobby.LobbyManager;
+import net.jadedmc.jadedcore.networking.InstanceMonitor;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import net.jadedmc.jadedcore.worlds.WorldManager;
@@ -56,6 +57,7 @@ public final class JadedCorePlugin extends JavaPlugin {
     private Redis redis;
     private SettingsManager settingsManager;
     private WorldManager worldManager;
+    private InstanceMonitor instanceMonitor;
 
     @Override
     public void onEnable() {
@@ -95,8 +97,7 @@ public final class JadedCorePlugin extends JavaPlugin {
         // Downloads configured worlds.
         updateWorlds();
 
-        // Server heartbeat
-        new ServerHeartbeat(this).runTaskTimerAsynchronously(this, 0, 20*30);
+        instanceMonitor = new InstanceMonitor(this);
     }
 
     @Override
@@ -170,6 +171,10 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     public HookManager hookManager() {
         return hookManager;
+    }
+
+    public InstanceMonitor instanceMonitor() {
+        return instanceMonitor;
     }
 
     /**

@@ -26,6 +26,8 @@ package net.jadedmc.jadedcore.commands;
 
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
+import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
+import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
 import net.jadedmc.jadedutils.gui.CustomGUI;
 import net.jadedmc.jadedutils.items.ItemBuilder;
 import net.jadedmc.jadedutils.items.SkullBuilder;
@@ -51,19 +53,21 @@ public class PlayersCMD extends AbstractCommand {
         public PlayersGUI(JadedCorePlugin plugin) {
             super(54, "Online Players");
 
-            JadedAPI.getServers().thenAccept(servers -> {
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                NetworkPlayerSet players = JadedAPI.getPlayers();
+
                 plugin.getServer().getScheduler().runTask(plugin, () -> {
                     int slot = 0;
 
-                    for(JadedAPI.NetworkPlayer player : JadedAPI.getPlayers().getPlayers()) {
+                    for(NetworkPlayer player : JadedAPI.getPlayers()) {
                         if(slot > 53) {
                             continue;
                         }
 
-                        ItemBuilder builder = new SkullBuilder(player.skin())
+                        ItemBuilder builder = new SkullBuilder(player.getSkin())
                                 .asItemBuilder()
                                 .setDisplayName("<green>" + player.getName())
-                                .addLore("<gray>Server: <green>" + player.server());
+                                .addLore("<gray>Server: <green>" + player.getServerName());
                         setItem(slot, builder.build());
 
                         slot++;
