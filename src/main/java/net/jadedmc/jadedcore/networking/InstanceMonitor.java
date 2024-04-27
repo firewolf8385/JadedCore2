@@ -47,8 +47,8 @@ public class InstanceMonitor {
         this.plugin = plugin;
         this.currentInstance = new CurrentInstance(plugin);
 
-        // Heartbeat the current instance every 15 seconds.
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, currentInstance::heartbeat, 0, 15*20);
+        // Heartbeat the current instance every 5 seconds.
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, currentInstance::heartbeat, 0, 5*20);
     }
 
     /**
