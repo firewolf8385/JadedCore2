@@ -26,6 +26,7 @@ package net.jadedmc.jadedcore.listeners;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.JadedJoinEvent;
+import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,6 +58,15 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
 
         Player player = event.getPlayer();
+
+        // Hide all vanished players.
+        for(JadedPlayer otherPlayer : plugin.jadedPlayerManager().getJadedPlayers()) {
+            if(otherPlayer.isVanished()) {
+                player.hidePlayer(plugin, otherPlayer.getPlayer());
+            }
+        }
+
+        // Load the JadedPlayer.
         plugin.jadedPlayerManager().addPlayer(player).thenAccept(jadedPlayer -> {
 
             // Join Message
@@ -66,6 +76,13 @@ public class PlayerJoinListener implements Listener {
                     case SAPPHIRE -> ChatUtils.broadcast(player.getWorld(), "&9>&f>&9> &lSapphire &7" + jadedPlayer.getName() + " &ahas joined the lobby! &9<&f<&9<");
                     case JADED -> ChatUtils.broadcast(player.getWorld(), "&a>&f>&a> &lJaded &7" + jadedPlayer.getName() + " &ahas joined the lobby! &a<&f<&a<");
                     default -> ChatUtils.broadcast(player.getWorld(), "&8[&a+&8] &a" + jadedPlayer.getName());
+                }
+            }
+
+            // If vanished, hide the player from all other players.
+            if(jadedPlayer.isVanished()) {
+                for(Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
+                    otherPlayer.hidePlayer(plugin, player);
                 }
             }
 

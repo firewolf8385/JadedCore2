@@ -57,10 +57,22 @@ public class VanishCMD extends AbstractCommand {
 
         if(jadedPlayer.isVanished()) {
             jadedPlayer.setVanished(false);
+
+            // Hide the player from view.
+            for(Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
+                otherPlayer.showPlayer(plugin, player);
+            }
+
             ChatUtils.chat(player, "&aYou are no longer vanished.");
         }
         else {
             jadedPlayer.setVanished(true);
+
+            // Hide the player from view.
+            for(Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
+                otherPlayer.hidePlayer(plugin, player);
+            }
+
             ChatUtils.chat(player, "&aYou are now vanished.");
         }
     }
