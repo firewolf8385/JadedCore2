@@ -22,57 +22,29 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedcore.listeners;
+package net.jadedmc.jadedcore.commands;
 
 import net.jadedmc.jadedcore.JadedAPI;
-import net.jadedmc.jadedcore.JadedCorePlugin;
-import net.jadedmc.jadedcore.events.RedisMessageEvent;
 import net.jadedmc.jadedcore.networking.InstanceStatus;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import net.jadedmc.jadedutils.chat.ChatUtils;
+import org.bukkit.command.CommandSender;
 
-import java.util.UUID;
+public class InstanceCMD extends AbstractCommand {
 
-public class RedisMessageListener implements Listener {
-    private final JadedCorePlugin plugin;
-
-    public RedisMessageListener(final JadedCorePlugin plugin) {
-        this.plugin = plugin;
+    public InstanceCMD() {
+        super("instance", "jadedcore.instance", true);
     }
 
-    @EventHandler
-    public void onMessage(RedisMessageEvent event) {
-        if(!event.getChannel().equalsIgnoreCase("jadedmc")) {
+    @Override
+    public void execute(CommandSender sender, String[] args) {
+        if(args.length == 0) {
             return;
         }
 
-        String[] args = event.getMessage().split(" ");
-
-        if(args.length < 2) {
-            return;
-        }
-
-        switch (args[1]) {
-            case "summon" -> {
-                UUID playerUUID = UUID.fromString(args[2]);
-                String server = args[3];
-
-                Player player = plugin.getServer().getPlayer(playerUUID);
-
-                if(player == null || !player.isOnline()) {
-                    return;
-                }
-
-                JadedAPI.sendBungeecordMessage(player, "BungeeCord", "connect", server);
-            }
-
+        switch (args[0].toLowerCase()) {
             case "close" -> {
-                String server = args[2];
-
-                if(server.equalsIgnoreCase(JadedAPI.getCurrentInstance().getName())) {
-                    JadedAPI.getCurrentInstance().setStatus(InstanceStatus.CLOSED);
-                }
+                JadedAPI.getCurrentInstance().setStatus(InstanceStatus.CLOSED);
+                ChatUtils.chat(sender, "<green><bold>Instance</bold> <dark_gray>» <green>Instance has been marked as closed.");
             }
         }
     }

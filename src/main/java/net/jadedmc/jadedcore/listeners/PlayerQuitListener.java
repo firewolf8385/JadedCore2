@@ -24,8 +24,10 @@
  */
 package net.jadedmc.jadedcore.listeners;
 
+import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.LobbyQuitEvent;
+import net.jadedmc.jadedcore.networking.InstanceStatus;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import net.jadedmc.jadedutils.scoreboard.CustomScoreboard;
@@ -71,5 +73,11 @@ public class PlayerQuitListener implements Listener {
 
         // Remove cached scoreboard from a player.
         CustomScoreboard.getPlayers().remove(player.getUniqueId());
+
+        // Shut down the server if it is closed and empty.
+        if(plugin.getServer().getOnlinePlayers().size() == 1 && JadedAPI.getCurrentInstance().getStatus() == InstanceStatus.CLOSED) {
+            System.out.println("Empty Server Detected. Waiting 15 seconds before shutdown.");
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> plugin.getServer().shutdown(),15*20);
+        }
     }
 }
