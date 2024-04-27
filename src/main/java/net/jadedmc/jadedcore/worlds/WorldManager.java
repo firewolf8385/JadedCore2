@@ -159,6 +159,9 @@ public class WorldManager {
                 }
             }
 
+            // Disable autosave.
+            world.setAutoSave(false);
+
             // Returns the resulting world.
             return world;
         }));
