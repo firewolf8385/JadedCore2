@@ -60,7 +60,7 @@ public class PlayerJoinListener implements Listener {
         plugin.jadedPlayerManager().addPlayer(player).thenAccept(jadedPlayer -> {
 
             // Join Message
-            if(plugin.lobbyManager().isEnabled()) {
+            if(plugin.lobbyManager().isEnabled() && !jadedPlayer.isVanished()) {
                 switch (jadedPlayer.getRank()) {
                     case AMETHYST -> ChatUtils.broadcast(player.getWorld(), "&5>&f>&5> &lAmethyst &7" + jadedPlayer.getName() + " &ahas joined the lobby! &5<&f<&5<");
                     case SAPPHIRE -> ChatUtils.broadcast(player.getWorld(), "&9>&f>&9> &lSapphire &7" + jadedPlayer.getName() + " &ahas joined the lobby! &9<&f<&9<");
