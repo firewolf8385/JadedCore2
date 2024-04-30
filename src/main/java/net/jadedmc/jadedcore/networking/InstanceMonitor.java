@@ -25,11 +25,10 @@
 package net.jadedmc.jadedcore.networking;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
+import net.jadedmc.jadedcore.minigames.Minigame;
 import redis.clients.jedis.Jedis;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -38,6 +37,8 @@ import java.util.concurrent.CompletableFuture;
 public class InstanceMonitor {
     private final JadedCorePlugin plugin;
     private final CurrentInstance currentInstance;
+    private final Map<Minigame, Integer> playerCounts = new HashMap<>();
+    private int playerCount = 0;
 
     /**
      * Creates the InstanceMonitor.
@@ -49,6 +50,29 @@ public class InstanceMonitor {
 
         // Heartbeat the current instance every 5 seconds.
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, currentInstance::heartbeat, 0, 5*20);
+
+        // Update player counts every 30 seconds.
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            getInstancesAsync().thenAccept(instances -> {
+                // Reset cached online count.
+                playerCounts.clear();
+                playerCount = 0;
+
+                // Add back all the valid Minigames.
+                for(Minigame minigame : Minigame.values()) {
+                    playerCounts.put(minigame, 0);
+                }
+
+                // Check every online instance.
+                for(Instance instance : instances) {
+                    // Update per-mode player-count.
+                    playerCounts.put(instance.getMinigame(), playerCounts.get(instance.getMinigame()) + instance.getOnline());
+
+                    // Update global player count.
+                    playerCount += instance.getOnline();
+                }
+            });
+        },0, 30*20);
     }
 
     /**
@@ -105,5 +129,22 @@ public class InstanceMonitor {
      */
     public CompletableFuture<Collection<Instance>> getInstancesAsync() {
         return CompletableFuture.supplyAsync(this::getInstances);
+    }
+
+    /**
+     * Get the last known player count of a Minigame.
+     * @param minigame Minigame to get player count of.
+     * @return Player count of the Minigame.
+     */
+    public int getPlayerCount(Minigame minigame) {
+        return playerCounts.get(minigame);
+    }
+
+    /**
+     *
+     * @return Current global player count.
+     */
+    public int getPlayerCount() {
+        return playerCount;
     }
 }
