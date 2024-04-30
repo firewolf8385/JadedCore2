@@ -183,6 +183,10 @@ class Placeholders extends PlaceholderExpansion {
             return JadedAPI.getCurrentInstance().getName();
         }
 
+        if(identifier.contains("online")) {
+            return JadedAPI.getInstanceMonitor().getPlayerCount() + "";
+        }
+
         return null;
     }
 }
