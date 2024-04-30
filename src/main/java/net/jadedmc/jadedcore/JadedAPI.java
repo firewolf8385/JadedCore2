@@ -88,7 +88,7 @@ public class JadedAPI {
                     }
 
                     // Make sure the server isn't a game server.
-                    if (instance.getType() != InstanceType.LOBBY) {
+                    if (instance.getType() != InstanceType.LOBBY && instance.getType() != InstanceType.OTHER) {
                         continue;
                     }
 
