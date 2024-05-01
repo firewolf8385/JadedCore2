@@ -24,17 +24,12 @@
  */
 package net.jadedmc.jadedcore.guis;
 
-import com.cryptomorin.xseries.XMaterial;
 import net.jadedmc.jadedcore.JadedAPI;
-import net.jadedmc.jadedcore.games.Game;
 import net.jadedmc.jadedcore.minigames.Minigame;
-import net.jadedmc.jadedutils.chat.ChatUtils;
 import net.jadedmc.jadedutils.gui.CustomGUI;
 import net.jadedmc.jadedutils.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.ChatPaginator;
 
 public class GamesGUI extends CustomGUI {
 
@@ -50,7 +45,10 @@ public class GamesGUI extends CustomGUI {
                 .addLore("<gray>Fighting Minigame.")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.CACTUS_RUSH) + " others playing!");
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.CACTUS_RUSH) + " others playing!")
+                .setUnbreakable(true)
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .addFlag(ItemFlag.HIDE_UNBREAKABLE);
         setItem(20, cactusRush.build(), (p,a) -> JadedAPI.sendBungeecordMessage(p, "BungeeCord", "Connect", "cactusrush"));
 
         ItemBuilder duels = new ItemBuilder(Material.IRON_SWORD)
@@ -61,7 +59,10 @@ public class GamesGUI extends CustomGUI {
                 .addLore("<gray>with a variety of kits!")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.DUELS_MODERN) + " others playing!");
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.DUELS_MODERN) + " others playing!")
+                .setUnbreakable(true)
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .addFlag(ItemFlag.HIDE_UNBREAKABLE);
         setItem(22, duels.build(), (p,a) -> JadedAPI.sendToLobby(p, Minigame.DUELS_MODERN));
 
         ItemBuilder elytraPvP = new ItemBuilder(Material.ELYTRA)
@@ -72,28 +73,40 @@ public class GamesGUI extends CustomGUI {
                 .addLore("<gray>air using bows!")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.ELYTRAPVP) + " others playing!");
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.ELYTRAPVP) + " others playing!")
+                .setUnbreakable(true)
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .addFlag(ItemFlag.HIDE_UNBREAKABLE);
         setItem(24, elytraPvP.build(), (p,a) -> JadedAPI.sendBungeecordMessage(p, "BungeeCord", "Connect", "elytrapvp"));
 
         ItemBuilder lobby = new ItemBuilder(Material.BOOKSHELF)
                 .setDisplayName("<green><bold>Main Lobby")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.HUB) + " others playing!");
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.HUB) + " others playing!")
+                .setUnbreakable(true)
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .addFlag(ItemFlag.HIDE_UNBREAKABLE);
         setItem(30, lobby.build(), (p,a) -> JadedAPI.sendToLobby(p, Minigame.HUB));
 
         ItemBuilder limbo = new ItemBuilder(Material.BEDROCK)
                 .setDisplayName("<green><bold>Limbo")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.LIMBO) + " others playing!");
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.LIMBO) + " others playing!")
+                .setUnbreakable(true)
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .addFlag(ItemFlag.HIDE_UNBREAKABLE);
         setItem(31, limbo.build(), (p,a) -> JadedAPI.sendBungeecordMessage(p, "BungeeCord", "Connect", "limbo"));
 
         ItemBuilder tournaments = new ItemBuilder(Material.GOLD_INGOT)
                 .setDisplayName("<green><bold>Tournament Lobby")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.TOURNAMENTS_MODERN) + " others playing!");
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.TOURNAMENTS_MODERN) + " others playing!")
+                .setUnbreakable(true)
+                .addFlag(ItemFlag.HIDE_ATTRIBUTES)
+                .addFlag(ItemFlag.HIDE_UNBREAKABLE);
         setItem(32, tournaments.build(), (p,a) -> JadedAPI.sendToLobby(p, Minigame.TOURNAMENTS_MODERN));
     }
 }
