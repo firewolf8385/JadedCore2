@@ -32,15 +32,15 @@ import org.bukkit.entity.Player;
 /**
  * Runs the /spawn command, which teleports the player to the server spawn.
  */
-public class SpawnCMD extends AbstractCommand {
+public class StuckCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
 
     /**
      * Creates the command with no required permissions.
      * @param plugin Instance of the plugin.
      */
-    public SpawnCMD(final JadedCorePlugin plugin) {
-        super("spawn", "", false);
+    public StuckCMD(final JadedCorePlugin plugin) {
+        super("stuck", "", false);
         this.plugin = plugin;
     }
 

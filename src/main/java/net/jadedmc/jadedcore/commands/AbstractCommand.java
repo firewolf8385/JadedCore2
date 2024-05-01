@@ -87,7 +87,7 @@ public abstract class AbstractCommand implements CommandExecutor {
         new RulesCMD();
         new SaveWorldCMD(pl);
         new SetLobbyCMD(pl);
-        new SpawnCMD(pl);
+        new StuckCMD(pl);
         new StoreCMD();
         new UUIDCMD();
         new VanishCMD(pl);

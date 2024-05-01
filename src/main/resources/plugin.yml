@@ -117,7 +117,7 @@ commands:
   setlobby:
     description: Sets the lobby spawn.
     permission: jadedcore.setlobby
-  spawn:
+  stuck:
     description: Go to the lobby spawn if it is set.
   store:
     description: View a link to the server store.
