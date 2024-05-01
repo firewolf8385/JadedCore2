@@ -75,6 +75,11 @@ public class InstancesCMD extends AbstractCommand {
                                 xMaterial = XMaterial.ORANGE_TERRACOTTA;
                             }
 
+                            case MAINTENANCE -> {
+                                color = "<light_purple>";
+                                xMaterial = XMaterial.PURPLE_TERRACOTTA;
+                            }
+
                             default -> {
                                 color = "<green>";
                                 xMaterial = XMaterial.GREEN_TERRACOTTA;

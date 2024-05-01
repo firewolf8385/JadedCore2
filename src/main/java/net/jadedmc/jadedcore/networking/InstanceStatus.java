@@ -46,5 +46,10 @@ public enum InstanceStatus {
     /**
      * Server is not open to new players. Will shut down when all players leave.
      */
-    CLOSED
+    CLOSED,
+
+    /**
+     * Server is blocked from the discovery system and only accessible by staff.
+     */
+    MAINTENANCE
 }
