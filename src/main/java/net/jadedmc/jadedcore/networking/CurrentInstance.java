@@ -58,7 +58,10 @@ public class CurrentInstance {
         this.majorVersion = Integer.parseInt(version.split("\\.")[1]);
         this.minorVersion = Integer.parseInt(version.split("\\.")[2]);
 
-        if(plugin.lobbyManager().isEnabled()) {
+        if(plugin.settingsManager().getConfig().isSet("serverType")) {
+            this.instanceType = InstanceType.valueOf(plugin.settingsManager().getConfig().getString("serverType"));
+        }
+        else if(plugin.lobbyManager().isEnabled()) {
             this.instanceType = InstanceType.LOBBY;
         }
         else {
