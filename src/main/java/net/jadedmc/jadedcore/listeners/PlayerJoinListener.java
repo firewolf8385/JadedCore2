@@ -26,13 +26,19 @@ package net.jadedmc.jadedcore.listeners;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.JadedJoinEvent;
+import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import redis.clients.jedis.Jedis;
+
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Listens to the PlayerJoinEvent, which is called when a player joins the server.
@@ -102,6 +108,33 @@ public class PlayerJoinListener implements Listener {
                     plugin.lobbyManager().sendToLobby(player);
                 }
             });
+        });
+
+        // Check for parties.
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            // Make sure the player's party isn't already cached.
+            if(plugin.partyManager().getParty(player) != null) {
+                return;
+            }
+
+            UUID playerUUID = player.getUniqueId();
+
+            // Get all parties from redis.
+            try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
+                Set<String> names = jedis.keys("parties:*");
+
+                // Loops through each stored party.
+                for(String key : names) {
+                    Document document = Document.parse(jedis.get("parties:" + key));
+                    Party party = new Party(plugin, document);
+
+                    // If the player is in that party, cache the party to memory.
+                    if(party.hasPlayer(playerUUID)) {
+                        plugin.partyManager().cacheParty(party);
+                        break;
+                    }
+                }
+            }
         });
     }
 }

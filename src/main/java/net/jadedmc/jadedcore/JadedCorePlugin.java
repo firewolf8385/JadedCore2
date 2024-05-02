@@ -34,6 +34,7 @@ import net.jadedmc.jadedcore.leaderboards.LeaderboardManager;
 import net.jadedmc.jadedcore.listeners.*;
 import net.jadedmc.jadedcore.lobby.LobbyManager;
 import net.jadedmc.jadedcore.networking.InstanceMonitor;
+import net.jadedmc.jadedcore.party.PartyManager;
 import net.jadedmc.jadedcore.player.JadedPlayerManager;
 import net.jadedmc.jadedcore.settings.SettingsManager;
 import net.jadedmc.jadedcore.worlds.WorldManager;
@@ -54,6 +55,7 @@ public final class JadedCorePlugin extends JavaPlugin {
     private LobbyManager lobbyManager;
     private MongoDB mongoDB;
     private MySQL mySQL;
+    private PartyManager partyManager;
     private Redis redis;
     private SettingsManager settingsManager;
     private WorldManager worldManager;
@@ -80,6 +82,7 @@ public final class JadedCorePlugin extends JavaPlugin {
         leaderboardManager = new LeaderboardManager(this);
         worldManager = new WorldManager(this);
         lobbyManager = new LobbyManager(this);
+        partyManager = new PartyManager(this);
 
         // Register commands and listeners.
         registerListeners();
@@ -215,6 +218,14 @@ public final class JadedCorePlugin extends JavaPlugin {
      */
     public MySQL mySQL() {
         return mySQL;
+    }
+
+    /**
+     * Get the party manager, which controls everything related to parties.
+     * @return Party Manager.
+     */
+    public PartyManager partyManager() {
+        return partyManager;
     }
 
     /**

@@ -24,14 +24,22 @@
  */
 package net.jadedmc.jadedcore.listeners;
 
+import net.jadedmc.jadedchat.utils.StringUtils;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.RedisMessageEvent;
 import net.jadedmc.jadedcore.networking.InstanceStatus;
+import net.jadedmc.jadedcore.party.Party;
+import net.jadedmc.jadedcore.party.PartyPlayer;
+import net.jadedmc.jadedcore.party.PartyRole;
+import net.jadedmc.jadedutils.chat.ChatUtils;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import redis.clients.jedis.Jedis;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class RedisMessageListener implements Listener {
@@ -75,5 +83,47 @@ public class RedisMessageListener implements Listener {
                 }
             }
         }
+    }
+
+    private void partyChannel(RedisMessageEvent event) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            String[] args = event.getMessage().split(" ");
+
+            switch(args[1].toLowerCase()) {
+                case "disband" -> {
+                    UUID partyUUID = UUID.fromString(args[1]);
+                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+                    plugin.partyManager().deleteParty(party);
+                }
+
+                case "message" -> {
+                    UUID partyUUID = UUID.fromString(args[1]);
+                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+
+                    if(party == null) {
+                        return;
+                    }
+
+                    plugin.getServer().getScheduler().runTask(plugin, () -> {
+                        String message = StringUtils.join(Arrays.copyOfRange(args, 2, args.length), " ");
+                        party.broadcastLocal(message);
+                    });
+                }
+
+                case "update" -> {
+                    UUID partyUUID = UUID.fromString(args[1]);
+                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+
+                    if(party == null) {
+                        return;
+                    }
+
+                    try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
+                        Document partyDocument = Document.parse(jedis.get("parties:" + partyUUID.toString()));
+                        party.update(partyDocument);
+                    }
+                }
+            }
+        });
     }
 }

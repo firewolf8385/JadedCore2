@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.party;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.player.Rank;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -49,6 +50,10 @@ public class PartyPlayer {
         this.username = player.getName();
         this.rank = JadedAPI.getJadedPlayer(player).getRank();
         this.role = role;
+    }
+
+    public Player getPlayer() {
+        return Bukkit.getPlayer(uuid);
     }
 
     public Rank getRank() {

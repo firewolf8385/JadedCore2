@@ -28,6 +28,9 @@ import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.LobbyQuitEvent;
 import net.jadedmc.jadedcore.networking.InstanceStatus;
+import net.jadedmc.jadedcore.party.Party;
+import net.jadedmc.jadedcore.party.PartyPlayer;
+import net.jadedmc.jadedcore.party.PartyRole;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import net.jadedmc.jadedutils.scoreboard.CustomScoreboard;
@@ -64,6 +67,24 @@ public class PlayerQuitListener implements Listener {
         // Call the lobby quit event if the world is a lobby world.
         if(plugin.lobbyManager().isLobbyWorld(player.getWorld())) {
             plugin.getServer().getPluginManager().callEvent(new LobbyQuitEvent(player));
+        }
+
+        // Check if the player was in a party.
+        Party party = plugin.partyManager().getParty(player);
+        if(party != null) {
+            PartyPlayer partyPlayer = party.getPlayer(player.getUniqueId());
+
+            // If the player isn't the leader, leave as normal.
+            if(partyPlayer.getRole() != PartyRole.LEADER) {
+                party.broadcast("<green><bold>Party</bold> <dark_gray>» " + jadedPlayer.getRank().getChatPrefix() + " <gray>" + player.getName() + " &ahas left the party.");
+                party.removePlayer(player);
+                party.update();
+                return;
+            }
+
+            // Otherwise, disband the party.
+            party.broadcast("<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded.");
+            party.disband();
         }
 
         event.setQuitMessage(null);
