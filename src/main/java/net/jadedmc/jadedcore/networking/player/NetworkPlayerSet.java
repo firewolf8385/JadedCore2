@@ -34,6 +34,36 @@ import java.util.UUID;
 public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
 
     /**
+     * Get a Network player file for a player in the set.
+     * @param uuid UUID of the player to get Network player of.
+     * @return Associated NetworkPlayer.
+     */
+    public NetworkPlayer getPlayer(final UUID uuid) {
+        for(NetworkPlayer networkPlayer : this) {
+            if(networkPlayer.getUniqueUID().equals(uuid)) {
+                return networkPlayer;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get a Network player object for a player in the set.
+     * @param username Username of the player to get Network player of.
+     * @return Associated NetworkPlayer.
+     */
+    public NetworkPlayer getPlayer(final String username) {
+        for(NetworkPlayer networkPlayer : this) {
+            if(networkPlayer.getName().equalsIgnoreCase(username)) {
+                return networkPlayer;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Check if the set contains a player with a given UUID.
      * @param uuid UUID of the player to check.
      * @return Whether the set has the player.
@@ -55,7 +85,7 @@ public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
      */
     public boolean hasPlayer(final String username) {
         for(NetworkPlayer networkPlayer : this) {
-            if(networkPlayer.getName().equals(username)) {
+            if(networkPlayer.getName().equalsIgnoreCase(username)) {
                 return true;
             }
         }
