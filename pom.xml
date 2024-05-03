@@ -146,7 +146,7 @@
         <dependency>
             <groupId>com.github.JadedMC</groupId>
             <artifactId>JadedChat</artifactId>
-            <version>0.6</version>
+            <version>d2e59ead74</version>
         </dependency>
     </dependencies>
 </project>
