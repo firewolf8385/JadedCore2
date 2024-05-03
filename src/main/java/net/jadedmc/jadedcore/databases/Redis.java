@@ -93,6 +93,12 @@ public class Redis {
         }
     }
 
+    public String get(@NotNull final String key) {
+        try(Jedis jedis = jedisPool.getResource()) {
+            return jedis.get(key);
+        }
+    }
+
     public void subscribe() {
         new Thread("Redis Subscriber") {
             @Override
