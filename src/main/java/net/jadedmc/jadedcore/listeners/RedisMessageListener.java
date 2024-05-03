@@ -51,6 +51,12 @@ public class RedisMessageListener implements Listener {
 
     @EventHandler
     public void onMessage(RedisMessageEvent event) {
+
+        if(event.getChannel().equalsIgnoreCase("party")) {
+            partyChannel(event);
+            return;
+        }
+
         if(!event.getChannel().equalsIgnoreCase("jadedmc")) {
             return;
         }
@@ -94,6 +100,18 @@ public class RedisMessageListener implements Listener {
                     UUID partyUUID = UUID.fromString(args[1]);
                     Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
                     plugin.partyManager().deleteParty(party);
+                }
+
+                case "leave" -> {
+                    UUID partyUUID = UUID.fromString(args[1]);
+                    UUID playerUUID = UUID.fromString(args[2]);
+                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+
+                    if(party == null) {
+                        return;
+                    }
+
+                    party.removePlayer(playerUUID);
                 }
 
                 case "message" -> {

@@ -92,9 +92,9 @@ public class Party {
         return false;
     }
 
-    public void removePlayer(Player player) {
+    public void removePlayer(UUID player) {
         for(PartyPlayer partyPlayer : players) {
-            if(partyPlayer.getUniqueID().equals(player.getUniqueId())) {
+            if(partyPlayer.getUniqueID().equals(player)) {
                 players.remove(partyPlayer);
                 return;
             }
