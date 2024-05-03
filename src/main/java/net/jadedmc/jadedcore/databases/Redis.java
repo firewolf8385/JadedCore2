@@ -26,10 +26,13 @@ package net.jadedmc.jadedcore.databases;
 
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.RedisMessageEvent;
+import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
+
+import java.util.Set;
 
 /**
  * Manages the connection process to Redis.
@@ -81,6 +84,12 @@ public class Redis {
     public void del(String key) {
         try(Jedis jedis = jedisPool.getResource()) {
             jedis.del(key);
+        }
+    }
+
+    public Set<String> keys(@NotNull final String pattern) {
+        try(Jedis jedis = jedisPool.getResource()) {
+            return jedis.keys(pattern);
         }
     }
 
