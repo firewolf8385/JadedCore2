@@ -98,6 +98,9 @@ commands:
   loom:
     description: Opens a loom.
     permission: jadedcore.loom
+  party:
+    description: Party commands.
+    aliases: [p]
   players:
     description: View all online network players.
     permission: jadedcore.players

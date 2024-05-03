@@ -24,10 +24,17 @@
  */
 package net.jadedmc.jadedcore.listeners;
 
+import net.jadedmc.jadedchat.JadedChat;
 import net.jadedmc.jadedchat.features.channels.events.ChannelMessageSendEvent;
 import net.jadedmc.jadedcore.JadedCorePlugin;
+import net.jadedmc.jadedcore.party.Party;
+import net.jadedmc.jadedutils.chat.ChatUtils;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
+import java.util.Collections;
 
 /**
  * Listens to the ChannelMessageSendEvent, which is called every time a player sends a message in a chat channel.
@@ -50,5 +57,28 @@ public class ChannelMessageSendListener implements Listener {
     @EventHandler
     public void onMessageSend(ChannelMessageSendEvent event) {
         plugin.achievementManager().getAchievement("general_2").unlock(event.getPlayer());
+
+        if(event.getChannel().equals(JadedChat.getChannel("PARTY"))) {
+            partyChannel(event);
+            return;
+        }
+    }
+
+    private void partyChannel(ChannelMessageSendEvent event) {
+        Player player = event.getPlayer();
+        Party party = plugin.partyManager().getParty(player);
+
+        if(party == null) {
+            ChatUtils.chat(player, "&cYou are not in a party! You can go back to global with /chat global");
+            event.setCancelled(true);
+            return;
+        }
+
+        // Sends the chat message to the party.
+        String message = MiniMessage.miniMessage().serialize(event.getFormattedMessage());
+        party.sendMessage(message);
+
+        // Remove all server-side viewers.
+        event.setViewers(Collections.emptyList());
     }
 }

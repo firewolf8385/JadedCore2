@@ -30,9 +30,6 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.RedisMessageEvent;
 import net.jadedmc.jadedcore.networking.InstanceStatus;
 import net.jadedmc.jadedcore.party.Party;
-import net.jadedmc.jadedcore.party.PartyPlayer;
-import net.jadedmc.jadedcore.party.PartyRole;
-import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -95,11 +92,33 @@ public class RedisMessageListener implements Listener {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             String[] args = event.getMessage().split(" ");
 
-            switch(args[1].toLowerCase()) {
+            switch(args[0].toLowerCase()) {
                 case "disband" -> {
                     UUID partyUUID = UUID.fromString(args[1]);
                     Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
                     plugin.partyManager().deleteParty(party);
+                }
+
+                case "join" -> {
+                    UUID partyUUID = UUID.fromString(args[1]);
+                    UUID playerUUID = UUID.fromString(args[2]);
+                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+
+                    Player player = plugin.getServer().getPlayer(playerUUID);
+                    if(player == null || !player.isOnline()) {
+                        return;
+                    }
+
+                    try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
+                        Document document = Document.parse(jedis.get("parties:" + partyUUID.toString()));
+
+                        if(party == null) {
+                            plugin.partyManager().createParty(document);
+                        }
+                        else {
+                            party.update(document);
+                        }
+                    }
                 }
 
                 case "leave" -> {
@@ -124,7 +143,7 @@ public class RedisMessageListener implements Listener {
 
                     plugin.getServer().getScheduler().runTask(plugin, () -> {
                         String message = StringUtils.join(Arrays.copyOfRange(args, 2, args.length), " ");
-                        party.broadcastLocal(message);
+                        party.sendLocalMessage(message);
                     });
                 }
 

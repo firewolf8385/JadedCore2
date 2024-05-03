@@ -27,9 +27,11 @@ package net.jadedmc.jadedcore.party;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import org.bson.Document;
 import org.bukkit.entity.Player;
+import redis.clients.jedis.Jedis;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class PartyManager {
@@ -80,5 +82,20 @@ public class PartyManager {
 
     public void cacheParty(final Party party) {
         parties.add(party);
+    }
+
+    public Collection<Party> getRemoteParties() {
+        Collection<Party> remoteParties = new HashSet<>();
+
+        try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
+            Set<String> uuids = jedis.keys("parties:*");
+
+            for(String uuid : uuids) {
+                Document document = Document.parse(jedis.get("parties:" + uuid.replace("parties:", "")));
+                remoteParties.add(new Party(plugin, document));
+            }
+        }
+
+        return remoteParties;
     }
 }

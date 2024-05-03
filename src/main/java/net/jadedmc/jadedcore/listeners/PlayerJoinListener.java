@@ -125,7 +125,7 @@ public class PlayerJoinListener implements Listener {
 
                 // Loops through each stored party.
                 for(String key : names) {
-                    Document document = Document.parse(jedis.get("parties:" + key));
+                    Document document = Document.parse(jedis.get("parties:" + key.replace("parties:", "")));
                     Party party = new Party(plugin, document);
 
                     // If the player is in that party, cache the party to memory.

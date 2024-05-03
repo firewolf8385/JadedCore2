@@ -24,13 +24,11 @@
  */
 package net.jadedmc.jadedcore.party;
 
-import net.jadedmc.jadedchat.utils.StringUtils;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bson.Document;
 import org.bukkit.entity.Player;
-import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
@@ -43,27 +41,82 @@ public class Party {
     private final Collection<PartyPlayer> players = new HashSet<>();
     private final Collection<UUID> invites = new HashSet<>();
 
+    /**
+     * Creates the party using a Bson Document.
+     * @param plugin Instance of the plugin.
+     * @param document Bson document.
+     */
     public Party(final JadedCorePlugin plugin, final Document document) {
         this.plugin = plugin;
         this.uuid = UUID.fromString(document.getString("uuid"));
 
+        // Load the players from the document.
         Document playersDocument = document.get("players", Document.class);
         for(String player : playersDocument.keySet()) {
             players.add(new PartyPlayer(playersDocument.get(player, Document.class)));
         }
+
+        // Load the pending invites of the party.
+        List<String> inviteUUIDs = document.getList("invites", String.class);
+        for(String uuid : inviteUUIDs) {
+            this.invites.add(UUID.fromString(uuid));
+        }
     }
 
+    /**
+     * Creates an empty party with a given leader.
+     * @param plugin Instance of the plugin.
+     * @param leader Leader of the party.
+     */
     public Party(final JadedCorePlugin plugin, Player leader) {
         this.plugin = plugin;
         this.uuid = UUID.randomUUID();
         addPlayer(leader, PartyRole.LEADER);
     }
 
+    /**
+     * Adds an invite to the party.
+     * @param playerUUID UUID of the player being invited.
+     */
+    public void addInvite(final UUID playerUUID) {
+        this.invites.add(playerUUID);
+    }
+
+    /**
+     * Adds a player to the party.
+     * @param player Player to add to the party.
+     * @param role Role the player has.
+     */
     public void addPlayer(Player player, PartyRole role) {
         players.add(new PartyPlayer(player, role));
+
+        // Removes any potential pending invites for the player.
         this.invites.remove(player.getUniqueId());
     }
 
+    /**
+     * Disbands the party.
+     */
+    public void disband() {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            JadedAPI.getRedis().publish("party", "disband " + this.uuid.toString());
+            JadedAPI.getRedis().del("parties:" + this.uuid.toString());
+        });
+    }
+
+    /**
+     * Gets a Collection of all current invites.
+     * @return All active invites.
+     */
+    public Collection<UUID> getInvites() {
+        return this.invites;
+    }
+
+    /**
+     * Get the PartyPlayer of a player, from their uuid.
+     * @param playerUUID UUID of the player.
+     * @return Corresponding PartyPlayer obkect.
+     */
     public PartyPlayer getPlayer(UUID playerUUID) {
         for(PartyPlayer partyPlayer : players) {
             if(partyPlayer.getUniqueID().equals(playerUUID)) {
@@ -74,14 +127,27 @@ public class Party {
         return null;
     }
 
+    /**
+     * Gets all players currently in the party.
+     * @return All current players.
+     */
     public Collection<PartyPlayer> getPlayers() {
         return players;
     }
 
+    /**
+     * Gets the UUID of the party.
+     * @return Party UUID.
+     */
     public UUID getUniqueID() {
         return uuid;
     }
 
+    /**
+     * Check if the party has a given player in it.
+     * @param playerUUID UUID of the player.
+     * @return Whether they are in the party.
+     */
     public boolean hasPlayer(UUID playerUUID) {
         for(PartyPlayer partyPlayer : players) {
             if(partyPlayer.getUniqueID().equals(playerUUID)) {
@@ -92,15 +158,60 @@ public class Party {
         return false;
     }
 
-    public void removePlayer(UUID player) {
+    /**
+     * Removes an invite from the party.
+     * @param playerUUID UUID of the player who was invited.
+     */
+    public void removeInvite(final UUID playerUUID) {
+        this.invites.remove(playerUUID);
+    }
+
+    /**
+     * Removes a player from the party.
+     * @param playerUUID UUID of the player to remove.
+     */
+    public void removePlayer(UUID playerUUID) {
         for(PartyPlayer partyPlayer : players) {
-            if(partyPlayer.getUniqueID().equals(player)) {
+            if(partyPlayer.getUniqueID().equals(playerUUID)) {
                 players.remove(partyPlayer);
                 return;
             }
         }
     }
 
+    /**
+     * Sends a message to all members of the party on the current server.
+     * @param message Message to be sent.
+     */
+    public void sendLocalMessage(final String message) {
+        Collection<PartyPlayer> localPlayers = new HashSet<>(this.players);
+
+        for(PartyPlayer partyPlayer : localPlayers) {
+            Player player = partyPlayer.getPlayer();
+
+            // Skip the player if they aren't online.
+            if(player == null) {
+                continue;
+            }
+
+            ChatUtils.chat(player, message);
+        }
+    }
+
+    /**
+     * Sends a message to all members of the party.
+     * @param message Message to be sent.
+     */
+    public void sendMessage(final String message) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            JadedAPI.getRedis().publish("party", "message " + this.uuid.toString() + " " + message);
+        });
+    }
+
+    /**
+     * Converts the cached party into a Bson Document.
+     * @return Bson document of the party.
+     */
     public Document toDocument() {
         Document document = new Document();
         document.append("uuid", uuid.toString());
@@ -118,55 +229,37 @@ public class Party {
         return document;
     }
 
+    /**
+     * Updates the party in Redis.
+     */
     public void update() {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.redis().set("parties:" + uuid.toString(), toDocument().toJson());
+            plugin.redis().publish("party", "update " + this.uuid.toString());
         });
     }
 
-    public void addInvite(final UUID playerUUID) {
-        this.invites.add(playerUUID);
-    }
-
-    public Collection<UUID> getInvites() {
-        return this.invites;
-    }
-
-    public void removeInvite(final UUID playerUUID) {
-        this.invites.remove(playerUUID);
-    }
-
-    public void broadcast(final String message) {
-        // TODO: Create a "publishAsync" method.
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            JadedAPI.getRedis().publish("party", "message " + message);
-            JadedAPI.getRedis().publish("party", "update " + this.uuid.toString());
-        });
-    }
-
-    public void broadcastLocal(final String message) {
-        for(PartyPlayer partyPlayer : this.players) {
-            Player player = partyPlayer.getPlayer();
-
-            if(player == null) {
-                continue;
-            }
-
-            ChatUtils.chat(player, message);
-        }
-    }
-
+    /**
+     * Updates the cached party with a given Bson document.
+     * @param document Bson document to use.
+     */
     public void update(final Document document) {
+        // Empty cached players.
+        players.clear();
+
+        // Loads the party players.
         Document playersDocument = document.get("players", Document.class);
         for(String player : playersDocument.keySet()) {
             players.add(new PartyPlayer(playersDocument.get(player, Document.class)));
         }
-    }
 
-    public void disband() {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            JadedAPI.getRedis().publish("party", "disband " + this.uuid.toString());
-            JadedAPI.getRedis().del("parties:" + this.uuid.toString());
-        });
+        // Empty cached invites.
+        this.invites.clear();
+
+        // Loads new invites.
+        List<String> inviteUUIDs = document.getList("invites", String.class);
+        for(String uuid : inviteUUIDs) {
+            this.invites.add(UUID.fromString(uuid));
+        }
     }
 }

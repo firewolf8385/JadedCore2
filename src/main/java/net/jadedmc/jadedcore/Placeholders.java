@@ -25,6 +25,8 @@
 package net.jadedmc.jadedcore;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.clip.placeholderapi.expansion.Relational;
+import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.entity.Player;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
  * This class will be registered through the register-method in the
  * plugins onEnable-method.
  */
-class Placeholders extends PlaceholderExpansion {
+class Placeholders extends PlaceholderExpansion implements Relational {
     private final JadedCorePlugin plugin;
 
     /**
@@ -185,6 +187,30 @@ class Placeholders extends PlaceholderExpansion {
 
         if(identifier.contains("online")) {
             return JadedAPI.getInstanceMonitor().getPlayerCount() + "";
+        }
+
+        return null;
+    }
+
+    @Override
+    public String onPlaceholderRequest(Player one, Player two, String identifier) {
+        if (one == null || two == null) {
+            return null; //
+        }
+
+        Party partyOne = plugin.partyManager().getParty(one);
+        Party partyTwo = plugin.partyManager().getParty(two);
+
+        if(partyOne == null || partyTwo == null) {
+            return "";
+        }
+
+        if(identifier.contains("party_sign")) {
+            if(partyOne.equals(partyTwo)) {
+                return "&e⭐ ";
+            }
+
+            return "";
         }
 
         return null;
