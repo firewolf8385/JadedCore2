@@ -118,7 +118,7 @@ public class PartyCMD extends AbstractCommand {
 
     private void createCMD(final Player player) {
         // Makes sure the player is not already in a party.
-        if(plugin.partyManager().getParty(player) != null) {
+        if(plugin.partyManager().getLocalParties().containsPlayer(player)) {
             ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are already in a party.");
             return;
         }
@@ -130,7 +130,7 @@ public class PartyCMD extends AbstractCommand {
     }
 
     private void inviteCMD(final Player player, String[] args) {
-        Party party = plugin.partyManager().getParty(player);
+        Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
             ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create.");
             return;

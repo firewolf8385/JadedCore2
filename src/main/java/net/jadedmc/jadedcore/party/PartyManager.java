@@ -27,41 +27,40 @@ package net.jadedmc.jadedcore.party;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import org.bson.Document;
 import org.bukkit.entity.Player;
-import redis.clients.jedis.Jedis;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 public class PartyManager {
     private final JadedCorePlugin plugin;
-    private final Collection<Party> parties = new HashSet<>();
+    private final PartySet localParties = new PartySet();
 
     public PartyManager(final JadedCorePlugin plugin) {
         this.plugin = plugin;
     }
 
+    @Deprecated
     public Party createParty(Player leader) {
         Party party = new Party(plugin, leader);
-        parties.add(party);
+        localParties.add(party);
         return party;
     }
 
+    @Deprecated
     public Party createParty(final Document document) {
         return new Party(plugin, document);
     }
 
+    @Deprecated
     public void deleteParty(Party party) {
-        parties.remove(party);
+        localParties.remove(party);
     }
 
-    public Collection<Party> getParties() {
-        return parties;
-    }
-
+    @Deprecated
     public Party getParty(Player player) {
-        for(Party party : parties) {
+        for(Party party : localParties) {
             if(party.hasPlayer(player.getUniqueId())) {
                 return party;
             }
@@ -70,8 +69,9 @@ public class PartyManager {
         return null;
     }
 
+    @Deprecated
     public Party getPartyFromUUID(final UUID partyUUID) {
-        for(Party party : parties) {
+        for(Party party : localParties) {
             if(party.getUniqueID().equals(partyUUID)) {
                 return party;
             }
@@ -80,20 +80,55 @@ public class PartyManager {
         return null;
     }
 
+    @Deprecated
     public void cacheParty(final Party party) {
-        parties.add(party);
+        localParties.add(party);
     }
 
-    public Collection<Party> getRemoteParties() {
-        Collection<Party> remoteParties = new HashSet<>();
+    /**
+     * Retrieves a Set of all locally cached Parties.
+     * @return Set containing parties stored in RAM.
+     */
+    @NotNull
+    public PartySet getLocalParties() {
+        return localParties;
+    }
 
-        try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
-            Set<String> uuids = jedis.keys("parties:*");
+    /**
+     * Retrieves a locally-cached party from its UUID.
+     * Returns null if non are found.
+     * @param player Player to get the Party of.
+     * @return Corresponding Party object.
+     */
+    @Nullable
+    public Party getLocalPartyFromPlayer(final Player player) {
+        return localParties.getFromPlayer(player);
+    }
 
-            for(String uuid : uuids) {
-                Document document = Document.parse(jedis.get("parties:" + uuid.replace("parties:", "")));
-                remoteParties.add(new Party(plugin, document));
-            }
+    /**
+     * Retrieves a locally-cached party from its UUID.
+     * Returns null if non are found.
+     * @param partyUUID UUID of target Party.
+     * @return Corresponding Party object.
+     */
+    @Nullable
+    public Party getLocalPartyFromUUID(final UUID partyUUID) {
+        return localParties.getFromUUID(partyUUID);
+    }
+
+    /**
+     * Retrieves a Set of all parties stored in Redis.
+     * <b>Warning: Database operation. Call asynchronously.</b>
+     * @return Set containing Parties grabbed from Redis.
+     */
+    @NotNull
+    public PartySet getRemoteParties() {
+        final PartySet remoteParties = new PartySet();
+
+        final Set<String> keys = plugin.redis().keys("parties:*");
+        for(String key : keys) {
+            final Document partyDocument = Document.parse(plugin.redis().get(key));
+            remoteParties.add(new Party(plugin, partyDocument));
         }
 
         return remoteParties;

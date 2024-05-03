@@ -158,6 +158,16 @@ public class Party {
         return false;
     }
 
+    public boolean hasUsername(final String username) {
+        for(PartyPlayer partyPlayer : players) {
+            if(partyPlayer.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Removes an invite from the party.
      * @param playerUUID UUID of the player who was invited.
