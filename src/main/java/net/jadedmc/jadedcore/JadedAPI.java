@@ -220,4 +220,10 @@ public class JadedAPI {
             plugin.redis().publish("proxy", "message " + playerUUID.toString() + " " + message);
         });
     }
+
+    public static void sendPlayer(final UUID playerUUID, final String server) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.redis().publish("proxy", "connect " + playerUUID.toString() + " " + server);
+        });
+    }
 }
