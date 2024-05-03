@@ -49,7 +49,7 @@ public class InstanceMonitor {
         this.currentInstance = new CurrentInstance(plugin);
 
         // Heartbeat the current instance every 5 seconds.
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, currentInstance::heartbeat, 0, 5*20);
+        plugin.getServer().getScheduler().runTaskTimer(plugin, currentInstance::heartbeat, 0, 5*20);
 
         // Update player counts every 30 seconds.
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {

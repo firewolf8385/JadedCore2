@@ -169,8 +169,11 @@ public class CurrentInstance {
         return System.currentTimeMillis() - this.startTime;
     }
 
+    /**
+     * Sends a heartbeat message to Redis, containing various data about the instance.
+     */
     public void heartbeat() {
-        Document document = new Document()
+        final Document document = new Document()
                 .append("serverName", name)
                 .append("status", getStatus().toString())
                 .append("online", getOnline())
@@ -184,7 +187,9 @@ public class CurrentInstance {
                 .append("majorVersion", majorVersion)
                 .append("minorVersion", minorVersion);
 
-        plugin.redis().set("servers:" + plugin.settingsManager().getConfig().getString("serverName"), document.toJson());
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.redis().set("servers:" + plugin.settingsManager().getConfig().getString("serverName"), document.toJson());
+        });
     }
 
     /**
