@@ -38,9 +38,24 @@ public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
      * @param uuid UUID of the player to check.
      * @return Whether the set has the player.
      */
-    public boolean hasPlayer(UUID uuid) {
+    public boolean hasPlayer(final UUID uuid) {
         for(NetworkPlayer networkPlayer : this) {
             if(networkPlayer.getUniqueUID().equals(uuid)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the set contains a player with a given username.
+     * @param username Username of the player to check.
+     * @return Whether the set has the player.
+     */
+    public boolean hasPlayer(final String username) {
+        for(NetworkPlayer networkPlayer : this) {
+            if(networkPlayer.getName().equals(username)) {
                 return true;
             }
         }

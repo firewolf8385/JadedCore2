@@ -30,7 +30,6 @@ import com.google.common.io.ByteStreams;
 import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.databases.Redis;
-import net.jadedmc.jadedcore.games.Game;
 import net.jadedmc.jadedcore.minigames.Minigame;
 import net.jadedmc.jadedcore.networking.CurrentInstance;
 import net.jadedmc.jadedcore.networking.Instance;
@@ -46,7 +45,6 @@ import redis.clients.jedis.Jedis;
 
 import java.sql.Connection;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 public class JadedAPI {
     private static JadedCorePlugin plugin = null;
@@ -205,5 +203,15 @@ public class JadedAPI {
 
     public static InstanceMonitor getInstanceMonitor() {
         return plugin.instanceMonitor();
+    }
+
+    public boolean isOnline(final UUID playerUUID) {
+        try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
+            return jedis.exists("jadedplayers:" + playerUUID);
+        }
+    }
+
+    public boolean isOnline(final String username) {
+        return getPlayers().hasPlayer(username);
     }
 }
