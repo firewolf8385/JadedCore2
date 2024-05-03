@@ -205,13 +205,19 @@ public class JadedAPI {
         return plugin.instanceMonitor();
     }
 
-    public boolean isOnline(final UUID playerUUID) {
+    public static boolean isOnline(final UUID playerUUID) {
         try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
             return jedis.exists("jadedplayers:" + playerUUID);
         }
     }
 
-    public boolean isOnline(final String username) {
+    public static boolean isOnline(final String username) {
         return getPlayers().hasPlayer(username);
+    }
+
+    public static void sendMessage(final UUID playerUUID, final String message) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.redis().publish("proxy", "message " + playerUUID.toString() + " " + message);
+        });
     }
 }
