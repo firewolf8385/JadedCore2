@@ -263,37 +263,38 @@ public class JadedPlayer {
 
     /**
      * Set if the player is currently vanished.
-     *
      * @param vanished Whether they are vanished.
      */
     public void setVanished(boolean vanished) {
         this.vanished = vanished;
 
         if (!vanished) {
-            for (Player pl : Bukkit.getOnlinePlayers()) {
-                if (pl.equals(player)) {
+            for (Player viewer : plugin.getServer().getOnlinePlayers()) {
+                if (viewer.equals(player)) {
                     continue;
                 }
 
-                pl.showPlayer(player);
+                viewer.showPlayer(plugin, player);
             }
-        } else {
-            for (Player pl : Bukkit.getOnlinePlayers()) {
-                if (pl.equals(player)) {
+        }
+        else {
+            for (Player viewer : plugin.getServer().getOnlinePlayers()) {
+                if (viewer.equals(player)) {
                     continue;
                 }
 
-                pl.hidePlayer(player);
+                viewer.hidePlayer(plugin, player);
             }
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("UPDATE staff_settings SET vanish = ? WHERE uuid = ?");
                 statement.setBoolean(1, vanished);
                 statement.setString(2, player.getUniqueId().toString());
                 statement.executeUpdate();
-            } catch (SQLException exception) {
+            }
+            catch (SQLException exception) {
                 exception.printStackTrace();
             }
         });
