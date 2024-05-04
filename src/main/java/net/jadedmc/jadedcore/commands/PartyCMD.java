@@ -68,6 +68,7 @@ public class PartyCMD extends AbstractCommand {
             case "invite" -> inviteCMD(player, args);
             case "leave" -> leaveCMD(player);
             case "list" -> listCMD(player);
+            default -> inviteCMD(player, new String[]{"invite", args[0]});
         }
     }
 
