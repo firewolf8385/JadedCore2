@@ -56,6 +56,7 @@ public class PartyCMD extends AbstractCommand {
         Player player = (Player) sender;
 
         if(args.length == 0) {
+            helpCMD(player);
             return;
         }
 
@@ -63,6 +64,7 @@ public class PartyCMD extends AbstractCommand {
             case "accept" -> acceptCMD(player, args);
             case "create" -> createCMD(player);
             case "disband" -> disbandCMD(player);
+            case "help" -> helpCMD(player);
             case "invite" -> inviteCMD(player, args);
             case "list" -> listCMD(player);
         }
@@ -171,6 +173,16 @@ public class PartyCMD extends AbstractCommand {
 
         party.sendMessage("<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded.");
         party.disband();
+    }
+
+    private void helpCMD(@NotNull final Player player) {
+        ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
+        ChatUtils.chat(player, ChatUtils.centerText("<green><bold>Party Commands"));
+        ChatUtils.chat(player, "  <green>/party create");
+        ChatUtils.chat(player, "  <green>/party disband");
+        ChatUtils.chat(player, "  <green>/party invite <player>");
+        ChatUtils.chat(player, "  <green>/party list");
+        ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
     }
 
     private void inviteCMD(final Player player, String[] args) {
