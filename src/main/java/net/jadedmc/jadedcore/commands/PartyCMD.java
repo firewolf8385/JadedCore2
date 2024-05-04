@@ -118,7 +118,6 @@ public class PartyCMD extends AbstractCommand {
             party.update();
             party.sendMessage("<green><bold>Party</bold> <dark_gray>» " + jadedPlayer.getRank().getChatPrefix() + "<gray>" + player.getName() + " <green>has joined the party.");
 
-            ChatUtils.chat(player, "");
             ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
             ChatUtils.chat(player, ChatUtils.centerText("<green><bold>You are partying with"));
             ChatUtils.chat(player, "");
@@ -138,7 +137,6 @@ public class PartyCMD extends AbstractCommand {
             ChatUtils.chat(player, members.substring(0, members.length() - 1));
             ChatUtils.chat(player, "");
             ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
-            ChatUtils.chat(player, "");
 
             ChatUtils.chat(player, "<green><bold>Party</bold> <dark_gray>» " + jadedPlayer.getRank().getChatPrefix() + "<gray>" + player.getName() + " <green>has joined the party.");
         });
@@ -235,9 +233,9 @@ public class PartyCMD extends AbstractCommand {
         });
     }
 
-    private void listCMD(final Player player) {
+    private void listCMD(@NotNull final Player player) {
         // Makes sure the player is in a party.
-        Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
+        final Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
             ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create.");
             return;
@@ -245,8 +243,8 @@ public class PartyCMD extends AbstractCommand {
 
         // Gets all the party members and their roles.
         String leader = "";
-        List<String> moderators = new ArrayList<>();
-        List<String> members = new ArrayList<>();
+        final List<String> moderators = new ArrayList<>();
+        final List<String> members = new ArrayList<>();
         for(PartyPlayer member : party.getPlayers()) {
             switch (member.getRole()) {
                 case LEADER -> leader = member.getRank().getChatPrefix() + "<gray>" + member.getUsername();
@@ -256,7 +254,7 @@ public class PartyCMD extends AbstractCommand {
         }
 
         // Displays the list
-        ChatUtils.chat(player, "&8&m+-----------------------***-----------------------+");
+        ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
         ChatUtils.chat(player, ChatUtils.centerText("&a&lParty Members"));
         ChatUtils.chat(player, "");
         ChatUtils.chat(player, "&aLeader &7» &f" + leader);
@@ -268,7 +266,7 @@ public class PartyCMD extends AbstractCommand {
 
         ChatUtils.chat(player, "&aMembers &7[" + members.size() + "] » &f" + StringUtils.join(members, ", "));
         ChatUtils.chat(player, "");
-        ChatUtils.chat(player, "&8&m+-----------------------***-----------------------+");
+        ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
     }
 
     private void summonCMD(final Player player) {
