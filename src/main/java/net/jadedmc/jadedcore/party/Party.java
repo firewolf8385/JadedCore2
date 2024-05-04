@@ -202,31 +202,19 @@ public class Party {
     }
 
     /**
-     * Sends a message to all members of the party on the current server.
-     * @param message Message to be sent.
-     */
-    public void sendLocalMessage(final String message) {
-        Collection<PartyPlayer> localPlayers = new HashSet<>(this.players);
-
-        for(PartyPlayer partyPlayer : localPlayers) {
-            Player player = partyPlayer.getPlayer();
-
-            // Skip the player if they aren't online.
-            if(player == null) {
-                continue;
-            }
-
-            ChatUtils.chat(player, message);
-        }
-    }
-
-    /**
      * Sends a message to all members of the party.
      * @param message Message to be sent.
      */
     public void sendMessage(final String message) {
+        final StringBuilder builder = new StringBuilder();
+        players.forEach(partyPlayer -> {
+            builder.append(partyPlayer.getUniqueID());
+            builder.append(",");
+        });
+
+        final String targets = builder.substring(0, builder.length() - 1);
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            JadedAPI.getRedis().publish("party", "message " + this.uuid.toString() + " " + message);
+            JadedAPI.getRedis().publish("proxy", "message " + targets + " " + message);
         });
     }
 

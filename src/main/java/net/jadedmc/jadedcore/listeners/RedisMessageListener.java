@@ -133,20 +133,6 @@ public class RedisMessageListener implements Listener {
                     party.removePlayer(playerUUID);
                 }
 
-                case "message" -> {
-                    final UUID partyUUID = UUID.fromString(args[1]);
-                    final Party party = plugin.partyManager().getLocalPartyFromUUID(partyUUID);
-
-                    if(party == null) {
-                        return;
-                    }
-
-                    plugin.getServer().getScheduler().runTask(plugin, () -> {
-                        final String message = StringUtils.join(Arrays.copyOfRange(args, 2, args.length), " ");
-                        party.sendLocalMessage(message);
-                    });
-                }
-
                 case "update" -> {
                     final UUID partyUUID = UUID.fromString(args[1]);
                     final Party party = plugin.partyManager().getLocalPartyFromUUID(partyUUID);
