@@ -30,6 +30,7 @@ import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -116,7 +117,7 @@ public class Party {
     /**
      * Get the PartyPlayer of a player, from their uuid.
      * @param playerUUID UUID of the player.
-     * @return Corresponding PartyPlayer obkect.
+     * @return Corresponding PartyPlayer object.
      */
     public PartyPlayer getPlayer(UUID playerUUID) {
         for(PartyPlayer partyPlayer : players) {
@@ -126,6 +127,16 @@ public class Party {
         }
 
         return null;
+    }
+
+    /**
+     * Get the PartyPlayer of a given Player.
+     * @param player Player to get PartyPlayer of.
+     * @return Corresponding PartyPlayer object.
+     */
+    @Nullable
+    public PartyPlayer getPlayer(final Player player) {
+        return getPlayer(player.getUniqueId());
     }
 
     /**
@@ -216,6 +227,15 @@ public class Party {
     public void sendMessage(final String message) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             JadedAPI.getRedis().publish("party", "message " + this.uuid.toString() + " " + message);
+        });
+    }
+
+    /**
+     * Updates the party in Redis without announcing the update.
+     */
+    public void silentUpdate() {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.redis().set("parties:" + uuid.toString(), toDocument().toJson());
         });
     }
 

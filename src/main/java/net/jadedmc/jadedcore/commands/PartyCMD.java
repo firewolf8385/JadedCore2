@@ -66,6 +66,7 @@ public class PartyCMD extends AbstractCommand {
             case "disband" -> disbandCMD(player);
             case "help" -> helpCMD(player);
             case "invite" -> inviteCMD(player, args);
+            case "leave" -> leaveCMD(player);
             case "list" -> listCMD(player);
         }
     }
@@ -181,6 +182,7 @@ public class PartyCMD extends AbstractCommand {
         ChatUtils.chat(player, "  <green>/party create");
         ChatUtils.chat(player, "  <green>/party disband");
         ChatUtils.chat(player, "  <green>/party invite <player>");
+        ChatUtils.chat(player, "  <green>/party leave");
         ChatUtils.chat(player, "  <green>/party list");
         ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
     }
@@ -243,6 +245,30 @@ public class PartyCMD extends AbstractCommand {
 
             JadedAPI.sendMessage(targetUUID, inviteMessage);
         });
+    }
+
+    private void leaveCMD(@NotNull final Player player) {
+        // Makes sure the player is in a party.
+        final Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
+        if(party == null) {
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party!");
+            return;
+        }
+
+        final PartyPlayer partyPlayer = party.getPlayer(player);
+        if(partyPlayer.getRole() == PartyRole.LEADER) {
+            party.sendMessage("<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded.");
+            party.disband();
+            return;
+        }
+
+        party.sendMessage("<green><bold>Party</bold> <dark_gray>» " + partyPlayer.getRank().getChatPrefix() + "<gray>" + partyPlayer.getUsername() + " <green>has left the party.");
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            plugin.redis().publish("party", "leave " + party.getUniqueID() + " " + player.getUniqueId());
+            party.silentUpdate();
+        });
+
+        ChatUtils.chat(player, "<green><bold>Party</bold> <dark_gray>» " + partyPlayer.getRank().getChatPrefix() + "<gray>" + player.getName() + " <green>has left the party.");
     }
 
     private void listCMD(@NotNull final Player player) {
