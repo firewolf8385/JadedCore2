@@ -113,9 +113,34 @@ public class PartyCMD extends AbstractCommand {
                 return;
             }
 
+            final JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
             party.addPlayer(player, PartyRole.MEMBER);
             party.update();
-            party.sendMessage("<green><bold>Party</bold> <dark_gray>» <white>" + player.getName() + " &ahas joined the party.");
+            party.sendMessage("<green><bold>Party</bold> <dark_gray>» " + jadedPlayer.getRank().getChatPrefix() + "<gray>" + player.getName() + " <green>has joined the party.");
+
+            ChatUtils.chat(player, "");
+            ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
+            ChatUtils.chat(player, ChatUtils.centerText("<green><bold>You are partying with"));
+            ChatUtils.chat(player, "");
+
+            final StringBuilder members = new StringBuilder();
+            for(PartyPlayer partyPlayer : party.getPlayers()) {
+                if(partyPlayer.getUniqueID().equals(player.getUniqueId())) {
+                    continue;
+                }
+
+                members.append(partyPlayer.getRank().getChatPrefix());
+                members.append("<gray>");
+                members.append(partyPlayer.getUsername());
+                members.append("<green>,");
+            }
+
+            ChatUtils.chat(player, members.substring(0, members.length() - 1));
+            ChatUtils.chat(player, "");
+            ChatUtils.chat(player, "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green>");
+            ChatUtils.chat(player, "");
+
+            ChatUtils.chat(player, "<green><bold>Party</bold> <dark_gray>» " + jadedPlayer.getRank().getChatPrefix() + "<gray>" + player.getName() + " <green>has joined the party.");
         });
     }
 
