@@ -90,30 +90,30 @@ public class RedisMessageListener implements Listener {
 
     private void partyChannel(RedisMessageEvent event) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            String[] args = event.getMessage().split(" ");
+            final String[] args = event.getMessage().split(" ");
 
             switch(args[0].toLowerCase()) {
                 case "disband" -> {
-                    UUID partyUUID = UUID.fromString(args[1]);
-                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
-                    plugin.partyManager().deleteParty(party);
+                    final UUID partyUUID = UUID.fromString(args[1]);
+                    final Party party = plugin.partyManager().getLocalPartyFromUUID(partyUUID);
+                    plugin.partyManager().deleteLocalParty(party);
                 }
 
                 case "join" -> {
-                    UUID partyUUID = UUID.fromString(args[1]);
-                    UUID playerUUID = UUID.fromString(args[2]);
-                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+                    final UUID partyUUID = UUID.fromString(args[1]);
+                    final UUID playerUUID = UUID.fromString(args[2]);
+                    final Party party = plugin.partyManager().getLocalPartyFromUUID(partyUUID);
 
-                    Player player = plugin.getServer().getPlayer(playerUUID);
+                    final Player player = plugin.getServer().getPlayer(playerUUID);
                     if(player == null || !player.isOnline()) {
                         return;
                     }
 
                     try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
-                        Document document = Document.parse(jedis.get("parties:" + partyUUID.toString()));
+                        final Document document = Document.parse(jedis.get("parties:" + partyUUID.toString()));
 
                         if(party == null) {
-                            plugin.partyManager().createParty(document);
+                            plugin.partyManager().loadPartyFromDocument(document);
                         }
                         else {
                             party.update(document);
@@ -122,9 +122,9 @@ public class RedisMessageListener implements Listener {
                 }
 
                 case "leave" -> {
-                    UUID partyUUID = UUID.fromString(args[1]);
-                    UUID playerUUID = UUID.fromString(args[2]);
-                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+                    final UUID partyUUID = UUID.fromString(args[1]);
+                    final UUID playerUUID = UUID.fromString(args[2]);
+                    final Party party = plugin.partyManager().getLocalPartyFromUUID(partyUUID);
 
                     if(party == null) {
                         return;
@@ -134,29 +134,29 @@ public class RedisMessageListener implements Listener {
                 }
 
                 case "message" -> {
-                    UUID partyUUID = UUID.fromString(args[1]);
-                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+                    final UUID partyUUID = UUID.fromString(args[1]);
+                    final Party party = plugin.partyManager().getLocalPartyFromUUID(partyUUID);
 
                     if(party == null) {
                         return;
                     }
 
                     plugin.getServer().getScheduler().runTask(plugin, () -> {
-                        String message = StringUtils.join(Arrays.copyOfRange(args, 2, args.length), " ");
+                        final String message = StringUtils.join(Arrays.copyOfRange(args, 2, args.length), " ");
                         party.sendLocalMessage(message);
                     });
                 }
 
                 case "update" -> {
-                    UUID partyUUID = UUID.fromString(args[1]);
-                    Party party = plugin.partyManager().getPartyFromUUID(partyUUID);
+                    final UUID partyUUID = UUID.fromString(args[1]);
+                    final Party party = plugin.partyManager().getLocalPartyFromUUID(partyUUID);
 
                     if(party == null) {
                         return;
                     }
 
                     try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
-                        Document partyDocument = Document.parse(jedis.get("parties:" + partyUUID.toString()));
+                        final Document partyDocument = Document.parse(jedis.get("parties:" + partyUUID.toString()));
                         party.update(partyDocument);
                     }
                 }

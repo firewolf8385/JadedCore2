@@ -198,8 +198,8 @@ class Placeholders extends PlaceholderExpansion implements Relational {
             return null; //
         }
 
-        Party partyOne = plugin.partyManager().getParty(one);
-        Party partyTwo = plugin.partyManager().getParty(two);
+        Party partyOne = plugin.partyManager().getLocalPartyFromPlayer(one);
+        Party partyTwo = plugin.partyManager().getLocalPartyFromPlayer(two);
 
         if(partyOne == null || partyTwo == null) {
             return "";

@@ -29,6 +29,7 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bson.Document;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -223,16 +224,16 @@ public class Party {
      * @return Bson document of the party.
      */
     public Document toDocument() {
-        Document document = new Document();
+        final Document document = new Document();
         document.append("uuid", uuid.toString());
 
-        Document playersDocument = new Document();
+        final Document playersDocument = new Document();
         for(PartyPlayer player : players) {
             playersDocument.append(player.getUniqueID().toString(), player.toDocument());
         }
         document.append("players", playersDocument);
 
-        List<String> invites = new ArrayList<>();
+        final List<String> invites = new ArrayList<>();
         this.invites.forEach(invite -> invites.add(invite.toString()));
         document.append("invites", invites);
 
@@ -253,12 +254,12 @@ public class Party {
      * Updates the cached party with a given Bson document.
      * @param document Bson document to use.
      */
-    public void update(final Document document) {
+    public void update(@NotNull final Document document) {
         // Empty cached players.
         players.clear();
 
         // Loads the party players.
-        Document playersDocument = document.get("players", Document.class);
+        final Document playersDocument = document.get("players", Document.class);
         for(String player : playersDocument.keySet()) {
             players.add(new PartyPlayer(playersDocument.get(player, Document.class)));
         }
@@ -267,7 +268,7 @@ public class Party {
         this.invites.clear();
 
         // Loads new invites.
-        List<String> inviteUUIDs = document.getList("invites", String.class);
+        final List<String> inviteUUIDs = document.getList("invites", String.class);
         for(String uuid : inviteUUIDs) {
             this.invites.add(UUID.fromString(uuid));
         }

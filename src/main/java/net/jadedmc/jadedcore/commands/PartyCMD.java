@@ -31,6 +31,7 @@ import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
 import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.party.PartyPlayer;
 import net.jadedmc.jadedcore.party.PartyRole;
+import net.jadedmc.jadedcore.party.PartySet;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
@@ -123,7 +124,7 @@ public class PartyCMD extends AbstractCommand {
             return;
         }
 
-        Party party = plugin.partyManager().createParty(player);
+        Party party = plugin.partyManager().createLocalParty(player);
         party.update();
 
         ChatUtils.chat(player, "<green><bold>Party</bold> <dark_gray>» <green>Party has been created.");
@@ -158,17 +159,8 @@ public class PartyCMD extends AbstractCommand {
 
             UUID uuid = onlinePlayers.getPlayer(username).getUniqueUID();
 
-            Collection<Party> remoteParties = plugin.partyManager().getRemoteParties();
-            boolean inParty = false;
-
-            for(Party remoteParty : remoteParties) {
-                if(remoteParty.hasPlayer(uuid)) {
-                    inParty = true;
-                    break;
-                }
-            }
-
-            if(inParty) {
+            PartySet remoteParties = plugin.partyManager().getRemoteParties();
+            if(remoteParties.containsPlayer(player)) {
                 ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>That player is already in a party!");
                 return;
             }
@@ -200,7 +192,7 @@ public class PartyCMD extends AbstractCommand {
 
     private void listCMD(final Player player) {
         // Makes sure the player is in a party.
-        Party party = plugin.partyManager().getParty(player);
+        Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
             ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create.");
             return;
@@ -236,7 +228,7 @@ public class PartyCMD extends AbstractCommand {
 
     private void summonCMD(final Player player) {
         // Makes sure the player is in a party.
-        Party party = plugin.partyManager().getParty(player);
+        Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
             ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create.");
             return;

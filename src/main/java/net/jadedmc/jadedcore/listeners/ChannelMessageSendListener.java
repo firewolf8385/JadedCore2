@@ -66,7 +66,7 @@ public class ChannelMessageSendListener implements Listener {
 
     private void partyChannel(ChannelMessageSendEvent event) {
         Player player = event.getPlayer();
-        Party party = plugin.partyManager().getParty(player);
+        Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
 
         if(party == null) {
             ChatUtils.chat(player, "&cYou are not in a party! You can go back to global with /chat global");

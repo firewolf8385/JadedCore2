@@ -33,56 +33,50 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Manages all existing party, both Local (stored in memory) and Remote (stored in Redis).
+ */
 public class PartyManager {
     private final JadedCorePlugin plugin;
     private final PartySet localParties = new PartySet();
 
-    public PartyManager(final JadedCorePlugin plugin) {
+    /**
+     * Creates the party manager.
+     * @param plugin Instance of the plugin.
+     */
+    public PartyManager(@NotNull final JadedCorePlugin plugin) {
         this.plugin = plugin;
     }
 
-    @Deprecated
-    public Party createParty(Player leader) {
+    /**
+     * Creates a Local Party with a given leader.
+     * @param leader Leader of the party.
+     * @return Created Party.
+     */
+    @NotNull
+    public Party createLocalParty(@NotNull final Player leader) {
         Party party = new Party(plugin, leader);
         localParties.add(party);
         return party;
     }
 
-    @Deprecated
-    public Party createParty(final Document document) {
-        return new Party(plugin, document);
-    }
-
-    @Deprecated
-    public void deleteParty(Party party) {
-        localParties.remove(party);
-    }
-
-    @Deprecated
-    public Party getParty(Player player) {
-        for(Party party : localParties) {
-            if(party.hasPlayer(player.getUniqueId())) {
-                return party;
-            }
-        }
-
-        return null;
-    }
-
-    @Deprecated
-    public Party getPartyFromUUID(final UUID partyUUID) {
-        for(Party party : localParties) {
-            if(party.getUniqueID().equals(partyUUID)) {
-                return party;
-            }
-        }
-
-        return null;
-    }
-
-    @Deprecated
-    public void cacheParty(final Party party) {
+    /**
+     * Caches a given Party by storing it as a Local Party.
+     * @param party Party to be cached.
+     */
+    public void cacheParty(@NotNull final Party party) {
         localParties.add(party);
+    }
+
+    /**
+     * Loads a party object from a document.
+     * Allows for using Party class methods on Remote Parties.
+     * @param document Document to load the party object from.
+     * @return Party object from the document.
+     */
+    @NotNull
+    public Party loadPartyFromDocument(@NotNull final Document document) {
+        return new Party(plugin, document);
     }
 
     /**
@@ -95,13 +89,21 @@ public class PartyManager {
     }
 
     /**
+     * Deletes a Party from the local Party cache.
+     * @param party Party to be deleted.
+     */
+    public void deleteLocalParty(@NotNull final Party party) {
+        localParties.remove(party);
+    }
+
+    /**
      * Retrieves a locally-cached party from its UUID.
      * Returns null if non are found.
      * @param player Player to get the Party of.
      * @return Corresponding Party object.
      */
     @Nullable
-    public Party getLocalPartyFromPlayer(final Player player) {
+    public Party getLocalPartyFromPlayer(@NotNull final Player player) {
         return localParties.getFromPlayer(player);
     }
 
@@ -112,7 +114,7 @@ public class PartyManager {
      * @return Corresponding Party object.
      */
     @Nullable
-    public Party getLocalPartyFromUUID(final UUID partyUUID) {
+    public Party getLocalPartyFromUUID(@NotNull final UUID partyUUID) {
         return localParties.getFromUUID(partyUUID);
     }
 
