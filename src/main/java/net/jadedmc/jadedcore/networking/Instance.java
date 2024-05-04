@@ -133,6 +133,14 @@ public class Instance {
     }
 
     /**
+     * Get the number of slots available for players to join.
+     * @return Number of open spots.
+     */
+    public int getOpenSlots() {
+        return getCapacity() - getOnline();
+    }
+
+    /**
      * Get the port the Instance is running on.
      * @return Port of the Instance.
      */
