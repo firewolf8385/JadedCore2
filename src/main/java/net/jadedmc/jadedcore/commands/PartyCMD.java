@@ -197,12 +197,12 @@ public class PartyCMD extends AbstractCommand {
             party.sendMessage("<green><bold>Party</bold> <dark_gray>» <white>" + username + " &ahas been invited to the party.");
             party.update();
 
-            String inviteMessage = "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green><newline>" +
+            String inviteMessage = "<newline><green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green><newline>" +
                     ChatUtils.centerText("<green><bold>Party Invite</bold></green>") + "<newline>" +
                     "<newline>" +
                     ChatUtils.centerText(jadedPlayer.getRank().getChatPrefix() + "<gray>" + player.getName() + " <green>has invited you to join their party!") + "<newline>" +
                     "<newline>" +
-                    "  <dark_gray>» <click:run_command:'/party accept " + player.getName() + "'><hover:show_text:'<green>Click to accept'><green>/party accept " + player.getName() + "</hover></click><newline>" +
+                    ChatUtils.centerText("<click:run_command:'/party accept " + player.getName() + "'><hover:show_text:'<yellow>Click to accept'><yellow><bold>Click Here to Join!</bold></yellow></hover></click>") + "<newline>" +
                     "<newline>" +
                     "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green><newline>";
 
