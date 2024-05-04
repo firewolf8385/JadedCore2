@@ -40,19 +40,28 @@ public class PartySet extends HashSet<Party> {
 
     /**
      * Checks if one of the parties in the Set have a given Player.
-     * @param player Player to check the parties for.
+     * @param playerUUID UUID of the player to check the parties for.
      * @return Whether one of the parties contains this player.
      */
-    public boolean containsPlayer(final Player player) {
+    public boolean containsPlayer(@NotNull final UUID playerUUID) {
         // Loop through each party looking for the player.
         for(Party party : this) {
             // If the player is found, exit the loop.
-            if(party.hasPlayer(player.getUniqueId())) {
+            if(party.hasPlayer(playerUUID)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Checks if one of the parties in the Set have a given Player.
+     * @param player Player to check the parties for.
+     * @return Whether one of the parties contains this player.
+     */
+    public boolean containsPlayer(@NotNull final Player player) {
+        return containsPlayer(player.getUniqueId());
     }
 
     /**
@@ -62,7 +71,7 @@ public class PartySet extends HashSet<Party> {
      * @return Party that contains the player.
      */
     @Nullable
-    public Party getFromPlayer(final UUID playerUUID) {
+    public Party getFromPlayer(@NotNull final UUID playerUUID) {
         // Loop through each party looking for the player.
         for(Party party : this) {
             // If the player is found, return that party.
