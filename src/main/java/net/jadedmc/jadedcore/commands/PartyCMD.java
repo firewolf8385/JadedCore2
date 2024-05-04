@@ -36,6 +36,7 @@ import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,6 +62,7 @@ public class PartyCMD extends AbstractCommand {
         switch(args[0].toLowerCase()) {
             case "accept" -> acceptCMD(player, args);
             case "create" -> createCMD(player);
+            case "disband" -> disbandCMD(player);
             case "invite" -> inviteCMD(player, args);
             case "list" -> listCMD(player);
         }
@@ -130,6 +132,24 @@ public class PartyCMD extends AbstractCommand {
         ChatUtils.chat(player, "<green><bold>Party</bold> <dark_gray>» <green>Party has been created.");
     }
 
+    private void disbandCMD(@NotNull final Player player) {
+        final Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
+
+        if(party == null) {
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party!");
+            return;
+        }
+
+        final PartyPlayer partyPlayer = party.getPlayer(player.getUniqueId());
+        if(partyPlayer.getRole() != PartyRole.LEADER) {
+            ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You do not have permission to disband the party!");
+            return;
+        }
+
+        party.sendMessage("<green><bold>Party</bold> <dark_gray>» <green>The party has been disbanded.");
+        party.disband();
+    }
+
     private void inviteCMD(final Player player, String[] args) {
         Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
@@ -157,23 +177,23 @@ public class PartyCMD extends AbstractCommand {
                 return;
             }
 
-            UUID uuid = onlinePlayers.getPlayer(username).getUniqueUID();
+            UUID targetUUID = onlinePlayers.getPlayer(username).getUniqueUID();
 
             PartySet remoteParties = plugin.partyManager().getRemoteParties();
-            if(remoteParties.containsPlayer(player)) {
+            if(remoteParties.containsPlayer(targetUUID)) {
                 ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>That player is already in a party!");
                 return;
             }
 
             // Makes sure the player wasn't already invited.
-            if(party.getInvites().contains(uuid)) {
+            if(party.getInvites().contains(targetUUID)) {
                 ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You already have a pending invite to that person.");
                 return;
             }
 
             JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
 
-            party.addInvite(uuid);
+            party.addInvite(targetUUID);
             party.sendMessage("<green><bold>Party</bold> <dark_gray>» <white>" + username + " &ahas been invited to the party.");
             party.update();
 
@@ -186,7 +206,7 @@ public class PartyCMD extends AbstractCommand {
                     "<newline>" +
                     "<green>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</green><newline>";
 
-            JadedAPI.sendMessage(uuid, inviteMessage);
+            JadedAPI.sendMessage(targetUUID, inviteMessage);
         });
     }
 
