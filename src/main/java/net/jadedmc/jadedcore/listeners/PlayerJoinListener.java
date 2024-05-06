@@ -86,13 +86,6 @@ public class PlayerJoinListener implements Listener {
                 }
             }
 
-            // If vanished, hide the player from all other players.
-            if(jadedPlayer.isVanished()) {
-                for(Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
-                    otherPlayer.hidePlayer(plugin, player);
-                }
-            }
-
             // Give the "A Whole New World" achievement.
             plugin.achievementManager().getAchievement("general_1").unlock(player);
 
@@ -102,6 +95,13 @@ public class PlayerJoinListener implements Listener {
             }
 
             plugin.getServer().getScheduler().runTask(plugin, () -> {
+                // If vanished, hide the player from all other players.
+                if(jadedPlayer.isVanished()) {
+                    for(Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
+                        otherPlayer.hidePlayer(plugin, player);
+                    }
+                }
+
                 plugin.getServer().getPluginManager().callEvent(new JadedJoinEvent(jadedPlayer));
 
                 // Sends the player to the lobby if it is enabled.
