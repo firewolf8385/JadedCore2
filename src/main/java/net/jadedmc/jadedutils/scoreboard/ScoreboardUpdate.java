@@ -37,7 +37,13 @@ public class ScoreboardUpdate extends BukkitRunnable {
     public void run() {
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(ScoreHelper.hasScore(player)) {
-                CustomScoreboard.getPlayers().get(player.getUniqueId()).update(player);
+                final CustomScoreboard scoreboard = CustomScoreboard.getPlayers().get(player);
+
+                if(scoreboard == null) {
+                    continue;
+                }
+
+                scoreboard.update(player);
             }
         }
     }
