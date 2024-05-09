@@ -45,7 +45,7 @@ public class LoadWorldCMD extends AbstractCommand {
 
         // Make sure they are using the command properly.
         if(args.length != 1) {
-            ChatUtils.chat(player, "&c&lUsage &8» &/loadworld <name>");
+            ChatUtils.chat(player, "<red>><bold>>Usage</bold> <dark_gray>» <red>/loadworld <name>");
             return;
         }
 
