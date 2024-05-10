@@ -69,6 +69,7 @@ public abstract class AbstractCommand implements CommandExecutor {
         new EnderchestCMD();
         new FeedCMD();
         new FlyCMD();
+        new GameRulesCMD();
         new GamesCMD();
         new GrindstoneCMD();
         new HealCMD();

@@ -60,6 +60,10 @@ commands:
     description: Toggles flight
     usage: /<command>
     permission: jadedcore.fly
+  gamerules:
+    description: View and edit world gamerules.
+    usage: /<command>
+    permission: jadedcore.gamerules
   games:
     description: View the games available on the server.
     usage: /<command>
