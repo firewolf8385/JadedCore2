@@ -35,9 +35,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ScoreboardUpdate extends BukkitRunnable {
     @Override
     public void run() {
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        for(final Player player : Bukkit.getOnlinePlayers()) {
             if(ScoreHelper.hasScore(player)) {
-                final CustomScoreboard scoreboard = CustomScoreboard.getPlayers().get(player);
+                final CustomScoreboard scoreboard = CustomScoreboard.getPlayers().get(player.getUniqueId());
 
                 if(scoreboard == null) {
                     continue;
