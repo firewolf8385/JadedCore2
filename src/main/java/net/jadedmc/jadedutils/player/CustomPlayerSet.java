@@ -103,4 +103,20 @@ public class CustomPlayerSet extends HashSet<CustomPlayer> {
     public boolean hasPlayer(@NotNull final Player player) {
         return hasPlayer(player.getUniqueId());
     }
+
+    /**
+     * Remove a guven player from the set from their UUID.
+     * @param playerUUID UUID of the player you want to remove.
+     */
+    public void removePlayer(@NotNull final UUID playerUUID) {
+        this.remove(getPlayer(playerUUID));
+    }
+
+    /**
+     * Remove a given player from the set.
+     * @param player Player to remove.
+     */
+    public void removePlayer(@NotNull final Player player) {
+        removePlayer(player.getUniqueId());
+    }
 }
