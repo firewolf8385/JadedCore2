@@ -99,6 +99,9 @@ commands:
   loadworld:
     description: Loads a world.
     permission: jadedcore.loadworld
+  lobby:
+    description: Go to the lobby.
+    aliases: [leave,l,exit,hub,back]
   loom:
     description: Opens a loom.
     permission: jadedcore.loom
