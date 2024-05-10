@@ -115,6 +115,9 @@ commands:
     description: View a player's profile.
   rank:
     description: Debug command for the rank system.
+  reboot:
+    description: Reboots the server.
+    permission: jadedcore.reboot
   rename:
     description: Rename an item in the player's hand.
     usage: /<command>
