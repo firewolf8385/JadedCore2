@@ -109,6 +109,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- NanoID -->
+        <dependency>
+            <groupId>com.github.JadedMC</groupId>
+            <artifactId>NanoID</artifactId>
+            <version>5c87c0157f</version>
+        </dependency>
+
         <!-- Minecraft Dependencies -->
         <!-- PaperMC -->
         <dependency>
