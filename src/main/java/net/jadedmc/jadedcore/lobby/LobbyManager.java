@@ -156,7 +156,7 @@ public class LobbyManager {
 
         // Scoreboard
         if(plugin.settingsManager().getConfig().getBoolean("Lobby.Scoreboard.Enabled")) {
-            new LobbyScoreboard(plugin, player).addPlayer(player);
+            new LobbyScoreboard(plugin, player).update(player);
         }
 
         // Give items.
