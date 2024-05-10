@@ -70,7 +70,10 @@ public class PlayerQuitListener implements Listener {
         }
 
         event.setQuitMessage(null);
-        ChatUtils.broadcast(player.getWorld(),"&8[&c-&8] &c" + jadedPlayer.getName());
+
+        if(!jadedPlayer.isVanished()) {
+            ChatUtils.broadcast(player.getWorld(),"&8[&c-&8] &c" + jadedPlayer.getName());
+        }
 
         plugin.jadedPlayerManager().removePlayer(player);
 
