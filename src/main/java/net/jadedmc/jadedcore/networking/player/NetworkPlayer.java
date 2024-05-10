@@ -26,11 +26,12 @@ package net.jadedmc.jadedcore.networking.player;
 
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.networking.Instance;
+import net.jadedmc.jadedutils.player.CustomPlayer;
 import org.bson.Document;
 
 import java.util.UUID;
 
-public class NetworkPlayer {
+public class NetworkPlayer implements CustomPlayer {
     private final String name;
     private final UUID uuid;
     private final String skin;
@@ -43,11 +44,22 @@ public class NetworkPlayer {
         this.serverName = document.getString("server");
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * <b>Deprecated. Use getUniqueId()</b>
+     * @return Player's UUID.
+     */
+    @Deprecated
     public UUID getUniqueUID() {
+        return uuid;
+    }
+
+    @Override
+    public UUID getUniqueId() {
         return uuid;
     }
 

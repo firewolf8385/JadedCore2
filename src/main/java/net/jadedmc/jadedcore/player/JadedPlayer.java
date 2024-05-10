@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.player;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.achievements.Achievement;
+import net.jadedmc.jadedutils.player.CustomPlayer;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -37,12 +38,13 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Represents a Player on the server. Stores plugin-specific data about them.
  * Should only be created async.
  */
-public class JadedPlayer {
+public class JadedPlayer implements CustomPlayer {
     private final JadedCorePlugin plugin;
     private final Player player;
     private Rank rank;
@@ -204,6 +206,14 @@ public class JadedPlayer {
      */
     public String getRealName() {
         return player.getName();
+    }
+
+    /**
+     * Get the player's UUID.
+     * @return UUID of the player.
+     */
+    public UUID getUniqueId() {
+        return player.getUniqueId();
     }
 
     /**

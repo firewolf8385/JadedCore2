@@ -22,31 +22,31 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-package net.jadedmc.jadedcore.networking.player;
+package net.jadedmc.jadedutils.player;
+
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.UUID;
 
 /**
- * <b>Deprecated. Use CustomPlayerSet instead.</b>
- * This class represents a Set of NetworkPlayer objects.
- * Contains extra methods for comparing cached information inside the NetworkPlayer objects.
+ * This class represents a Set of CustomPlayer objects.
+ * Contains extra methods for comparing cached information inside the CustomPlayer objects.
  */
-@Deprecated
-public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
+public class CustomPlayerSet extends HashSet<CustomPlayer> {
 
     /**
      * Get a Network player file for a player in the set.
      * @param uuid UUID of the player to get Network player of.
      * @return Associated NetworkPlayer.
      */
-    public NetworkPlayer getPlayer(final UUID uuid) {
-        for(NetworkPlayer networkPlayer : this) {
-            if(networkPlayer.getUniqueUID().equals(uuid)) {
-                return networkPlayer;
+    public CustomPlayer getPlayer(@NotNull final UUID uuid) {
+        for(final CustomPlayer customPlayer : this) {
+            if(customPlayer.getUniqueId().equals(uuid)) {
+                return customPlayer;
             }
         }
-
         return null;
     }
 
@@ -55,10 +55,10 @@ public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
      * @param username Username of the player to get Network player of.
      * @return Associated NetworkPlayer.
      */
-    public NetworkPlayer getPlayer(final String username) {
-        for(NetworkPlayer networkPlayer : this) {
-            if(networkPlayer.getName().equalsIgnoreCase(username)) {
-                return networkPlayer;
+    public CustomPlayer getPlayer(@NotNull final String username) {
+        for(final CustomPlayer customPlayer : this) {
+            if(customPlayer.getName().equalsIgnoreCase(username)) {
+                return customPlayer;
             }
         }
 
@@ -70,9 +70,9 @@ public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
      * @param uuid UUID of the player to check.
      * @return Whether the set has the player.
      */
-    public boolean hasPlayer(final UUID uuid) {
-        for(NetworkPlayer networkPlayer : this) {
-            if(networkPlayer.getUniqueUID().equals(uuid)) {
+    public boolean hasPlayer(@NotNull final UUID uuid) {
+        for(final CustomPlayer customPlayer : this) {
+            if(customPlayer.getUniqueId().equals(uuid)) {
                 return true;
             }
         }
@@ -85,13 +85,22 @@ public class NetworkPlayerSet extends HashSet<NetworkPlayer> {
      * @param username Username of the player to check.
      * @return Whether the set has the player.
      */
-    public boolean hasPlayer(final String username) {
-        for(NetworkPlayer networkPlayer : this) {
-            if(networkPlayer.getName().equalsIgnoreCase(username)) {
+    public boolean hasPlayer(@NotNull final String username) {
+        for(final CustomPlayer customPlayer : this) {
+            if(customPlayer.getName().equalsIgnoreCase(username)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Check if the set contains a given player.
+     * @param player Player to check.
+     * @return Whether the set has that player.
+     */
+    public boolean hasPlayer(@NotNull final Player player) {
+        return hasPlayer(player.getUniqueId());
     }
 }
