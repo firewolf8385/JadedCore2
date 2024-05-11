@@ -24,6 +24,7 @@
  */
 package net.jadedmc.jadedutils.player;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -93,6 +94,35 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      */
     public T getPlayer(@NotNull final CustomPlayer customPlayer) {
         return getPlayer(customPlayer.getUniqueId());
+    }
+
+    /**
+     * Gets all CustomPlayers that are on this instance.
+     * @return Collection of online CustomPlayers.
+     */
+    public CustomPlayerSet<T> getOnlinePlayers() {
+        final CustomPlayerSet<T> onlinePlayers = new CustomPlayerSet<>();
+
+        // Loop through all objects.
+        for(final T object : this) {
+            // If it's not a CustomPlayer, skip it.
+            if(!(object instanceof final CustomPlayer customPlayer)) {
+                continue;
+            }
+
+            // Gets the Bukkit player being represented.
+            final Player player = Bukkit.getPlayer(customPlayer.getUniqueId());
+
+            // Skip them if they are not online.
+            if(player == null | !player.isOnline()) {
+                continue;
+            }
+
+            // Otherwise, add them to the Set.
+            onlinePlayers.add((T) customPlayer);
+        }
+
+        return onlinePlayers;
     }
 
     /**
