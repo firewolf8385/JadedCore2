@@ -34,7 +34,7 @@ import java.util.UUID;
  * This class represents a Set of CustomPlayer objects.
  * Contains extra methods for comparing cached information inside the CustomPlayer objects.
  */
-public class CustomPlayerSet extends HashSet<CustomPlayer> {
+public class CustomPlayerSet<T> extends HashSet<T> {
 
     /**
      * Get a Network player file for a player in the set.
@@ -42,7 +42,11 @@ public class CustomPlayerSet extends HashSet<CustomPlayer> {
      * @return Associated NetworkPlayer.
      */
     public CustomPlayer getPlayer(@NotNull final UUID uuid) {
-        for(final CustomPlayer customPlayer : this) {
+        for(final Object object : this) {
+            if(!(object instanceof final CustomPlayer customPlayer)) {
+                return null;
+            }
+
             if(customPlayer.getUniqueId().equals(uuid)) {
                 return customPlayer;
             }
@@ -56,7 +60,11 @@ public class CustomPlayerSet extends HashSet<CustomPlayer> {
      * @return Associated NetworkPlayer.
      */
     public CustomPlayer getPlayer(@NotNull final String username) {
-        for(final CustomPlayer customPlayer : this) {
+        for(final Object object : this) {
+            if(!(object instanceof final CustomPlayer customPlayer)) {
+                return null;
+            }
+
             if(customPlayer.getName().equalsIgnoreCase(username)) {
                 return customPlayer;
             }
@@ -71,7 +79,11 @@ public class CustomPlayerSet extends HashSet<CustomPlayer> {
      * @return Whether the set has the player.
      */
     public boolean hasPlayer(@NotNull final UUID uuid) {
-        for(final CustomPlayer customPlayer : this) {
+        for(final Object object : this) {
+            if(!(object instanceof final CustomPlayer customPlayer)) {
+                return false;
+            }
+
             if(customPlayer.getUniqueId().equals(uuid)) {
                 return true;
             }
@@ -86,7 +98,11 @@ public class CustomPlayerSet extends HashSet<CustomPlayer> {
      * @return Whether the set has the player.
      */
     public boolean hasPlayer(@NotNull final String username) {
-        for(final CustomPlayer customPlayer : this) {
+        for(final Object object : this) {
+            if(!(object instanceof final CustomPlayer customPlayer)) {
+                return false;
+            }
+
             if(customPlayer.getName().equalsIgnoreCase(username)) {
                 return true;
             }
