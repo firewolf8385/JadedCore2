@@ -137,8 +137,8 @@ public class Party {
      * Gets all party members who are on the current instance.
      * @return All online players.
      */
-    public Collection<PartyPlayer> getOnlinePlayers() {
-        return players.getOnlinePlayers();
+    public Collection<Player> getOnlinePlayers() {
+        return players.asBukkitPlayers();
     }
 
     /**
