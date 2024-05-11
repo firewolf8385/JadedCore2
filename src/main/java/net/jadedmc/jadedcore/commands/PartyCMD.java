@@ -89,7 +89,7 @@ public class PartyCMD extends AbstractCommand {
                 return;
             }
 
-            UUID uuid = onlinePlayers.getPlayer(username).getUniqueUID();
+            UUID uuid = onlinePlayers.getPlayer(username).getUniqueId();
 
             Collection<Party> remoteParties = plugin.partyManager().getRemoteParties();
             boolean inParty = false;
@@ -220,7 +220,7 @@ public class PartyCMD extends AbstractCommand {
                 return;
             }
 
-            UUID targetUUID = onlinePlayers.getPlayer(username).getUniqueUID();
+            UUID targetUUID = onlinePlayers.getPlayer(username).getUniqueId();
 
             PartySet remoteParties = plugin.partyManager().getRemoteParties();
             if(remoteParties.containsPlayer(targetUUID)) {

@@ -49,15 +49,6 @@ public class NetworkPlayer implements CustomPlayer {
         return name;
     }
 
-    /**
-     * <b>Deprecated. Use getUniqueId()</b>
-     * @return Player's UUID.
-     */
-    @Deprecated
-    public UUID getUniqueUID() {
-        return uuid;
-    }
-
     @Override
     public UUID getUniqueId() {
         return uuid;
