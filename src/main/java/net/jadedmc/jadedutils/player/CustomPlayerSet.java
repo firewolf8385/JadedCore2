@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -36,6 +37,35 @@ import java.util.UUID;
  * Contains extra methods for comparing cached information inside the CustomPlayer objects.
  */
 public class CustomPlayerSet<T> extends HashSet<T> {
+
+    /**
+     * Converts all the online CustomPlayers to Bukkit Players.
+     * @return Collection of Bukkit Players.
+     */
+    public Collection<Player> asBukkitPlayers() {
+        final Collection<Player> bukkitPlayers = new HashSet<>();
+
+        // Loop through all objects.
+        for(final T object : this) {
+            // If it's not a CustomPlayer, skip it.
+            if(!(object instanceof final CustomPlayer customPlayer)) {
+                continue;
+            }
+
+            // Gets the Bukkit player being represented.
+            final Player player = Bukkit.getPlayer(customPlayer.getUniqueId());
+
+            // Skip them if they are not online.
+            if(player == null || !player.isOnline()) {
+                continue;
+            }
+
+            // Otherwise, add them to the Set.
+            bukkitPlayers.add(player);
+        }
+
+        return bukkitPlayers;
+    }
 
     /**
      * Get a CustomPlayer object for a player in the set.
@@ -114,7 +144,7 @@ public class CustomPlayerSet<T> extends HashSet<T> {
             final Player player = Bukkit.getPlayer(customPlayer.getUniqueId());
 
             // Skip them if they are not online.
-            if(player == null | !player.isOnline()) {
+            if(player == null || !player.isOnline()) {
                 continue;
             }
 
