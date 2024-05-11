@@ -37,10 +37,12 @@ import net.jadedmc.jadedcore.networking.InstanceMonitor;
 import net.jadedmc.jadedcore.networking.InstanceType;
 import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
 import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
+import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
 
 import java.sql.Connection;
@@ -225,5 +227,9 @@ public class JadedAPI {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.redis().publish("proxy", "connect " + playerUUID.toString() + " " + server);
         });
+    }
+
+    public static Party getParty(@NotNull final UUID playerUUID) {
+        return plugin.partyManager().getLocalPartyFromUUID(playerUUID);
     }
 }
