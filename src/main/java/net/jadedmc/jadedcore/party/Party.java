@@ -140,6 +140,22 @@ public class Party {
     }
 
     /**
+     * Gets all party members who are on the current instance.
+     * @return All online players.
+     */
+    public Collection<PartyPlayer> getOnlinePlayers() {
+        final Collection<PartyPlayer> onlinePlayers = new HashSet<>();
+
+        for(final PartyPlayer player : players) {
+            if(player.isOnline()) {
+                onlinePlayers.add(player);
+            }
+        }
+
+        return onlinePlayers;
+    }
+
+    /**
      * Gets all players currently in the party.
      * @return All current players.
      */

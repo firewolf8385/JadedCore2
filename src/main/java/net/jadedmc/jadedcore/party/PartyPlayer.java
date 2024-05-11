@@ -72,6 +72,11 @@ public class PartyPlayer {
         return username;
     }
 
+    public boolean isOnline() {
+        Player player = Bukkit.getPlayer(uuid);
+        return (player != null && player.isOnline());
+    }
+
     public Document toDocument() {
         return new Document()
                 .append("uuid", uuid.toString())
