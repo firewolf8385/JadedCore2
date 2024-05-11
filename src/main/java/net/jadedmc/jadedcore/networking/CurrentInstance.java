@@ -24,7 +24,6 @@
  */
 package net.jadedmc.jadedcore.networking;
 
-import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.minigames.Minigame;
 import org.bson.Document;

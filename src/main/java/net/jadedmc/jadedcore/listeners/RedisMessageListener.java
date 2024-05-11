@@ -24,7 +24,6 @@
  */
 package net.jadedmc.jadedcore.listeners;
 
-import net.jadedmc.jadedchat.utils.StringUtils;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.events.RedisMessageEvent;
@@ -36,7 +35,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import redis.clients.jedis.Jedis;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 public class RedisMessageListener implements Listener {

@@ -28,7 +28,6 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedcore.player.Rank;
 import net.jadedmc.jadedutils.chat.ChatUtils;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

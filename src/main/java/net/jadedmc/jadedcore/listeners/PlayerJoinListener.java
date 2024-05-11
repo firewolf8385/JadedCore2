@@ -30,15 +30,12 @@ import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.party.PartySet;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
-import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import redis.clients.jedis.Jedis;
 
-import java.util.Set;
 import java.util.UUID;
 
 /**
