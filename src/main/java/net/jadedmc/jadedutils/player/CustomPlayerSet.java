@@ -43,10 +43,12 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      */
     public T getPlayer(@NotNull final UUID uuid) {
         for(final Object object : this) {
+            // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return null;
             }
 
+            // If the UUID matches, return that object.
             if(customPlayer.getUniqueId().equals(uuid)) {
                 return (T) customPlayer;
             }
@@ -55,16 +57,18 @@ public class CustomPlayerSet<T> extends HashSet<T> {
     }
 
     /**
-     * Get a Network player object for a player in the set.
-     * @param username Username of the player to get Network player of.
-     * @return Associated NetworkPlayer.
+     * Get a CustomPlayer object for a player in the set from their username.
+     * @param username Username of the player to get CustomPlayer of.
+     * @return Associated CustomPlayer.
      */
     public T getPlayer(@NotNull final String username) {
         for(final Object object : this) {
+            // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return null;
             }
 
+            // If the username matches, return that object.
             if(customPlayer.getName().equalsIgnoreCase(username)) {
                 return (T) customPlayer;
             }
@@ -74,16 +78,27 @@ public class CustomPlayerSet<T> extends HashSet<T> {
     }
 
     /**
+     * Get a CustomPlayer object of a player in the set.
+     * @param player Player to get CustomPlayer of.
+     * @return Associated CustomPlayer.
+     */
+    public T getPlayer(@NotNull final Player player) {
+        return getPlayer(player.getUniqueId());
+    }
+
+    /**
      * Check if the set contains a player with a given UUID.
      * @param uuid UUID of the player to check.
      * @return Whether the set has the player.
      */
     public boolean hasPlayer(@NotNull final UUID uuid) {
         for(final Object object : this) {
+            // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return false;
             }
 
+            // If the UUID matches, return that object.
             if(customPlayer.getUniqueId().equals(uuid)) {
                 return true;
             }
@@ -99,10 +114,12 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      */
     public boolean hasPlayer(@NotNull final String username) {
         for(final Object object : this) {
+            // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return false;
             }
 
+            // If the username matches, return that object.
             if(customPlayer.getName().equalsIgnoreCase(username)) {
                 return true;
             }
