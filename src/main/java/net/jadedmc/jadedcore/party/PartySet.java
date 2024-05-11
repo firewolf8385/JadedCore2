@@ -24,8 +24,7 @@
  */
 package net.jadedmc.jadedcore.party;
 
-import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
-import net.jadedmc.jadedcore.player.JadedPlayer;
+import net.jadedmc.jadedutils.player.CustomPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -98,23 +97,12 @@ public class PartySet extends HashSet<Party> {
     /**
      * Retrieves a Party containing a given Player.
      * Returns null if a corresponding Party is not found.
-     * @param jadedPlayer Player we are looking for.
+     * @param customPlayer Player we are looking for.
      * @return Party that contains the player.
      */
     @Nullable
-    public Party getFromPlayer(@NotNull final JadedPlayer jadedPlayer) {
-        return getFromPlayer(jadedPlayer.getPlayer());
-    }
-
-    /**
-     * Retrieves a Party containing a given Player.
-     * Returns null if a corresponding Party is not found.
-     * @param networkPlayer Player we are looking for.
-     * @return Party that contains the player.
-     */
-    @Nullable
-    public Party getFromPlayer(@NotNull final NetworkPlayer networkPlayer) {
-        return getFromPlayer(networkPlayer.getUniqueUID());
+    public Party getFromPlayer(@NotNull final CustomPlayer customPlayer) {
+        return getFromPlayer(customPlayer.getUniqueId());
     }
 
     /**
