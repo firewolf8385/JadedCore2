@@ -26,7 +26,7 @@ package net.jadedmc.jadedcore.party;
 
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
-import net.jadedmc.jadedutils.chat.ChatUtils;
+import net.jadedmc.jadedutils.player.CustomPlayerSet;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ import java.util.*;
 public class Party {
     private final JadedCorePlugin plugin;
     private final UUID uuid;
-    private final Collection<PartyPlayer> players = new HashSet<>();
+    private final CustomPlayerSet<PartyPlayer> players = new CustomPlayerSet<>();
     private final Collection<UUID> invites = new HashSet<>();
 
     /**
@@ -48,19 +48,19 @@ public class Party {
      * @param plugin Instance of the plugin.
      * @param document Bson document.
      */
-    public Party(final JadedCorePlugin plugin, final Document document) {
+    public Party(@NotNull final JadedCorePlugin plugin, @NotNull final Document document) {
         this.plugin = plugin;
         this.uuid = UUID.fromString(document.getString("uuid"));
 
         // Load the players from the document.
-        Document playersDocument = document.get("players", Document.class);
-        for(String player : playersDocument.keySet()) {
+        final Document playersDocument = document.get("players", Document.class);
+        for(final String player : playersDocument.keySet()) {
             players.add(new PartyPlayer(playersDocument.get(player, Document.class)));
         }
 
         // Load the pending invites of the party.
-        List<String> inviteUUIDs = document.getList("invites", String.class);
-        for(String uuid : inviteUUIDs) {
+        final List<String> inviteUUIDs = document.getList("invites", String.class);
+        for(final String uuid : inviteUUIDs) {
             this.invites.add(UUID.fromString(uuid));
         }
     }
@@ -70,7 +70,7 @@ public class Party {
      * @param plugin Instance of the plugin.
      * @param leader Leader of the party.
      */
-    public Party(final JadedCorePlugin plugin, Player leader) {
+    public Party(@NotNull final JadedCorePlugin plugin, @NotNull Player leader) {
         this.plugin = plugin;
         this.uuid = UUID.randomUUID();
         addPlayer(leader, PartyRole.LEADER);
@@ -80,7 +80,7 @@ public class Party {
      * Adds an invite to the party.
      * @param playerUUID UUID of the player being invited.
      */
-    public void addInvite(final UUID playerUUID) {
+    public void addInvite(@NotNull final UUID playerUUID) {
         this.invites.add(playerUUID);
     }
 
@@ -89,7 +89,7 @@ public class Party {
      * @param player Player to add to the party.
      * @param role Role the player has.
      */
-    public void addPlayer(Player player, PartyRole role) {
+    public void addPlayer(@NotNull final Player player, final PartyRole role) {
         players.add(new PartyPlayer(player, role));
 
         // Removes any potential pending invites for the player.
@@ -119,14 +119,8 @@ public class Party {
      * @param playerUUID UUID of the player.
      * @return Corresponding PartyPlayer object.
      */
-    public PartyPlayer getPlayer(UUID playerUUID) {
-        for(PartyPlayer partyPlayer : players) {
-            if(partyPlayer.getUniqueID().equals(playerUUID)) {
-                return partyPlayer;
-            }
-        }
-
-        return null;
+    public PartyPlayer getPlayer(@NotNull final UUID playerUUID) {
+        return players.getPlayer(playerUUID);
     }
 
     /**
@@ -135,7 +129,7 @@ public class Party {
      * @return Corresponding PartyPlayer object.
      */
     @Nullable
-    public PartyPlayer getPlayer(final Player player) {
+    public PartyPlayer getPlayer(@NotNull final Player player) {
         return getPlayer(player.getUniqueId());
     }
 
@@ -144,15 +138,7 @@ public class Party {
      * @return All online players.
      */
     public Collection<PartyPlayer> getOnlinePlayers() {
-        final Collection<PartyPlayer> onlinePlayers = new HashSet<>();
-
-        for(final PartyPlayer player : players) {
-            if(player.isOnline()) {
-                onlinePlayers.add(player);
-            }
-        }
-
-        return onlinePlayers;
+        return players.getOnlinePlayers();
     }
 
     /**
@@ -176,31 +162,26 @@ public class Party {
      * @param playerUUID UUID of the player.
      * @return Whether they are in the party.
      */
-    public boolean hasPlayer(UUID playerUUID) {
-        for(PartyPlayer partyPlayer : players) {
-            if(partyPlayer.getUniqueID().equals(playerUUID)) {
-                return true;
-            }
-        }
-
-        return false;
+    public boolean hasPlayer(@NotNull final UUID playerUUID) {
+        return players.hasPlayer(playerUUID);
     }
 
-    public boolean hasUsername(final String username) {
-        for(PartyPlayer partyPlayer : players) {
-            if(partyPlayer.getUsername().equalsIgnoreCase(username)) {
-                return true;
-            }
-        }
-
-        return false;
+    /**
+     * <b>Deprecated. Don't remember why this exists, but it shouldn't. At least, not in this state.</b>
+     * Check if the party contains someone with a given username.
+     * @param username Username to check.
+     * @return Whether they are in the party.
+     */
+    @Deprecated
+    public boolean hasUsername(@NotNull final String username) {
+        return players.hasPlayer(username);
     }
 
     /**
      * Removes an invite from the party.
      * @param playerUUID UUID of the player who was invited.
      */
-    public void removeInvite(final UUID playerUUID) {
+    public void removeInvite(@NotNull final UUID playerUUID) {
         this.invites.remove(playerUUID);
     }
 
@@ -208,20 +189,15 @@ public class Party {
      * Removes a player from the party.
      * @param playerUUID UUID of the player to remove.
      */
-    public void removePlayer(UUID playerUUID) {
-        for(PartyPlayer partyPlayer : players) {
-            if(partyPlayer.getUniqueID().equals(playerUUID)) {
-                players.remove(partyPlayer);
-                return;
-            }
-        }
+    public void removePlayer(@NotNull final UUID playerUUID) {
+        players.removePlayer(playerUUID);
     }
 
     /**
      * Sends a message to all members of the party.
      * @param message Message to be sent.
      */
-    public void sendMessage(final String message) {
+    public void sendMessage(@NotNull final String message) {
         final StringBuilder builder = new StringBuilder();
         players.forEach(partyPlayer -> {
             builder.append(partyPlayer.getUniqueID());
