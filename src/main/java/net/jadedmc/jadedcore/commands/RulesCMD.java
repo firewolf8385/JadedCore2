@@ -26,6 +26,7 @@ package net.jadedmc.jadedcore.commands;
 
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class RulesCMD extends AbstractCommand {
 
@@ -34,7 +35,7 @@ public class RulesCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         ChatUtils.chat(sender, "&a&lRules &8» &aYou can view the server rules at &f<click:open_url:'http://www.jadedmc.net/rules'>http://www.jadedmc.net/rules</click>&a.");
     }
 }

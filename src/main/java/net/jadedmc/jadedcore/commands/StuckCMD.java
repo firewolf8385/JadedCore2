@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Runs the /spawn command, which teleports the player to the server spawn.
@@ -39,7 +40,7 @@ public class StuckCMD extends AbstractCommand {
      * Creates the command with no required permissions.
      * @param plugin Instance of the plugin.
      */
-    public StuckCMD(final JadedCorePlugin plugin) {
+    public StuckCMD(@NotNull final JadedCorePlugin plugin) {
         super("stuck", "", false);
         this.plugin = plugin;
     }
@@ -50,8 +51,8 @@ public class StuckCMD extends AbstractCommand {
      * @param args Arguments of the command.
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         // Makes sure the player can go to spawn.
         if(!plugin.lobbyManager().isEnabled() || !plugin.lobbyManager().isLobbyWorld(player.getWorld())) {

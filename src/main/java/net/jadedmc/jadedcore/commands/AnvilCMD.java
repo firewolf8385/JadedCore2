@@ -26,6 +26,7 @@ package net.jadedmc.jadedcore.commands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the anvil command, which opens a virtual anvil.
@@ -45,7 +46,7 @@ public class AnvilCMD extends AbstractCommand {
      * @param args The arguments of the command.
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         Player player = (Player) sender;
         player.openAnvil(player.getLocation(), true);
     }

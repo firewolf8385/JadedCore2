@@ -28,6 +28,7 @@ import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the feed command, which feeds the player who ran it.
@@ -46,8 +47,8 @@ public class FeedCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         // Checks if the player meant to feed themselves.
         if(args.length == 0) {
@@ -64,7 +65,7 @@ public class FeedCMD extends AbstractCommand {
         }
 
         // Gets the player the sender meant to heal.
-        Player target = Bukkit.getPlayer(args[0]);
+        final Player target = Bukkit.getPlayer(args[0]);
 
         // Makes sure they are online.
         if(target == null) {

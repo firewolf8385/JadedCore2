@@ -26,6 +26,7 @@ package net.jadedmc.jadedcore.commands;
 
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class VoteCMD extends AbstractCommand {
 
@@ -34,7 +35,7 @@ public class VoteCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         ChatUtils.chat(sender, "&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
         ChatUtils.chat(sender, "");
         ChatUtils.chat(sender, ChatUtils.centerText("&a&lVote Links"));

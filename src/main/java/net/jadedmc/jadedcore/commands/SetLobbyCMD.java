@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Runs the /setspawn command, which sets the lobby's spawn.
@@ -39,7 +40,7 @@ public class SetLobbyCMD extends AbstractCommand {
      * Creates the command with the required permission "jadedlobby.setspawn".
      * @param plugin Instance of the plugin.
      */
-    public SetLobbyCMD(final JadedCorePlugin plugin) {
+    public SetLobbyCMD(@NotNull final JadedCorePlugin plugin) {
         super("setlobby", "jadedcore.setlobby", false);
         this.plugin = plugin;
     }
@@ -50,8 +51,8 @@ public class SetLobbyCMD extends AbstractCommand {
      * @param args Arguments of the command.
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
         plugin.lobbyManager().setSpawn(player.getLocation());
         ChatUtils.chat(player, "&aSpawn location has been set!");
     }

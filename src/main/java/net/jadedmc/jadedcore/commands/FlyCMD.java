@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.commands;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the fly command, which allows a player to toggle the ability to fly.
@@ -45,8 +46,8 @@ public class FlyCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         if(player.getAllowFlight()) {
             ChatUtils.chat(player, "&a&lFly &8» &aFlight has been disabled.");

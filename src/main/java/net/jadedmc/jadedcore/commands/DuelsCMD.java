@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.commands;
 import net.jadedmc.jadedcore.guis.DuelsGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class DuelsCMD extends AbstractCommand {
 
@@ -35,8 +36,8 @@ public class DuelsCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
         new DuelsGUI().open(player);
     }
 }

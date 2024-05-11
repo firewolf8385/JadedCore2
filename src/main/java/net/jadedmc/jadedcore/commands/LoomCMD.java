@@ -26,6 +26,7 @@ package net.jadedmc.jadedcore.commands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the loom command, which opens a virtual loom.
@@ -45,8 +46,8 @@ public class LoomCMD extends AbstractCommand {
      * @param args The arguments of the command.
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
         player.openLoom(player.getLocation(), true);
     }
 }

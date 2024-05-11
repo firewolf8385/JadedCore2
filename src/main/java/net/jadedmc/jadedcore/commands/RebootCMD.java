@@ -6,6 +6,7 @@ import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class RebootCMD extends AbstractCommand {
 
@@ -14,7 +15,7 @@ public class RebootCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(final CommandSender sender, String[] args) {
+    public void execute(final @NotNull CommandSender sender, String[] args) {
         JadedAPI.getCurrentInstance().setStatus(InstanceStatus.CLOSED);
 
         for(final Player player : Bukkit.getOnlinePlayers()) {

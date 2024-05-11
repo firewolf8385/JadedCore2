@@ -29,6 +29,7 @@ import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class RankCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
@@ -36,7 +37,7 @@ public class RankCMD extends AbstractCommand {
     /**
      * Creates the /rank, which is a debug command for ranks.
      */
-    public RankCMD(final JadedCorePlugin plugin) {
+    public RankCMD(@NotNull final JadedCorePlugin plugin) {
         super("rank", "jadedcore.rank", false);
         this.plugin = plugin;
     }
@@ -46,9 +47,9 @@ public class RankCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
-        JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
+        final JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
 
         ChatUtils.chat(player, "&aRank: " + jadedPlayer.getRank().getName());
     }

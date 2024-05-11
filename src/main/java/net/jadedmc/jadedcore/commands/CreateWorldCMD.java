@@ -31,6 +31,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateWorldCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
@@ -41,7 +42,7 @@ public class CreateWorldCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         Player player = (Player) sender;
 
         if(args.length != 2) {

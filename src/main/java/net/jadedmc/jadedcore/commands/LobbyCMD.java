@@ -29,6 +29,7 @@ import net.jadedmc.jadedcore.minigames.Minigame;
 import net.jadedmc.jadedcore.networking.InstanceType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class LobbyCMD extends AbstractCommand {
 
@@ -37,7 +38,7 @@ public class LobbyCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         final Player player = (Player) sender;
 
         if(JadedAPI.getCurrentInstance().getType() == InstanceType.GAME) {

@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the rename command, which allows to a player to rename an item.
@@ -48,8 +49,8 @@ public class RenameCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         // Exit if no arguments
         if(args.length == 0) {
@@ -57,10 +58,10 @@ public class RenameCMD extends AbstractCommand {
             return;
         }
 
-        String name = StringUtils.join(args, " ");
+        final String name = StringUtils.join(args, " ");
 
-        ItemStack item = player.getItemInHand();
-        ItemStack renamed = new ItemBuilder(item)
+        final ItemStack item = player.getItemInHand();
+        final ItemStack renamed = new ItemBuilder(item)
                 .setDisplayName(name)
                 .build();
         player.setItemInHand(renamed);

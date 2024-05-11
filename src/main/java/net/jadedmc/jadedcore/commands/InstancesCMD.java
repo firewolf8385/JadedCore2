@@ -24,13 +24,14 @@
  */
 package net.jadedmc.jadedcore.commands;
 
-import com.cryptomorin.xseries.XMaterial;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.networking.Instance;
 import net.jadedmc.jadedutils.gui.CustomGUI;
 import net.jadedmc.jadedutils.items.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class InstancesCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
@@ -41,7 +42,7 @@ public class InstancesCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         Player player = (Player) sender;
         new InstancesGUI(plugin).open(player);
     }
@@ -57,32 +58,32 @@ public class InstancesCMD extends AbstractCommand {
 
                     for(Instance instance : instances) {
                         String color;
-                        XMaterial xMaterial;
+                        Material xMaterial;
 
                         switch (instance.getStatus()) {
                             case UNRESPONSIVE -> {
                                 color = "<dark_gray>";
-                                xMaterial = XMaterial.BLACK_TERRACOTTA;
+                                xMaterial = Material.BLACK_TERRACOTTA;
                             }
 
                             case FULL -> {
                                 color = "<red>";
-                                xMaterial = XMaterial.RED_TERRACOTTA;
+                                xMaterial = Material.RED_TERRACOTTA;
                             }
 
                             case CLOSED -> {
                                 color = "<gold>";
-                                xMaterial = XMaterial.ORANGE_TERRACOTTA;
+                                xMaterial = Material.ORANGE_TERRACOTTA;
                             }
 
                             case MAINTENANCE -> {
                                 color = "<light_purple>";
-                                xMaterial = XMaterial.PURPLE_TERRACOTTA;
+                                xMaterial = Material.PURPLE_TERRACOTTA;
                             }
 
                             default -> {
                                 color = "<green>";
-                                xMaterial = XMaterial.GREEN_TERRACOTTA;
+                                xMaterial = Material.GREEN_TERRACOTTA;
                             }
                         }
 

@@ -26,6 +26,7 @@ package net.jadedmc.jadedcore.commands;
 
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class StoreCMD extends AbstractCommand {
 
@@ -34,7 +35,7 @@ public class StoreCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         ChatUtils.chat(sender, "&a&lStore &8» &aCheck out our store! &f<click:open_url:'https://jadedmc.tebex.io/'>https://jadedmc.tebex.io/</click>");
     }
 }

@@ -26,6 +26,7 @@ package net.jadedmc.jadedcore.commands;
 
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class WebsiteCMD extends AbstractCommand {
 
@@ -34,7 +35,7 @@ public class WebsiteCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         ChatUtils.chat(sender, "&a&lWebsite &8» &aCheck out our website! <click:open_url:'https://www.jadedmc.net'>https://www.jadedmc.net</click>");
     }
 }

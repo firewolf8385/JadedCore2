@@ -29,6 +29,7 @@ import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the commandspy command, which spies on all commands being used.
@@ -51,9 +52,9 @@ public class CommandSpyCMD extends AbstractCommand {
      * @param args The arguments of the command.
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
-        JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
+        final JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
 
         if(jadedPlayer.isSpying()) {
             jadedPlayer.setSpying(false);

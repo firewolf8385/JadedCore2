@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.commands;
 import net.jadedmc.jadedcore.guis.GameRulesGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class GameRulesCMD extends AbstractCommand {
 
@@ -35,7 +36,7 @@ public class GameRulesCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(final CommandSender sender, final String[] args) {
+    public void execute(final @NotNull CommandSender sender, final String[] args) {
         final Player player = (Player) sender;
         new GameRulesGUI(player.getWorld()).open(player);
     }

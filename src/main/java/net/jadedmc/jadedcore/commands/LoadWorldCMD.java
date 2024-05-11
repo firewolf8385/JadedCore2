@@ -30,18 +30,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class LoadWorldCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
 
-    public LoadWorldCMD(final JadedCorePlugin plugin) {
+    public LoadWorldCMD(@NotNull final JadedCorePlugin plugin) {
         super("loadworld", "jadedcore.loadworld", false);
         this.plugin = plugin;
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         // Make sure they are using the command properly.
         if(args.length != 1) {
@@ -49,10 +50,10 @@ public class LoadWorldCMD extends AbstractCommand {
             return;
         }
 
-        String worldName = args[0];
+        final String worldName = args[0];
 
         // Make sure the world isn't already being loaded.
-        for(World world : Bukkit.getWorlds()) {
+        for(final World world : Bukkit.getWorlds()) {
             if(world.getName().equals(worldName)) {
                 player.teleport(world.getSpawnLocation());
                 return;

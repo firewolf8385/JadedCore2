@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.networking.InstanceStatus;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class InstanceCMD extends AbstractCommand {
 
@@ -36,7 +37,7 @@ public class InstanceCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         if(args.length == 0) {
             return;
         }

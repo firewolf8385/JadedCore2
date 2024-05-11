@@ -53,7 +53,7 @@ public class PartyCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         Player player = (Player) sender;
 
         if(args.length == 0) {

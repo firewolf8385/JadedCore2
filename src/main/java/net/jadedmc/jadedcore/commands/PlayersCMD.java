@@ -33,6 +33,7 @@ import net.jadedmc.jadedutils.items.SkullBuilder;
 import net.jadedmc.jadedutils.player.CustomPlayerSet;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayersCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
@@ -43,7 +44,7 @@ public class PlayersCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull CommandSender sender, String[] args) {
         Player player = (Player) sender;
         new PlayersGUI(plugin).open(player);
     }

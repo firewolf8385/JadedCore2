@@ -30,20 +30,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 public class SaveWorldCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
 
-    public SaveWorldCMD(final JadedCorePlugin plugin) {
+    public SaveWorldCMD(@NotNull final JadedCorePlugin plugin) {
         super("saveworld", "jadedcore.saveworld", false);
         this.plugin = plugin;
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         // Make sure the world isn't loaded as a lobby.
         if(plugin.lobbyManager().isLobbyWorld(player.getWorld())) {
@@ -51,16 +52,16 @@ public class SaveWorldCMD extends AbstractCommand {
             return;
         }
 
-        World world = player.getWorld();
+        final World world = player.getWorld();
 
         // Kick all the players out before saving.
-        for(Player inhabitant : world.getPlayers()) {
+        for(final Player inhabitant : world.getPlayers()) {
             plugin.lobbyManager().sendToLobby(inhabitant);
         }
 
         // Get important data before killing the world.
-        File worldFolder = world.getWorldFolder();
-        String name = world.getName();
+        final File worldFolder = world.getWorldFolder();
+        final String name = world.getName();
 
         // Kill the world.
         Bukkit.unloadWorld(world, true);

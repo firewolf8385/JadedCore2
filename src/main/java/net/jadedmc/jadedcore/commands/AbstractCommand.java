@@ -30,6 +30,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public abstract class AbstractCommand implements CommandExecutor {
     private final String permission;
@@ -42,10 +45,10 @@ public abstract class AbstractCommand implements CommandExecutor {
      * @param permission Permission required to use the command.
      * @param canConsoleUse Whether console can use the command.
      */
-    public AbstractCommand(final String commandName, final String permission, final boolean canConsoleUse) {
+    public AbstractCommand(@NotNull final String commandName, @NotNull final String permission, final boolean canConsoleUse) {
         this.permission = permission;
         this.canConsoleUse = canConsoleUse;
-        plugin.getCommand(commandName).setExecutor(this);
+        Objects.requireNonNull(plugin.getCommand(commandName)).setExecutor(this);
     }
 
     /**
@@ -105,7 +108,7 @@ public abstract class AbstractCommand implements CommandExecutor {
      * @param sender The Command Sender.
      * @param args Arguments of the command.
      */
-    public abstract void execute(CommandSender sender, String[] args);
+    public abstract void execute(@NotNull final CommandSender sender, final String[] args);
 
     /**
      * Processes early execution of the plugin.
@@ -116,7 +119,7 @@ public abstract class AbstractCommand implements CommandExecutor {
      * @return Successful Completion.
      */
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command cmd, @NotNull final String label, final String[] args) {
         if(!permission.equals("") && !sender.hasPermission(permission)) {
             ChatUtils.chat(sender, "&cError &8» &cYou do not have access to that command.");
             return true;

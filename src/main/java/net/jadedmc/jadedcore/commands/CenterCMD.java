@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.commands;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CenterCMD extends AbstractCommand {
 
@@ -35,8 +36,8 @@ public class CenterCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         double x = player.getLocation().getBlockX() + 0.5;
         double y = player.getLocation().getY();
@@ -57,7 +58,7 @@ public class CenterCMD extends AbstractCommand {
             yaw = -90;
         }
 
-        Location location = new Location(player.getLocation().getWorld(), x, y, z, yaw, pitch);
+        final Location location = new Location(player.getLocation().getWorld(), x, y, z, yaw, pitch);
         player.teleport(location);
     }
 }

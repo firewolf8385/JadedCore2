@@ -30,6 +30,7 @@ import net.jadedmc.jadedcore.player.Rank;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -44,7 +45,7 @@ public class ListAllCMD extends AbstractCommand {
     /**
      * Creates the /listall command with the permission "jadedcore.listall".
      */
-    public ListAllCMD(final JadedCorePlugin plugin) {
+    public ListAllCMD(@NotNull final JadedCorePlugin plugin) {
         super("listall", "jadedcore.listall", false);
         this.plugin = plugin;
     }
@@ -55,25 +56,25 @@ public class ListAllCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args   The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         // Create a  map to store all the groups.
-        LinkedHashMap<Rank, Set<Player>> groups = new LinkedHashMap<>();
-        for(Rank rank : Rank.values()) {
+        final LinkedHashMap<Rank, Set<Player>> groups = new LinkedHashMap<>();
+        for(final Rank rank : Rank.values()) {
             groups.put(rank, new HashSet<>());
         }
 
         // Add players to their group's player list.
-        for(Player worldPlayer : plugin.getServer().getOnlinePlayers()) {
-            JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
+        for(final Player worldPlayer : plugin.getServer().getOnlinePlayers()) {
+            final JadedPlayer jadedPlayer = plugin.jadedPlayerManager().getPlayer(player);
             groups.get(jadedPlayer.getRank()).add(worldPlayer);
         }
 
         // Creates a string containing all players.
-        StringBuilder list = new StringBuilder();
-        for(Rank rank : groups.keySet()) {
-            for(Player worldPlayer : groups.get(rank)) {
+        final StringBuilder list = new StringBuilder();
+        for(final Rank rank : groups.keySet()) {
+            for(final Player worldPlayer : groups.get(rank)) {
                 list.append(rank.getChatColor()).append(worldPlayer.getName()).append("<white>,");
             }
         }

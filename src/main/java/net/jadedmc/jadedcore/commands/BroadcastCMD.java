@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.commands;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the broadcast command, which allows the server to broadcast a message.
@@ -45,7 +46,7 @@ public class BroadcastCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         if(args.length == 0) {
             ChatUtils.chat(sender, "&c&lUsage &8» &c/bc [message]");
             return;

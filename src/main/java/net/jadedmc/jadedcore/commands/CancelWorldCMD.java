@@ -31,6 +31,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -43,8 +44,8 @@ public class CancelWorldCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
+        final Player player = (Player) sender;
 
         // Make sure the world isn't loaded as a lobby.
         if(plugin.lobbyManager().isLobbyWorld(player.getWorld())) {
@@ -52,15 +53,15 @@ public class CancelWorldCMD extends AbstractCommand {
             return;
         }
 
-        World world = player.getWorld();
+        final World world = player.getWorld();
 
         // Kick all the players out before killing.
-        for(Player inhabitant : world.getPlayers()) {
+        for(final Player inhabitant : world.getPlayers()) {
             plugin.lobbyManager().sendToLobby(inhabitant);
         }
 
         // Gets the world folder before stabbing the world.
-        File worldFolder = world.getWorldFolder();
+        final File worldFolder = world.getWorldFolder();
 
         // Kill the world.
         Bukkit.unloadWorld(world, false);

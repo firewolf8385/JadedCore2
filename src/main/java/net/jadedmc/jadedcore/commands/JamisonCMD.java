@@ -27,6 +27,7 @@ package net.jadedmc.jadedcore.commands;
 import net.jadedmc.jadedcore.guis.JamisonGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class JamisonCMD extends AbstractCommand {
 
@@ -35,7 +36,7 @@ public class JamisonCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         Player player = (Player) sender;
         new JamisonGUI().open(player);
     }

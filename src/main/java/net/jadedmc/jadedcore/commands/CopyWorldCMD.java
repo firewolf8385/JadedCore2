@@ -30,6 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CopyWorldCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
@@ -40,7 +41,7 @@ public class CopyWorldCMD extends AbstractCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         Player player = (Player) sender;
 
         // Make sure they are using the command properly.

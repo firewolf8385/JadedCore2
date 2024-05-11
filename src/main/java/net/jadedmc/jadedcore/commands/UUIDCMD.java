@@ -28,6 +28,7 @@ import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Gets the UUID of a player.
@@ -46,13 +47,13 @@ public class UUIDCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         if(args.length == 0) {
             ChatUtils.chat(sender, "&c&lUsage &8» &cUsage: /uuid [player]");
             return;
         }
 
-        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+        final OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
         ChatUtils.chat(sender, "&aUUID of &f" + target.getName() + " &ais &f" + target.getUniqueId() + "&a.");
     }
 }

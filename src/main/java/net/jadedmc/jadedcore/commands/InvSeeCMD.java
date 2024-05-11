@@ -28,6 +28,7 @@ import net.jadedmc.jadedutils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class runs the /invsee command, which allows someone to view the inventory of another player.
@@ -46,7 +47,7 @@ public class InvSeeCMD extends AbstractCommand {
      * @param sender The player (or console) that sent the command.
      * @param args The arguments of the command.
      */
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         if(args.length == 0) {
             ChatUtils.chat(sender, "&cUsage &8» &c/invsee [player]");
             return;

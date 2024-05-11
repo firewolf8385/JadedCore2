@@ -24,7 +24,6 @@
  */
 package net.jadedmc.jadedcore.commands;
 
-import com.cryptomorin.xseries.XMaterial;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import net.jadedmc.jadedutils.gui.CustomGUI;
@@ -35,6 +34,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,14 +42,13 @@ import java.sql.SQLException;
 
 public class ChatLogCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
-
     public ChatLogCMD(JadedCorePlugin plugin) {
         super("chatlog", "jadedcore.chatlog", false);
         this.plugin = plugin;
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull CommandSender sender, String[] args) {
         // Make sure they're using the command properly.
         if(args.length < 1) {
             ChatUtils.chat(sender, "&c&lUsage &8» &c/chatlog [player]");
@@ -118,8 +117,7 @@ public class ChatLogCMD extends AbstractCommand {
             else {
                 // Loads the filler items.
                 int[] fillers = {0,1,2,3,4,5,6,7,8,45,46,47,49,51,52,53};
-                ItemBuilder builder = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem())
-                        .setDisplayName(" ");
+                ItemBuilder builder = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ");
                 for(int i : fillers) {
                     setItem(i, builder.build());
                 }
