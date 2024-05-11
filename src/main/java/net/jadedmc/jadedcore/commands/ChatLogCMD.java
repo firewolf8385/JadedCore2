@@ -42,13 +42,13 @@ import java.sql.SQLException;
 
 public class ChatLogCMD extends AbstractCommand {
     private final JadedCorePlugin plugin;
-    public ChatLogCMD(JadedCorePlugin plugin) {
+    public ChatLogCMD(@NotNull final JadedCorePlugin plugin) {
         super("chatlog", "jadedcore.chatlog", false);
         this.plugin = plugin;
     }
 
     @Override
-    public void execute(@NotNull CommandSender sender, String[] args) {
+    public void execute(@NotNull final CommandSender sender, final String[] args) {
         // Make sure they're using the command properly.
         if(args.length < 1) {
             ChatUtils.chat(sender, "&c&lUsage &8» &c/chatlog [player]");
@@ -58,13 +58,13 @@ public class ChatLogCMD extends AbstractCommand {
         // Runs MySQL async.
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("SELECT * FROM player_info WHERE username = ?");
+                final PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("SELECT * FROM player_info WHERE username = ?");
                 statement.setString(1, args[0]);
-                ResultSet results = statement.executeQuery();
+                final ResultSet results = statement.executeQuery();
 
                 if(results.next()) {
-                    String target = results.getString(2);
-                    String uuid = results.getString(1);
+                    final String target = results.getString(2);
+                    final String uuid = results.getString(1);
 
                     Bukkit.getScheduler().runTask(plugin, () -> {
                         new ChatLogGUI(target, uuid, 1).open((Player) sender);
@@ -74,7 +74,7 @@ public class ChatLogCMD extends AbstractCommand {
                     ChatUtils.chat(sender, "&cError &8» &cThat player has not played.");
                 }
             }
-            catch (SQLException exception) {
+            catch (final SQLException exception) {
                 exception.printStackTrace();
             }
         });
@@ -84,90 +84,56 @@ public class ChatLogCMD extends AbstractCommand {
         public ChatLogGUI(String target, String uuid, int page) {
             super(54, "Chat Log - " + target);
 
-            String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-            int subVersion = Integer.parseInt(version.replace("1_", "").replaceAll("_R\\d", "").replace("v", ""));
+            addFiller(0,1,2,3,4,5,6,7,8,45,46,47,49,51,52,53);
 
-            if(subVersion >= 13) {
-                int[] fillers = {0,1,2,3,4,5,6,7,8,45,46,47,49,51,52,53};
-                for(int i : fillers) {
-                    setItem(i, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ").build());
-                }
-
-                if(page == 1) {
-                    ItemStack previous = new SkullBuilder("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjg0ZjU5NzEzMWJiZTI1ZGMwNThhZjg4OGNiMjk4MzFmNzk1OTliYzY3Yzk1YzgwMjkyNWNlNGFmYmEzMzJmYyJ9fX0=")
-                            .asItemBuilder()
-                            .setDisplayName("&cPrevious Page")
-                            .build();
-                    setItem(48, previous);
-                }
-                else {
-                    ItemStack previous = new SkullBuilder("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzU0YWFhYjM5NzY0NjQxZmY4NjI3OTMyZDJmZTFhNGNjY2VkOTY1Mzc1MDhkNGFiYzZjZDVmYmJiODc5MTMifX19")
-                            .asItemBuilder()
-                            .setDisplayName("&aPrevious Page")
-                            .build();
-                    setItem(48, previous, (p,a) -> new ChatLogGUI(target, uuid, page-1).open(p));
-                }
-
-                ItemStack next = new SkullBuilder("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTYzMzlmZjJlNTM0MmJhMThiZGM0OGE5OWNjYTY1ZDEyM2NlNzgxZDg3ODI3MmY5ZDk2NGVhZDNiOGFkMzcwIn19fQ==")
+            if(page == 1) {
+                final ItemStack previous = new SkullBuilder("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjg0ZjU5NzEzMWJiZTI1ZGMwNThhZjg4OGNiMjk4MzFmNzk1OTliYzY3Yzk1YzgwMjkyNWNlNGFmYmEzMzJmYyJ9fX0=")
                         .asItemBuilder()
-                        .setDisplayName("&aNext Page")
+                        .setDisplayName("&cPrevious Page")
                         .build();
-                setItem(50, next, (p,a) -> new ChatLogGUI(target, uuid, page+1).open(p));
+                setItem(48, previous);
             }
             else {
-                // Loads the filler items.
-                int[] fillers = {0,1,2,3,4,5,6,7,8,45,46,47,49,51,52,53};
-                ItemBuilder builder = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName(" ");
-                for(int i : fillers) {
-                    setItem(i, builder.build());
-                }
-
-                if(page == 1) {
-                    ItemStack previous = new ItemBuilder(Material.ARROW)
-                            .setDisplayName("&cPrevious Page")
-                            .build();
-                    setItem(48, previous);
-                }
-                else {
-                    ItemStack previous = new ItemBuilder(Material.ARROW)
-                            .setDisplayName("&aPrevious Page")
-                            .build();
-                    setItem(48, previous, (p,a) -> new ChatLogGUI(target, uuid, page-1).open(p));
-                }
-
-                ItemStack next = new ItemBuilder(Material.ARROW)
-                        .setDisplayName("&aNext Page")
+                final ItemStack previous = new SkullBuilder("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzU0YWFhYjM5NzY0NjQxZmY4NjI3OTMyZDJmZTFhNGNjY2VkOTY1Mzc1MDhkNGFiYzZjZDVmYmJiODc5MTMifX19")
+                        .asItemBuilder()
+                        .setDisplayName("&aPrevious Page")
                         .build();
-                setItem(50, next, (p,a) -> new ChatLogGUI(target, uuid, page+1).open(p));
+                setItem(48, previous, (p,a) -> new ChatLogGUI(target, uuid, page-1).open(p));
             }
+
+            final ItemStack next = new SkullBuilder("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTYzMzlmZjJlNTM0MmJhMThiZGM0OGE5OWNjYTY1ZDEyM2NlNzgxZDg3ODI3MmY5ZDk2NGVhZDNiOGFkMzcwIn19fQ==")
+                    .asItemBuilder()
+                    .setDisplayName("&aNext Page")
+                    .build();
+            setItem(50, next, (p,a) -> new ChatLogGUI(target, uuid, page+1).open(p));
 
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 try {
-                    PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("SELECT * FROM chat_logs WHERE uuid = ? ORDER BY time DESC LIMIT ?, 36");
+                    final PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("SELECT * FROM chat_logs WHERE uuid = ? ORDER BY time DESC LIMIT ?, 36");
                     statement.setString(1, uuid);
                     statement.setInt(2, (page-1) * 36);
-                    ResultSet results = statement.executeQuery();
+                    final ResultSet results = statement.executeQuery();
 
                     int slot = 9;
                     while(results.next()) {
-                        int id = results.getInt(1);
-                        String server = results.getString(2);
-                        String channel = results.getString(3);
-                        String message = results.getString(6);
-                        String time = results.getString(7);
+                        final int id = results.getInt(1);
+                        final String server = results.getString(2);
+                        final String channel = results.getString(3);
+                        final String message = results.getString(6);
+                        final String time = results.getString(7);
 
                         addMessage(slot, id, time, server, channel, message);
                         slot++;
                     }
                 }
-                catch (SQLException exception) {
+                catch (final SQLException exception) {
                     exception.printStackTrace();
                 }
             });
         }
 
         public void addMessage(int slot, int id, String time, String server, String channel, String message) {
-            ItemBuilder builder = new ItemBuilder(Material.PAPER)
+            final ItemBuilder builder = new ItemBuilder(Material.PAPER)
                     .setDisplayName("&a#" + id)
                     .addLore("&aServer: &f" + server)
                     .addLore("&aChannel: &f" + channel)
