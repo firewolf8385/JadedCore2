@@ -114,6 +114,7 @@
             <groupId>com.github.JadedMC</groupId>
             <artifactId>NanoID</artifactId>
             <version>5c87c0157f</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Minecraft Dependencies -->
