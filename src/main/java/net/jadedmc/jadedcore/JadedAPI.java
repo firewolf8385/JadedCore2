@@ -36,9 +36,9 @@ import net.jadedmc.jadedcore.networking.Instance;
 import net.jadedmc.jadedcore.networking.InstanceMonitor;
 import net.jadedmc.jadedcore.networking.InstanceType;
 import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
-import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
 import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.player.JadedPlayer;
+import net.jadedmc.jadedutils.player.CustomPlayerSet;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -165,15 +165,15 @@ public class JadedAPI {
         return plugin.instanceMonitor().getInstance(serverName);
     }
 
-    public static NetworkPlayerSet getPlayers() {
-        NetworkPlayerSet players = new NetworkPlayerSet();
+    public static CustomPlayerSet<NetworkPlayer> getPlayers() {
+        final CustomPlayerSet<NetworkPlayer> players = new CustomPlayerSet<>();
 
         try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
-            Set<String> names = jedis.keys("jadedplayers:*");
+            final Set<String> names = jedis.keys("jadedplayers:*");
 
-            for(String key : names) {
-                String json = jedis.get(key);
-                Document document = Document.parse(json);
+            for(final String key : names) {
+                final String json = jedis.get(key);
+                final Document document = Document.parse(json);
 
                 players.add(new NetworkPlayer(document));
             }
@@ -182,11 +182,11 @@ public class JadedAPI {
         return players;
     }
 
-    public static NetworkPlayerSet getPlayers(Minigame... games) {
-        NetworkPlayerSet players = new NetworkPlayerSet();
+    public static CustomPlayerSet<NetworkPlayer> getPlayers(Minigame... games) {
+        final CustomPlayerSet<NetworkPlayer> players = new CustomPlayerSet<>();
 
         try(Jedis jedis = plugin.redis().jedisPool().getResource()) {
-            Set<String> names = jedis.keys("jadedplayers:*");
+            final Set<String> names = jedis.keys("jadedplayers:*");
 
             for(String key : names) {
                 String json = jedis.get(key);

@@ -27,10 +27,10 @@ package net.jadedmc.jadedcore.commands;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
-import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
 import net.jadedmc.jadedutils.gui.CustomGUI;
 import net.jadedmc.jadedutils.items.ItemBuilder;
 import net.jadedmc.jadedutils.items.SkullBuilder;
+import net.jadedmc.jadedutils.player.CustomPlayerSet;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -54,7 +54,7 @@ public class PlayersCMD extends AbstractCommand {
             super(54, "Online Players");
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                NetworkPlayerSet players = JadedAPI.getPlayers();
+                final CustomPlayerSet<NetworkPlayer> players = JadedAPI.getPlayers();
 
                 plugin.getServer().getScheduler().runTask(plugin, () -> {
                     int slot = 0;

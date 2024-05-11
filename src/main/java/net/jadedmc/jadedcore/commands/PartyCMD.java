@@ -27,13 +27,14 @@ package net.jadedmc.jadedcore.commands;
 import net.jadedmc.jadedchat.utils.StringUtils;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
-import net.jadedmc.jadedcore.networking.player.NetworkPlayerSet;
+import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
 import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.party.PartyPlayer;
 import net.jadedmc.jadedcore.party.PartyRole;
 import net.jadedmc.jadedcore.party.PartySet;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.chat.ChatUtils;
+import net.jadedmc.jadedutils.player.CustomPlayerSet;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -80,7 +81,7 @@ public class PartyCMD extends AbstractCommand {
         }
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            NetworkPlayerSet onlinePlayers = JadedAPI.getPlayers();
+            final CustomPlayerSet<NetworkPlayer> onlinePlayers = JadedAPI.getPlayers();
             String username = args[1];
 
             if(!onlinePlayers.hasPlayer(username)) {
@@ -211,7 +212,7 @@ public class PartyCMD extends AbstractCommand {
         }
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            NetworkPlayerSet onlinePlayers = JadedAPI.getPlayers();
+            final CustomPlayerSet<NetworkPlayer> onlinePlayers = JadedAPI.getPlayers();
             String username = args[1];
 
             if(!onlinePlayers.hasPlayer(username)) {
