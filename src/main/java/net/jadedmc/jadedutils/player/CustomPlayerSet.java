@@ -37,9 +37,9 @@ import java.util.UUID;
 public class CustomPlayerSet<T> extends HashSet<T> {
 
     /**
-     * Get a Network player file for a player in the set.
-     * @param uuid UUID of the player to get Network player of.
-     * @return Associated NetworkPlayer.
+     * Get a CustomPlayer object for a player in the set.
+     * @param uuid UUID of the player to get CustomPlayer of.
+     * @return Associated CustomPlayer.
      */
     public T getPlayer(@NotNull final UUID uuid) {
         for(final Object object : this) {
@@ -84,6 +84,15 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      */
     public T getPlayer(@NotNull final Player player) {
         return getPlayer(player.getUniqueId());
+    }
+
+    /**
+     * Get a CustomPlayer object of a player in the set.
+     * @param customPlayer Player to get CustomPlayer of.
+     * @return Associated CustomPlayer.
+     */
+    public T getPlayer(@NotNull final CustomPlayer customPlayer) {
+        return getPlayer(customPlayer.getUniqueId());
     }
 
     /**
@@ -138,7 +147,16 @@ public class CustomPlayerSet<T> extends HashSet<T> {
     }
 
     /**
-     * Remove a guven player from the set from their UUID.
+     * Check if the set contains a given player, via one of their CustomPlayer objects.
+     * @param customPlayer Player to check.
+     * @return Whether the set has that player.
+     */
+    public boolean hasPlayer(@NotNull final CustomPlayer customPlayer) {
+        return hasPlayer(customPlayer.getUniqueId());
+    }
+
+    /**
+     * Remove a given player from the set from their UUID.
      * @param playerUUID UUID of the player you want to remove.
      */
     public void removePlayer(@NotNull final UUID playerUUID) {
@@ -151,5 +169,13 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      */
     public void removePlayer(@NotNull final Player player) {
         removePlayer(player.getUniqueId());
+    }
+
+    /**
+     * Remove a given player from the set, from a representative CustomPlayer object.
+     * @param customPlayer Player to remove.
+     */
+    public void removePlayer(@NotNull final CustomPlayer customPlayer) {
+        removePlayer(customPlayer.getUniqueId());
     }
 }
