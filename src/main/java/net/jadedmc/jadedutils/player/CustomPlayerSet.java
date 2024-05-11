@@ -41,14 +41,14 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      * @param uuid UUID of the player to get Network player of.
      * @return Associated NetworkPlayer.
      */
-    public CustomPlayer getPlayer(@NotNull final UUID uuid) {
+    public T getPlayer(@NotNull final UUID uuid) {
         for(final Object object : this) {
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return null;
             }
 
             if(customPlayer.getUniqueId().equals(uuid)) {
-                return customPlayer;
+                return (T) customPlayer;
             }
         }
         return null;
@@ -59,14 +59,14 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      * @param username Username of the player to get Network player of.
      * @return Associated NetworkPlayer.
      */
-    public CustomPlayer getPlayer(@NotNull final String username) {
+    public T getPlayer(@NotNull final String username) {
         for(final Object object : this) {
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return null;
             }
 
             if(customPlayer.getName().equalsIgnoreCase(username)) {
-                return customPlayer;
+                return (T) customPlayer;
             }
         }
 
