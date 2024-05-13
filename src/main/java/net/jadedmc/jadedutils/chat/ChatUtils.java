@@ -33,7 +33,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -112,6 +114,23 @@ public class ChatUtils {
      */
     public static void chat(CommandSender commandSender, String message) {
         commandSender.sendMessage(translate(message));
+    }
+
+    /**
+     * Send a MiniMessage message to a given player, from their UUID.
+     * @param playerUUID Player to send message to.
+     * @param message Message to send.
+     */
+    public static void chat(@NotNull final UUID playerUUID, @NotNull final String message) {
+        final Player player = Bukkit.getPlayer(playerUUID);
+
+        // Make sure the player is online.
+        if(player == null) {
+            return;
+        }
+
+        // Send the message.
+        chat(player, message);
     }
 
     /**
