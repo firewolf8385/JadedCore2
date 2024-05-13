@@ -35,6 +35,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -131,6 +132,15 @@ public class ChatUtils {
 
         // Send the message.
         chat(player, message);
+    }
+
+    /**
+     * Send a MiniMessage message to a group of players, based of their ids.
+     * @param playerUUIDs UUIDs of players to send messages to.
+     * @param message Message to send.
+     */
+    public static void chat(@NotNull final Collection<UUID> playerUUIDs, @NotNull final String message) {
+        playerUUIDs.forEach(uuid -> chat(uuid, message));
     }
 
     /**
