@@ -35,7 +35,9 @@ import java.util.UUID;
 /**
  * This class represents a Set of CustomPlayer objects.
  * Contains extra methods for comparing cached information inside the CustomPlayer objects.
+ * <b>Deprecated in favor of PluginPlayer, PlayerSet, and PlayerMap</b>
  */
+@Deprecated
 public class CustomPlayerSet<T> extends HashSet<T> {
 
     /**

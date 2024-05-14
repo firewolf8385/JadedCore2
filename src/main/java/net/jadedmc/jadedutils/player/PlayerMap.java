@@ -16,7 +16,7 @@
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
  *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -24,24 +24,43 @@
  */
 package net.jadedmc.jadedutils.player;
 
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * Represents a wrapped for the Player class, allowing us to cache our own information.
- * <b>Deprecated in favor of the upcoming PluginPlayer</b>
- */
-@Deprecated
-public interface CustomPlayer {
+public class PlayerMap<V> extends HashMap<UUID, V> {
 
-    /**
-     * Gets the UUID of the player being represented.
-     * @return Represented Player's UUID.
-     */
-    public UUID getUniqueId();
+    public void add(@NotNull final Player player) {
+        this.put(player.getUniqueId(), (V) player);
+    }
 
-    /**
-     * Gets the username of the player being represented.
-     * @return Represented Player's username.
-     */
-    public String getName();
+    public void add(@NotNull final PluginPlayer pluginPlayer) {
+        this.put(pluginPlayer.getUniqueId(), (V) pluginPlayer);
+    }
+
+    public boolean contains(@NotNull final Player player) {
+        return this.containsKey(player.getUniqueId());
+    }
+
+    public boolean contains(@NotNull final PluginPlayer pluginPlayer) {
+        return this.containsKey(pluginPlayer.getUniqueId());
+    }
+
+    public void put(@NotNull final Player player) {
+        add(player);
+    }
+
+    public void put(@NotNull final PluginPlayer pluginPlayer) {
+        add(pluginPlayer);
+    }
+
+    public void remove(@NotNull final Player player) {
+        this.remove(player.getUniqueId());
+    }
+
+    public void remove(@NotNull final PluginPlayer pluginPlayer) {
+        this.remove(pluginPlayer.getUniqueId());
+    }
 }
