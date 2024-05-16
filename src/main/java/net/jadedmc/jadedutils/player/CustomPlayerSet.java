@@ -75,7 +75,7 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      * @return Associated CustomPlayer.
      */
     public T getPlayer(@NotNull final UUID uuid) {
-        for(final Object object : this) {
+        for(final T object : this) {
             // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return null;
@@ -95,7 +95,7 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      * @return Associated CustomPlayer.
      */
     public T getPlayer(@NotNull final String username) {
-        for(final Object object : this) {
+        for(final T object : this) {
             // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return null;
@@ -163,7 +163,7 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      * @return Whether the set has the player.
      */
     public boolean hasPlayer(@NotNull final UUID uuid) {
-        for(final Object object : this) {
+        for(final T object : this) {
             // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return false;
@@ -184,7 +184,7 @@ public class CustomPlayerSet<T> extends HashSet<T> {
      * @return Whether the set has the player.
      */
     public boolean hasPlayer(@NotNull final String username) {
-        for(final Object object : this) {
+        for(final T object : this) {
             // Make sure the object is a custom player.
             if(!(object instanceof final CustomPlayer customPlayer)) {
                 return false;

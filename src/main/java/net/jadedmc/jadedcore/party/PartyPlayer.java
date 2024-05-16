@@ -26,13 +26,14 @@ package net.jadedmc.jadedcore.party;
 
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.player.Rank;
+import net.jadedmc.jadedutils.player.CustomPlayer;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class PartyPlayer {
+public class PartyPlayer implements CustomPlayer {
     private final UUID uuid;
     private final String username;
     private PartyRole role;
@@ -83,5 +84,15 @@ public class PartyPlayer {
                 .append("username", username)
                 .append("role", role.toString())
                 .append("rank", rank.toString());
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return getUniqueID();
+    }
+
+    @Override
+    public String getName() {
+        return getUsername();
     }
 }

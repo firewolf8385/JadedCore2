@@ -191,14 +191,14 @@ public class PartyCMD extends AbstractCommand {
     }
 
     private void inviteCMD(final Player player, String[] args) {
-        if(plugin.partyManager().getLocalPartyFromPlayer(player) == null) {
+        final Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
+
+        if(party == null) {
             //ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create.");
             // Creates the party.
             plugin.partyManager().createLocalParty(player).update();
             ChatUtils.chat(player, "<green><bold>Party</bold> <dark_gray>» <green>Party as been created.");
         }
-
-        final Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
 
         PartyPlayer partyPlayer = party.getPlayer(player.getUniqueId());
         if(partyPlayer.getRole() == PartyRole.MEMBER) {
@@ -281,6 +281,7 @@ public class PartyCMD extends AbstractCommand {
         final Party party = plugin.partyManager().getLocalPartyFromPlayer(player);
         if(party == null) {
             ChatUtils.chat(player, "<red><bold>Error</bold> <dark_gray>» <red>You are not in a party! Create one with /p create.");
+            System.out.println("No party found. Local Party Size: " + plugin.partyManager().getLocalParties().size());
             return;
         }
 
