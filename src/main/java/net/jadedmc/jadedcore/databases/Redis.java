@@ -53,8 +53,10 @@ public class Redis {
 
         String host = plugin.settingsManager().getConfig().getString("Redis.host");
         int port = plugin.settingsManager().getConfig().getInt("Redis.port");
+        String username = plugin.settingsManager().getConfig().getString("Redis.username");
+        String password = plugin.settingsManager().getConfig().getString("Redis.password");
 
-        jedisPool = new JedisPool(jedisPoolConfig, host, port);
+        jedisPool = new JedisPool(jedisPoolConfig, host, port, username, password);
 
         subscribe();
     }
