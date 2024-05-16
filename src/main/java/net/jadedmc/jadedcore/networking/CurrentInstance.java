@@ -29,6 +29,11 @@ import net.jadedmc.jadedcore.minigames.Minigame;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 /**
  * Stores information from the current server instance, as obtained through Redis.
  */
@@ -41,6 +46,7 @@ public class CurrentInstance {
     private final InstanceType instanceType;
     private final int majorVersion;
     private final int minorVersion;
+    private String address;
 
     /**
      * Creates the CurrentInstance object.
@@ -66,6 +72,15 @@ public class CurrentInstance {
         else {
             this.instanceType = InstanceType.GAME;
         }
+
+        // Get the IP address of the machine it's being run on.
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            this.address = socket.getLocalAddress().getHostAddress();
+        }
+        catch (UnknownHostException | SocketException e) {
+            this.address = "0.0.0.0";
+        }
     }
 
     /**
@@ -73,8 +88,7 @@ public class CurrentInstance {
      * @return Instance address.
      */
     public String getAddress() {
-        // TODO: Get proper address.
-        return "127.0.0.1";
+        return this.address;
     }
 
     /**
