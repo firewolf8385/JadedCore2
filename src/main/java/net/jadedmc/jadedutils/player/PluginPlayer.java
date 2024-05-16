@@ -30,6 +30,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -165,5 +166,22 @@ public abstract class PluginPlayer {
 
         // Display the title.
         Audience.audience(player).showTitle(title);
+    }
+
+    /**
+     * Change the player's GameMode.
+     * Does nothing if they are offline.
+     * @param gameMode GameMode of the player.
+     */
+    public void setGameMode(final GameMode gameMode) {
+        final Player player = this.getBukkitPlayer();
+
+        // Exit if the player isn't online.
+        if(player == null) {
+            return;
+        }
+
+        // Update their game mode.
+        player.setGameMode(gameMode);
     }
 }
