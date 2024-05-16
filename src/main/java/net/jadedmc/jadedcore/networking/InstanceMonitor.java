@@ -51,6 +51,9 @@ public class InstanceMonitor {
         // Heartbeat the current instance every 5 seconds.
         plugin.getServer().getScheduler().runTaskTimer(plugin, currentInstance::heartbeat, 0, 5*20);
 
+        // Tell the proxies to register the server.
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> plugin.redis().publishAsync("proxy", "register " + this.currentInstance.getName()), 20);
+
         // Update player counts every 30 seconds.
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             getInstancesAsync().thenAccept(instances -> {
