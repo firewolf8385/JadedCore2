@@ -24,14 +24,10 @@
  */
 package net.jadedmc.jadedutils.player;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerMap<V> extends HashMap<UUID, V> {
 
@@ -41,6 +37,35 @@ public class PlayerMap<V> extends HashMap<UUID, V> {
 
     public void add(@NotNull final PluginPlayer pluginPlayer) {
         this.put(pluginPlayer.getUniqueId(), (V) pluginPlayer);
+    }
+
+    /**
+     * Converts all the online PluginPlayers to Bukkit Players.
+     * @return Collection of Bukkit Players.
+     */
+    public Collection<Player> asBukkitPlayers() {
+        final Collection<Player> bukkitPlayers = new HashSet<>();
+
+        // Loop through all objects.
+        for(final V object : this.values()) {
+            // If it's not a CustomPlayer, skip it.
+            if(!(object instanceof final PluginPlayer pluginPlayer)) {
+                continue;
+            }
+
+            // Gets the Bukkit player being represented.
+            final Player player = pluginPlayer.getBukkitPlayer();
+
+            // Skip them if they are not online.
+            if(player == null || !player.isOnline()) {
+                continue;
+            }
+
+            // Otherwise, add them to the Set.
+            bukkitPlayers.add(player);
+        }
+
+        return bukkitPlayers;
     }
 
     public boolean contains(@NotNull final Player player) {
