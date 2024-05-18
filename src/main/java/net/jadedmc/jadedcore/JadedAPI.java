@@ -232,4 +232,8 @@ public class JadedAPI {
     public static Party getParty(@NotNull final UUID playerUUID) {
         return plugin.partyManager().getLocalPartyFromUUID(playerUUID);
     }
+
+    public static Party getParty(@NotNull final Player player) {
+        return plugin.partyManager().getLocalParties().getFromPlayer(player);
+    }
 }
