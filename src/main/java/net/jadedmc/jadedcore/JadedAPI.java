@@ -165,6 +165,7 @@ public class JadedAPI {
         return plugin.instanceMonitor().getInstance(serverName);
     }
 
+    @Deprecated
     public static CustomPlayerSet<NetworkPlayer> getPlayers() {
         final CustomPlayerSet<NetworkPlayer> players = new CustomPlayerSet<>();
 
@@ -182,6 +183,7 @@ public class JadedAPI {
         return players;
     }
 
+    @Deprecated
     public static CustomPlayerSet<NetworkPlayer> getPlayers(Minigame... games) {
         final CustomPlayerSet<NetworkPlayer> players = new CustomPlayerSet<>();
 
