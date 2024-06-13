@@ -140,7 +140,19 @@ public class InstanceMonitor {
      * @return Player count of the Minigame.
      */
     public int getPlayerCount(Minigame minigame) {
-        return playerCounts.get(minigame);
+        switch (minigame) {
+            case DUELS -> {
+                return playerCounts.get(Minigame.DUELS_MODERN) + playerCounts.get(Minigame.DUELS_LEGACY);
+            }
+
+            case TOURNAMENTS -> {
+                return playerCounts.get(Minigame.TOURNAMENTS_MODERN) + playerCounts.get(Minigame.TOURNAMENTS_LEGACY);
+            }
+
+            default -> {
+                return playerCounts.get(minigame);
+            }
+        }
     }
 
     /**

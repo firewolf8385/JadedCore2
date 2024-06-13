@@ -24,6 +24,7 @@
  */
 package net.jadedmc.jadedutils.player;
 
+import com.viaversion.viaversion.api.Via;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedutils.chat.ChatUtils;
 import net.kyori.adventure.audience.Audience;
@@ -75,6 +76,26 @@ public abstract class PluginPlayer {
     @NotNull
     public String getName() {
         return this.playerName;
+    }
+
+    /**
+     * Get the player's protocol version. Requires ViaVersion.
+     * @return Returns the player's protocol version, or 0 if ViaVersion is disabled or not online.
+     */
+    public int getProtocolVersion() {
+        // Exit if ViaVersion is not enabled.
+        if(!JadedAPI.getHookManager().useViaVersion()) {
+            return 0;
+        }
+
+        final Player player = this.getBukkitPlayer();
+
+        // If the player is not online, ignore them.
+        if(player == null) {
+            return 0;
+        }
+
+        return Via.getAPI().getPlayerVersion(this.playerUUID);
     }
 
     /**

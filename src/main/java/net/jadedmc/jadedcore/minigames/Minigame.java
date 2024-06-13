@@ -38,5 +38,7 @@ public enum Minigame {
     DUELS_MODERN,
     TOURNAMENTS_LEGACY,
     TOURNAMENTS_MODERN,
-    TURF_WARS;
+    TURF_WARS,
+    DUELS,
+    TOURNAMENTS;
 }

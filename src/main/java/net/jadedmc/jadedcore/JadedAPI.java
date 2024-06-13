@@ -30,6 +30,7 @@ import com.google.common.io.ByteStreams;
 import net.jadedmc.jadedcore.databases.MongoDB;
 import net.jadedmc.jadedcore.databases.MySQL;
 import net.jadedmc.jadedcore.databases.Redis;
+import net.jadedmc.jadedcore.hooks.HookManager;
 import net.jadedmc.jadedcore.minigames.Minigame;
 import net.jadedmc.jadedcore.networking.CurrentInstance;
 import net.jadedmc.jadedcore.networking.Instance;
@@ -237,5 +238,9 @@ public class JadedAPI {
 
     public static Party getParty(@NotNull final Player player) {
         return plugin.partyManager().getLocalParties().getFromPlayer(player);
+    }
+
+    public static HookManager getHookManager() {
+        return plugin.hookManager();
     }
 }

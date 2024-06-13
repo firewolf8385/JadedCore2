@@ -24,8 +24,10 @@
  */
 package net.jadedmc.jadedcore.guis;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.jadedmc.jadedcore.JadedAPI;
 import net.jadedmc.jadedcore.minigames.Minigame;
+import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.gui.CustomGUI;
 import net.jadedmc.jadedutils.items.ItemBuilder;
 import org.bukkit.Material;
@@ -59,11 +61,28 @@ public class GamesGUI extends CustomGUI {
                 .addLore("<gray>with a variety of kits!")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.DUELS_MODERN) + " others playing!")
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.DUELS) + " others playing!")
                 .setUnbreakable(true)
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addFlag(ItemFlag.HIDE_UNBREAKABLE);
-        setItem(22, duels.build(), (p,a) -> JadedAPI.sendToLobby(p, Minigame.DUELS_MODERN));
+        setItem(22, duels.build(), (p, a) -> {
+            final JadedPlayer jadedPlayer = JadedAPI.getJadedPlayer(p);
+            final int protocol = jadedPlayer.getProtocolVersion();
+            final Minigame minigame;
+
+
+            if(protocol == 0) {
+                minigame = Minigame.DUELS_MODERN;
+            }
+            else if(protocol > ProtocolVersion.v1_9.getVersion()) {
+                minigame = Minigame.DUELS_MODERN;
+            }
+            else {
+                minigame = Minigame.DUELS_LEGACY;
+            }
+
+            JadedAPI.sendToLobby(p, minigame);
+        });
 
         ItemBuilder elytraPvP = new ItemBuilder(Material.ELYTRA)
                 .setDisplayName("<green><bold>ElytraPvP")
@@ -103,10 +122,27 @@ public class GamesGUI extends CustomGUI {
                 .setDisplayName("<green><bold>Tournament Lobby")
                 .addLore("")
                 .addLore("<green>▸ Click to Connect")
-                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.TOURNAMENTS_MODERN) + " others playing!")
+                .addLore("<gray>Join " + JadedAPI.getInstanceMonitor().getPlayerCount(Minigame.TOURNAMENTS) + " others playing!")
                 .setUnbreakable(true)
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addFlag(ItemFlag.HIDE_UNBREAKABLE);
-        setItem(32, tournaments.build(), (p,a) -> JadedAPI.sendToLobby(p, Minigame.TOURNAMENTS_MODERN));
+        setItem(32, tournaments.build(), (p,a) -> {
+            final JadedPlayer jadedPlayer = JadedAPI.getJadedPlayer(p);
+            final int protocol = jadedPlayer.getProtocolVersion();
+            final Minigame minigame;
+
+
+            if(protocol == 0) {
+                minigame = Minigame.TOURNAMENTS_MODERN;
+            }
+            else if(protocol > ProtocolVersion.v1_9.getVersion()) {
+                minigame = Minigame.TOURNAMENTS_MODERN;
+            }
+            else {
+                minigame = Minigame.TOURNAMENTS_LEGACY;
+            }
+
+            JadedAPI.sendToLobby(p, minigame);
+        });
     }
 }

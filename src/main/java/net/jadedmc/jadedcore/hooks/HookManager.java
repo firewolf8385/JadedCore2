@@ -47,4 +47,12 @@ public class HookManager {
     public boolean useHyNick() {
         return plugin.getServer().getPluginManager().isPluginEnabled("HyNick");
     }
+
+    /**
+     * Get if the plugin should interact with ViaVersion.
+     * @return Whether ViaVersion is enabled.
+     */
+    public boolean useViaVersion() {
+        return plugin.getServer().getPluginManager().isPluginEnabled("ViaVersion");
+    }
 }
