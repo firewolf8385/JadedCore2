@@ -27,7 +27,6 @@ package net.jadedmc.jadedutils.items;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
 /**
@@ -64,8 +63,13 @@ public class PotionBuilder {
      * @return Potion Builder.
      */
     public PotionBuilder setPotionData(PotionType potionType, boolean extended, boolean upgraded) {
+        // TODO: Remove this when update to 1.21 is complete.
+        /*
         PotionData potionData = new PotionData(potionType, extended, upgraded);
         potionMeta.setBasePotionData(potionData);
+
+         */
+        System.out.println("Tried to set Potion Data in PotionBuilder");
         return this;
     }
 
