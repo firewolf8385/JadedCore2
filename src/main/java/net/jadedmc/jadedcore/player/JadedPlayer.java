@@ -86,6 +86,11 @@ public class JadedPlayer extends PluginPlayer implements CustomPlayer {
                 statement2.setString(1, getUniqueId().toString());
                 statement2.setString(2, getName());
                 statement2.setString(3, player.getAddress().getHostName());
+                statement2.executeUpdate();
+
+                level = 1;
+                experience = 0;
+                firstJoined = new Timestamp(System.currentTimeMillis());
             }
         }
         catch (SQLException exception) {
