@@ -65,7 +65,8 @@ public class PlayersCMD extends AbstractCommand {
                             continue;
                         }
 
-                        ItemBuilder builder = new SkullBuilder(player.getSkin())
+                        ItemBuilder builder = new SkullBuilder()
+                                .fromBase64(player.getSkin())
                                 .asItemBuilder()
                                 .setDisplayName("<green>" + player.getName())
                                 .addLore("<gray>Server: <green>" + player.getServerName());

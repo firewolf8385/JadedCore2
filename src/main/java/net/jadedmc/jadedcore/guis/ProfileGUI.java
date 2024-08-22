@@ -55,7 +55,7 @@ public class ProfileGUI extends CustomGUI {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String firstJoined = dateFormat.format(jadedPlayer.getFirstJoined());
 
-        ItemStack characterInfo = new SkullBuilder(player).asItemBuilder()
+        ItemStack characterInfo = new SkullBuilder().fromPlayer(player).asItemBuilder()
                 .setDisplayName("<green><bold>Character Info")
                 .addLore("<gray>Player: <green>" + player.getName())
                 .addLore("<gray>Rank: " + jadedPlayer.getRank().getDisplayName())

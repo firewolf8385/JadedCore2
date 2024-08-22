@@ -24,11 +24,13 @@
  */
 package net.jadedmc.jadedutils.items;
 
-import com.cryptomorin.xseries.XMaterial;
-import org.bukkit.Bukkit;
+import com.cryptomorin.xseries.profiles.builder.XSkull;
+import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
+import com.cryptomorin.xseries.profiles.objects.Profileable;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -36,35 +38,28 @@ public class SkullBuilder {
     private ItemStack item;
     private SkullMeta meta;
 
-    /**
-     * Create a SkullBuilder
-     * @param texture Skull Texture
-     */
-    public SkullBuilder(String texture) {
-        UUID id = UUID.nameUUIDFromBytes(texture.getBytes());
-        int less = (int) id.getLeastSignificantBits();
-        int most = (int) id.getMostSignificantBits();
+    public SkullBuilder() {}
 
-        item = Bukkit.getUnsafe().modifyItemStack(new ItemBuilder(XMaterial.PLAYER_HEAD).build(), "{SkullOwner:{Id:[I;" + (less * most) + "," + (less >> 23) + "," + (most / less) + "," + (most * 8731) + "],Properties:{textures:[{Value:\"" + texture + "\"}]}}}");
-        meta = (SkullMeta) item.getItemMeta();
+    public SkullBuilder fromBase64(@NotNull final String base64) {
+        this.item = XSkull.createItem().profile(Profileable.of(ProfileInputType.BASE64, base64)).apply();
+        return this;
     }
 
-    public SkullBuilder(OfflinePlayer player) {
-        item = new ItemBuilder(XMaterial.PLAYER_HEAD).build();
-        meta = (SkullMeta) item.getItemMeta();
-        meta.setOwner(player.getName());
+    public SkullBuilder fromPlayer(@NotNull final OfflinePlayer offlinePlayer) {
+        this.item = XSkull.createItem().profile(Profileable.of(offlinePlayer)).apply();
+        return this;
     }
 
-    /**
-     * Creates a SkullBuilder with a given Skull enum.
-     * @param skull Skull enum to use.
-     */
-    public SkullBuilder(Skull skull) {
-        this(skull.getTexture());
+    public SkullBuilder fromSkull(final Skull skull) {
+        return fromBase64(skull.getTexture());
+    }
+
+    public SkullBuilder fromUUID(@NotNull final UUID uuid) {
+        this.item = XSkull.createItem().profile(Profileable.of(uuid)).apply();
+        return this;
     }
 
     public ItemBuilder asItemBuilder() {
-        item.setItemMeta(meta);
         return new ItemBuilder(item);
     }
 }

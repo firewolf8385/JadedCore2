@@ -164,7 +164,8 @@ public class LobbyManager {
                 .setDisplayName("<green><bold>Games")
                 .build();
 
-        ItemStack profileItem = new SkullBuilder(player)
+        ItemStack profileItem = new SkullBuilder()
+                .fromPlayer(player)
                 .asItemBuilder()
                 .setDisplayName("<green><bold>Profile")
                 .build();
