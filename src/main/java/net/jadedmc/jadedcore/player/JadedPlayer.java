@@ -85,7 +85,7 @@ public class JadedPlayer extends PluginPlayer implements CustomPlayer {
                 PreparedStatement statement2 = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_info (uuid,username,ip) VALUES (?,?,?)");
                 statement2.setString(1, getUniqueId().toString());
                 statement2.setString(2, getName());
-                statement2.setString(3, player.getAddress().getHostName());
+                statement2.setString(3, player.getAddress().getAddress().getHostAddress());
                 statement2.executeUpdate();
 
                 level = 1;
