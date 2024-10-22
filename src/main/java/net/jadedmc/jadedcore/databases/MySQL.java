@@ -28,6 +28,7 @@ import net.jadedmc.jadedcore.JadedCorePlugin;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -97,6 +98,60 @@ public class MySQL {
                     exception.printStackTrace();
                 }
             }, 504000, 504000);
+
+            {
+                PreparedStatement api_keys = connection.prepareStatement("CREATE TABLE IF NOT EXISTS api_keys (" +
+                        "uuid VARCHAR(36)," +
+                        "apiKey VARCHAR(36)," +
+                        "PRIMARY KEY(uuid, apiKey)" +
+                        ");");
+                api_keys.execute();
+            }
+
+            {
+                PreparedStatement staff_settings = connection.prepareStatement("CREATE TABLE IF NOT EXISTS staff_settings (" +
+                        "uuid VARCHAR(36)," +
+                        "vanish BOOLEAN DEFAULT FALSE," +
+                        "commandSpy BOOLEAN DEFAULT FALSE," +
+                        "PRIMARY KEY(uuid)" +
+                        ");");
+                staff_settings.execute();
+            }
+
+            {
+                PreparedStatement achievements_list = connection.prepareStatement("CREATE TABLE IF NOT EXISTS achievements_list (" +
+                        "id VARCHAR(36)," +
+                        "mode VARCHAR(36)," +
+                        "name VARCHAR(36)," +
+                        "description VARCHAR(128)," +
+                        "achievementPoints INT DEFAULT 0, " +
+                        "rewards VARCHAR(256)," +
+                        "PRIMARY KEY(id)" +
+                        ");");
+                achievements_list.execute();
+            }
+
+            {
+                PreparedStatement player_achievements = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_achievements (" +
+                        "uuid VARCHAR(36)," +
+                        "achievementID VARCHAR(36), " +
+                        "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                        "PRIMARY KEY(uuid,achievementID)" +
+                        ");");
+                player_achievements.execute();
+            }
+
+            PreparedStatement player_info = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_info (" +
+                    "uuid VARCHAR(36)," +
+                    "username VARCHAR(16)," +
+                    "ip VARCHAR(36)," +
+                    "level INT DEFAULT 1," +
+                    "experience INT DEFAULT 0," +
+                    "firstOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "lastOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "achievementPoints INT DEFAULT 0" +
+                    ");");
+            player_info.execute();
         }
         catch(SQLException | ClassNotFoundException exception) {
             exception.printStackTrace();
