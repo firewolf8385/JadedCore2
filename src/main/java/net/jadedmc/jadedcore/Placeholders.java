@@ -189,6 +189,14 @@ class Placeholders extends PlaceholderExpansion implements Relational {
             return JadedAPI.getInstanceMonitor().getPlayerCount() + "";
         }
 
+        if(identifier.contains("achievement_points")) {
+            return jadedPlayer.getAchievementPoints() + "";
+        }
+
+        if(identifier.contains("level")) {
+            return jadedPlayer.getLevel() + "";
+        }
+
         return null;
     }
 
