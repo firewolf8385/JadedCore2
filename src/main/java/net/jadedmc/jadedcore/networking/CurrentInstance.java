@@ -73,6 +73,10 @@ public class CurrentInstance {
             this.instanceType = InstanceType.GAME;
         }
 
+        if(plugin.settingsManager().getConfig().isSet("status")) {
+            this.status = InstanceStatus.valueOf(plugin.settingsManager().getConfig().getString("status"));
+        }
+
         // Get the IP address of the machine it's being run on.
         try(final DatagramSocket socket = new DatagramSocket()){
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
