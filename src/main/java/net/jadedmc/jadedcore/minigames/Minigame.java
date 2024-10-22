@@ -30,6 +30,7 @@ package net.jadedmc.jadedcore.minigames;
 public enum Minigame {
     BUILD,
     CACTUS_RUSH,
+    CREATIVE,
     ELYTRAPVP,
     HOUSING,
     HUB,
