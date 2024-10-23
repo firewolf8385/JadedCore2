@@ -40,6 +40,7 @@ import net.jadedmc.jadedcore.networking.player.NetworkPlayer;
 import net.jadedmc.jadedcore.party.Party;
 import net.jadedmc.jadedcore.player.JadedPlayer;
 import net.jadedmc.jadedutils.player.CustomPlayerSet;
+import org.black_ixx.playerpoints.PlayerPoints;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -242,5 +243,17 @@ public class JadedAPI {
 
     public static HookManager getHookManager() {
         return plugin.hookManager();
+    }
+
+    public static void addGems(@NotNull final Player player, int gems) {
+        PlayerPoints.getInstance().getAPI().give(player.getUniqueId(), gems);
+    }
+
+    public static int getGems(@NotNull final Player player) {
+        return PlayerPoints.getInstance().getAPI().look(player.getUniqueId());
+    }
+
+    public static void removeGems(@NotNull final Player player, int gems) {
+        PlayerPoints.getInstance().getAPI().take(player.getUniqueId(), gems);
     }
 }

@@ -9,6 +9,9 @@ depend:
   - LuckPerms
   - JadedChat
 
+softdepend:
+  - PlayerPoints
+
 commands:
   anvil:
     description: Opens an anvil.
