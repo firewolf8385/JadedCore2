@@ -24,6 +24,7 @@
  */
 package net.jadedmc.jadedcore.guis;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.jadedmc.jadedcore.JadedCorePlugin;
 import net.jadedmc.jadedcore.achievements.Achievement;
 import net.jadedmc.jadedcore.player.JadedPlayer;
@@ -62,6 +63,7 @@ public class ProfileGUI extends CustomGUI {
                 .addLore("")
                 .addLore("<gray>Level: <green>" + jadedPlayer.getLevel())
                 .addLore("<gray>Experience: <green>" + jadedPlayer.getExperience())
+                .addLore("<gray>Gems: <light_purple>" + PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%"))
                 .addLore("")
                 .addLore("<gray>First Joined: <green>" + firstJoined)
                 .build();
@@ -78,5 +80,14 @@ public class ProfileGUI extends CustomGUI {
                 .addLore("<gray>Achievement Points: <yellow>" + achievementPoints)
                 .build();
         setItem(31, achievements, (p, a) -> new AchievementsGUI(plugin, p).open(p));
+
+        final ItemStack leveling = new ItemBuilder(Material.BREWING_STAND)
+                .setDisplayName("<green><bold>Leveling")
+                .addLore("")
+                .addLore(PlaceholderAPI.setPlaceholders(player, "<dark_aqua>Level %jadedlevels_current_level% %jadedlevels_progress_bar% <dark_aqua>Level %jadedlevels_next_level%"))
+                .addLore("")
+                .addLore(PlaceholderAPI.setPlaceholders(player, "<gray>Remaining Experience: <dark_aqua>%jadedlevels_remaining_experience%"))
+                .build();
+        setItem(32, leveling);
     }
 }
