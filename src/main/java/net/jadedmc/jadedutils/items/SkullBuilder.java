@@ -27,6 +27,7 @@ package net.jadedmc.jadedutils.items;
 import com.cryptomorin.xseries.profiles.builder.XSkull;
 import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
 import com.cryptomorin.xseries.profiles.objects.Profileable;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -46,6 +47,12 @@ public class SkullBuilder {
     }
 
     public SkullBuilder fromPlayer(@NotNull final OfflinePlayer offlinePlayer) {
+        // Work around for bedrock players.
+        if(offlinePlayer.getName() != null && offlinePlayer.getName().contains(".")) {
+            this.item = new ItemStack(Material.PLAYER_HEAD);
+            return this;
+        }
+
         this.item = XSkull.createItem().profile(Profileable.of(offlinePlayer)).apply();
         return this;
     }
