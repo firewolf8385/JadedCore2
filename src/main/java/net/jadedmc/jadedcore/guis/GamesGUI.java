@@ -51,7 +51,7 @@ public class GamesGUI extends CustomGUI {
                 .setUnbreakable(true)
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addFlag(ItemFlag.HIDE_UNBREAKABLE);
-        setItem(20, cactusRush.build(), (p,a) -> JadedAPI.sendBungeecordMessage(p, "BungeeCord", "Connect", "cactusrush"));
+        setItem(20, cactusRush.build(), (p,a) -> JadedAPI.sendToLobby(p, Minigame.CACTUS_RUSH));
 
         ItemBuilder duels = new ItemBuilder(Material.IRON_SWORD)
                 .setDisplayName("<green><bold>Duels")
